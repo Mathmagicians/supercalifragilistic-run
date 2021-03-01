@@ -1,5 +1,6 @@
 const options = {"workboxURL":"https://cdn.jsdelivr.net/npm/workbox-cdn@5.1.4/workbox/workbox-sw.js","importScripts":[],"config":{"debug":false},"cacheOptions":{"cacheId":"supercalifragilistic-run-prod","directoryIndex":"/","revision":"7f1Gjdx5j7xk"},"clientsClaim":true,"skipWaiting":true,"cleanupOutdatedCaches":true,"offlineAnalytics":false,"preCaching":[{"revision":"7f1Gjdx5j7xk","url":"/supercalifragilistic-run/?standalone=true"}],"runtimeCaching":[{"urlPattern":"/supercalifragilistic-run/_nuxt/","handler":"CacheFirst","method":"GET","strategyPlugins":[]},{"urlPattern":"/supercalifragilistic-run/","handler":"NetworkFirst","method":"GET","strategyPlugins":[]}],"offlinePage":null,"pagesURLPattern":"/supercalifragilistic-run/","offlineStrategy":"NetworkFirst"}
 
+
 importScripts(...[options.workboxURL, ...options.importScripts])
 
 initWorkbox(workbox, options)
