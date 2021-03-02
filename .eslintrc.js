@@ -1,6 +1,6 @@
 module.exports = {
-    root: true,
-    extends: [
-        '@nuxtjs'
-    ]
+  root: true,
+  extends: [
+    '@nuxtjs'
+  ]
 }
