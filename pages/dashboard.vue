@@ -1,0 +1,13 @@
+<template>
+  <h1>Dashboard for user xxx</h1>
+</template>
+
+<script>
+export default {
+  name: 'Dashboard'
+}
+</script>
+
+<style scoped>
+
+</style>
