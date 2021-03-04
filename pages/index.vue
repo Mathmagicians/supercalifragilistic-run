@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div>
+      <img src="~/assets/Super-run.svg">
       <h1 class="title">
         supercalifragilistic-run
       </h1>
-      <img href="">
     </div>
   </div>
 </template>
