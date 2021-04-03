@@ -1,13 +1,12 @@
 name: cd
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
 jobs:
   cd:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [14]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -16,7 +15,7 @@ jobs:
       - name: Setup node env
         uses: actions/setup-node@v2.1.2
         with:
-          node-version: ${{matrix.node}}
+          node-version: 14
 
       - name: Install dependencies
         run: npm install
