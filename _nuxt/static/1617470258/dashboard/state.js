@@ -1,1 +1,0 @@
-window.__NUXT__=(function(a){return {staticAssetsBase:"\u002Fsupercalifragilistic-run\u002F_nuxt\u002Fstatic\u002F1617470258",layout:"default",error:a,serverRendered:true,routePath:"\u002Fdashboard",config:{app:{basePath:"\u002Fsupercalifragilistic-run\u002F",assetsPath:"\u002Fsupercalifragilistic-run\u002F_nuxt\u002F",cdnURL:a},content:{dbHash:"915c3dd3"}}}}(null));
