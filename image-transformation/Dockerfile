@@ -10,6 +10,8 @@ RUN npm install -g svgo
 
 WORKDIR /images
 
+ENTRYPOINT ["/bin/bash"]
+
 # Usage
 
 # docker build -t bivihoba/potrace .
