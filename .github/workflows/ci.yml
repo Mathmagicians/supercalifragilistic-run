@@ -1,6 +1,8 @@
-name: super-run-ci
+name: super-run-ci-cd
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
   workflow_dispatch:
 
@@ -8,13 +10,57 @@ jobs:
   build-code:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Setup node env
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 14
+
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Lint code
-        run: echo todo !!!
+        run: npm run lint:js
+
       - name: Retrieve API conneciton URL
         env:
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: make lambda-url
+
       - name: Unit test
-        run: echo todo!!!
+        run: npm run test
+
+      - name: Generate static project
+        run: npm run generate
+
+      - name: Upload build artifact to Github Actions
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-dist-${{ github.sha }}
+          path: ./dist
+          if-no-files-found: error
+          retention-days: 7
+
+  cd:
+    needs: build-code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifact
+        id: download
+        uses: actions/download-artifact@v2
+        with:
+          name: frontend-dist-${{ github.sha }}
+
+      - name: File structure
+        run: ls -R
+
+      - name: Deploy
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: ./dist
