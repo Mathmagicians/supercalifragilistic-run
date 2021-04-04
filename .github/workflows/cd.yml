@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Create .env file with lambda url
+        run: make lambda-url
+
       - name: Generate static project
         run: npm run generate
 
