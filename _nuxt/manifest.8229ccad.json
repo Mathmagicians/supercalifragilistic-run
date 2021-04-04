@@ -1,7 +1,6 @@
 {
   "name": "supercalifragilistic-run",
   "short_name": "supercalifragilistic-run",
-  "description": "## Build Setup",
   "icons": [
     {
       "src": "/supercalifragilistic-run/_nuxt/icons/icon_64x64.5f6a36.png",
