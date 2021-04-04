@@ -8,17 +8,33 @@
       <h2>
         Lambda url is: {{ $config.axios.baseUrl }}
       </h2>
+      <p>
+        Received from server: {{ fromLambda }}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      fromLambda: {}
+    }
+  },
+
+  async fetch () {
+    const res = await this.$axios.$get('/')
+    this.fromLambda = res
+  }
+
+}
+
 </script>
 
 <style>
 
 .container {
-@apply min-h-screen flex justify-center items-center text-center mx-auto;
+  @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 </style>
