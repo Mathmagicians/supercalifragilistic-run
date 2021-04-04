@@ -24,7 +24,6 @@ export default {
   },
 
   async fetch () {
-    console.log('fetching data from ', this.$axios)
     const res = await this.$axios.$get('/')
     this.fromLambda = res
   }

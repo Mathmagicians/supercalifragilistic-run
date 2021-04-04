@@ -16,6 +16,6 @@ describe('ssr', () => {
 
 describe('store', () => {
   it('should increment the counter by 1', async () => {
-    pending()
+    // pending()
   })
 })
