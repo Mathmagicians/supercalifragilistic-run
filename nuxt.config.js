@@ -6,6 +6,12 @@ export default {
     base: '/supercalifragilistic-run/'
   },
 
+  publicRuntimeConfig: {
+    axios: {
+      baseUrl: process.env.LAMBDA_API_ROOT
+    }
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'supercalifragilistic-run',
@@ -54,8 +60,10 @@ export default {
     '@nuxt/content'
   ],
 
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  // fallback value, proper should be read from config file, see publicRuntimeConfig
+  axios: {
+    baseURL: 'http://mathmagicians.dk'
+  },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {

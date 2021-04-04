@@ -5,3 +5,4 @@ dist
 image-transformation/output/Overtaking.svg image-transformation/output/Star.svg image-transformation/output/Super-run.svg image-transformation/output/Undeserved-anger.svg image-transformation/output/What-sex.svg image-transformation/output/Your-comment.svg image-transformation/output/tmp
 .eslintcache
 env.prod
+.env

@@ -4,16 +4,15 @@
     <!-- logo + burger -->
     <div class="flex justify-between items-center px-4 py-1 sm:p-0">
       <nuxt-link to="/" class="text-gray-400">
-
         LOGO
-
       </nuxt-link>
       <!-- Menu burger -->
       <div class="sm:hidden">
         <button
-            class="block text-gray-500 hover:text-white focus:text-white focus:outline-none"
-            type="button"
-            @click="isOpen = !isOpen">
+          class="block text-gray-500 hover:text-white focus:text-white focus:outline-none"
+          type="button"
+          @click="isOpen = !isOpen"
+        >
           <XIcon v-if="isOpen" />
           <MenuIcon v-if="!isOpen" />
         </button>
@@ -24,15 +23,13 @@
       <a href="#" class="block font-semibold rounded hover:bg-gray-400 sm:ml-2">About us</a>
       <a href="#" class="block text-white font-semibold rounded hover:bg-gray-400 sm:ml-2">Lets play!</a>
       <NuxtLink to="/games" class="block text-white font-semibold rounded hover:bg-gray-400 sm:ml-2">
-
         Games
-
       </NuxtLink>
       <!-- use component on sm and larger screens, otherwise embed links -->
-      <LazyAccountDropdown class="hidden sm:block mx-2 sm:ml-8 text-gray-700"/>
+      <LazyAccountDropdown class="hidden sm:block mx-2 sm:ml-8 text-gray-700" />
       <div class="sm:hidden border-t-2 border-gray-600">
         <button class="flex items-center mt-2">
-          <UserIcon size="2x" class="text-pink-50 rounded-full border-2 hover:border-pink-50 border-pink-600 p-2"/>
+          <UserIcon size="2x" class="text-pink-50 rounded-full border-2 hover:border-pink-50 border-pink-600 p-2" />
           <span class="ml-3 font-semibold text-white">Jane Doe</span>
         </button>
         <div class="text-gray-100">
@@ -46,14 +43,14 @@
 </template>
 
 <script>
-import {XIcon, MenuIcon, UserIcon} from "@vue-hero-icons/outline"
+import { XIcon, MenuIcon, UserIcon } from '@vue-hero-icons/outline'
 
 export default {
-  name: "NavBar",
-  components: {XIcon, MenuIcon, UserIcon},
-  data() {
+  name: 'NavBar',
+  components: { XIcon, MenuIcon, UserIcon },
+  data () {
     return {
-      isOpen: false,
+      isOpen: false
     }
   }
 }

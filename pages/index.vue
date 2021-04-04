@@ -5,6 +5,9 @@
       <h1 class="title">
         supercalifragilistic-run
       </h1>
+      <h2>
+        Lambda url is: {{ $config.axios.baseUrl }}
+      </h2>
     </div>
   </div>
 </template>
