@@ -6,3 +6,4 @@ image-transformation/output/Overtaking.svg image-transformation/output/Star.svg 
 .eslintcache
 env.prod
 .env
+coverage
