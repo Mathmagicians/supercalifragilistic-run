@@ -54,6 +54,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: frontend-dist-${{ github.sha }}
+          path: ./dist
 
       - name: File structure
         run: ls -R
