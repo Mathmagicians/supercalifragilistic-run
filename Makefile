@@ -1,4 +1,4 @@
-.PHONY: dev lambda-url node tf-token
+.PHONY: dev lambda-url lint lint-fix node smoke tf-token
 
 # on Github actions this is set as env variable (passed as secret), on local dev machine, you need to have the terraform token locally
 export TF_API_TOKEN ?= $(shell cat ~/.terraform.d/credentials.tfrc.json | grep "token" | awk '{print $$2}' | sed 's/"//g')
@@ -21,4 +21,11 @@ lambda-url:
 	| xargs -t -I V echo "LAMBDA_API_ROOT=V" \
 	> .env
 
+smoke:
+	npm run test:smoke
 
+lint:
+	npm run lint:js
+
+lint-fix:
+	npm run lint:fix
