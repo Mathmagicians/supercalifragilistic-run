@@ -23,7 +23,8 @@ module.exports = {
     '<rootDir>/store/**/*js'
   ],
   setupFilesAfterEnv: [
-    '<rootDir>/node_modules/cucumber-jest/dist/init.js'
+    '<rootDir>/node_modules/cucumber-jest/dist/init.js',
+    '<rootDir>/test/bdd/steps/smokeSteps.test.js'
   ],
   testMatch: [
     '<rootDir>/test/bdd/features/**/*.feature',
