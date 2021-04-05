@@ -1,18 +1,37 @@
----
-title: Getting started
-description: 'Empower your NuxtJS application with @nuxt/content module: write in a content/ directory and fetch your Markdown, JSON, YAML and CSV files through a MongoDB like API, acting as a Git-based Headless CMS.'
----
+# The Engineering Behind this app
 
-Empower your NuxtJS application with `@nuxtjs/content` module: write in a `content/` directory and fetch your Markdown, JSON, YAML and CSV files through a MongoDB like API, acting as a **Git-based Headless CMS**.
+## Tech stack
 
-## Writing content
+The application is costructed with a Serverless Backend (ok, ok, FaaS) and a static frontend, aka the Jamstack.
 
-Learn how to write your `content/`, supporting Markdown, YAML, CSV and JSON: https://content.nuxtjs.org/writing.
+### Source control
+We use Github to host the source code:
+- [Frontend](https://github.com/Mathmagicians/supercalifragilistic-run)
+- [Backend](https://github.com/Mathmagicians/supercalifragilistic-run-lambda)
 
-## Fetching content
+### CI-CD
+We use Github Actions as build server.
 
-Learn how to fetch your content with `$content`: https://content.nuxtjs.org/fetching.
+We have a CI job that produces a build artifact, and a CD job, that publishes the artifact.
 
-## Displaying content
+### Frontend
+We use Tailwind CSS with Nuxt.js to generate a static frontend. 
+Babel is transpiling the Javascript from ECMEA6.
 
-Learn how to display your Markdown content with the `<nuxt-content>` component directly in your template: https://content.nuxtjs.org/displaying.
+Development server runs on Node, and Node is packed in a Docker container.
+
+We use Makefile as a build script.
+
+### Backend
+We use an IaC approach, with a remote backend on [Terraform Cloud](https://app.terraform.io/app/mathmagicians/workspaces) to create infrastucture on AWS.
+
+We use a REST Api Gateway, Lambda functions, Cloud Watch logs and Dynamo DB.
+
+Our lambda functions are coded using Golang.
+
+## Architecture
+
+Eventdriven, serverless, NoSQL.
+
+## License
+Open Source, under the [MIT license]().
