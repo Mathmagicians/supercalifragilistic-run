@@ -1,0 +1,48 @@
+### what3words api
+GET /v3/convert-to-coordinates?words=sifts.business.nimbly HTTP/1.1
+
+{
+  "country": "DK",
+  "square": {
+    "southwest": {
+      "lng": 12.583477,
+      "lat": 55.666667
+    },
+    "northeast": {
+      "lng": 12.583525,
+      "lat": 55.666694
+    }
+  },
+  "nearestPlace": "Christianshavn, Capital Region",
+  "coordinates": {
+    "lng": 12.583501,
+    "lat": 55.66668
+  },
+  "words": "sifts.business.nimbly",
+  "language": "en",
+  "map": "https://w3w.co/sifts.business.nimbly"
+}
+
+GET /v3/convert-to-coordinates?words=sifts.business.nimbly HTTP/1.1
+
+{
+  "country": "DK",
+  "square": {
+    "southwest": {
+      "lng": 12.583477,
+      "lat": 55.666667
+    },
+    "northeast": {
+      "lng": 12.583525,
+      "lat": 55.666694
+    }
+  },
+  "nearestPlace": "Christianshavn, Capital Region",
+  "coordinates": {
+    "lng": 12.583501,
+    "lat": 55.66668
+  },
+  "words": "sifts.business.nimbly",
+  "language": "en",
+  "map": "https://w3w.co/sifts.business.nimbly"
+}
