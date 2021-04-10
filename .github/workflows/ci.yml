@@ -67,4 +67,5 @@ jobs:
           publish_dir: ./dist
 
       - name: Smoke test
+        working-directory: ~
         run: make smoke
