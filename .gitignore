@@ -7,3 +7,4 @@ image-transformation/output/Overtaking.svg image-transformation/output/Star.svg 
 env.prod
 .env
 coverage
+.strava

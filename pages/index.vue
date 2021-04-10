@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div>
       <img src="~/assets/Super-run.svg">
       <h1 class="title">
@@ -31,10 +31,3 @@ export default {
 }
 
 </script>
-
-<style>
-
-.container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-</style>
