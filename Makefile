@@ -12,7 +12,7 @@ all: dev
 clean:
 	@rm -rf ./dist
 
-dev:
+dev: lambda-url
 	@docker-compose up web
 
 node:
@@ -38,7 +38,7 @@ lambda-url:
 	--header "Authorization: Bearer $(TF_API_TOKEN)" \
 	--header "Content-Type: application/vnd.api+json" \
 	"$(TF_API)/workspaces/supercalifragilistic-run-lambda-prod?include=outputs" \
-	| jq '.included[] | select(.attributes.name=="gateway_deployment").attributes.value ' \
+	| jq '.included[] | select(.attributes.name=="rest_api_stage").attributes.value ' \
 	| xargs -t -I V echo "LAMBDA_API_ROOT=V" \
 	> .env
 

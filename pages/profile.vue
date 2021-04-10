@@ -1,5 +1,8 @@
 <template>
-  <p>Received from server ... {{ fromLambda }}</p>
+  <div class="">
+    <p>Received from server ... {{ fromLambda }}</p>
+    <run />
+  </div>
 </template>
 
 <script>
