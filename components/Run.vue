@@ -1,8 +1,10 @@
 <template>
   <div>
-    <p>Run component</p>
+    <h2 class="text-2xl text-bold text-gray-800">
+      Run
+    </h2>
 
-    <div id="map-wrap" class="min-w-1/2 w-1/2" style="height: 100vh; width: 100vh;">
+    <div id="map-wrap" class="min-w-1/2 w-1/2" style="height: 50vw; width: 50vw; overflow: auto;">
       <client-only>
         <l-map :zoom="13" :center="[55.9464418,8.1277591]">
           <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />

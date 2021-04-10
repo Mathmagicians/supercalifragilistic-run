@@ -66,6 +66,17 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           publish_dir: ./dist
 
+  smoke:
+    needs: cd
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: File structure
+        working-directory: ~
+        run: ls -R
+
       - name: Smoke test
         working-directory: ~
         run: make smoke
