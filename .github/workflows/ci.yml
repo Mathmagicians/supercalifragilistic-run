@@ -66,6 +66,27 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           publish_dir: ./dist
 
+  smoke:
+    needs: cd
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node env
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 15.6
+
+      - name: Install dependencies
+        run: npm install
+
+
+      - name: File structure
+        working-directory: ~
+        run: ls -R
+
       - name: Smoke test
         working-directory: ~
         run: make smoke
