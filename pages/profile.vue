@@ -1,3 +1,20 @@
 <template>
-  <p>About...</p>
+  <p>Received from server ... {{ fromLambda }}</p>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      fromLambda: {}
+    }
+  },
+
+  async fetch () {
+    const res = await this.$axios.$get('/profile')
+    this.fromLambda = res
+  }
+
+}
+
+</script>
