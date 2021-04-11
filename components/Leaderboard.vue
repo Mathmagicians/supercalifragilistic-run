@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <h1>Situation overview</h1>
+  <div class="container max-w-5xl mx-auto m-8">
+    <page-section-title>
+      Situation overview
+    </page-section-title>
+
     <h1>Events</h1>
     <div class="w-full aspect-w-4 aspect-h-3 lg:aspect-w-16 lg:aspect-h-9">
       <img
@@ -14,8 +17,10 @@
 </template>
 
 <script>
+import PageSectionTitle from './layout-utils/PageSectionTitle'
 export default {
-  name: 'Leaderboard'
+  name: 'Leaderboard',
+  components: { PageSectionTitle }
 }
 </script>
 

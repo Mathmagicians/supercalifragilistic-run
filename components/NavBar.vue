@@ -1,15 +1,15 @@
 <template>
-  <header class="bg-gray-900 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-1">
+  <header class="fixed w-full z-30 top-0 text-white bg-gray-900 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-1">
     <!-- logo + burger -->
     <div class="flex justify-between items-center px-4 py-1 sm:p-0">
       <nav-bar-item link="/">
         <div class="flex flex-row items-center">
           <img
-            class="w-16 h-16 object-cover object-left-top"
+            class="w-16 h-16 object-cover object-left-top rounded-full ring-2 ring-pink-400"
             src="~/assets/flamingo.jpeg"
             alt="Crush your so-called peer-birds, and be the fastest flamingo in the flock"
           >
-          <p class="font-extrabold text-xs text-pink-600 px-2">
+          <p class="font-bold text-sm text-pink-600 px-2">
             Supercalifragilisticexpialdociously...RUN!
           </p>
         </div>

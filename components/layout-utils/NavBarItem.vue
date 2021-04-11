@@ -8,7 +8,10 @@
 export default {
   name: 'MenuItem',
   props: {
-    link: String
+    link: {
+      type: String,
+      default: '#'
+    }
   }
 }
 </script>
