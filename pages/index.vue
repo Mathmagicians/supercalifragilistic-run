@@ -1,22 +1,14 @@
 <template>
   <div>
-    <div>
-      <img src="~/assets/Super-run.svg">
-      <h1 class="title">
-        supercalifragilistic-run
-      </h1>
-      <h2>
-        Lambda url is: {{ $config.axios.baseUrl }}
-      </h2>
-      <p>
-        Received from server: {{ fromLambda }}
-      </p>
-    </div>
+    <hero />
   </div>
 </template>
 
 <script>
+import Hero from '../components/Hero'
+
 export default {
+  components: { Hero },
   data () {
     return {
       fromLambda: {}

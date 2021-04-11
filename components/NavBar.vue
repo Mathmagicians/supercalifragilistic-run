@@ -1,11 +1,20 @@
 <template>
-  <header class="bg-gray-900 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-1">
-    <span class="font-extrabold text-pink-700">Supercalifragilisticexpialdociously ... RUN!</span>
+  <header class="fixed w-full z-30 top-0 text-white bg-gray-900 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-1">
     <!-- logo + burger -->
     <div class="flex justify-between items-center px-4 py-1 sm:p-0">
-      <nuxt-link to="/" class="text-gray-400">
-        LOGO
-      </nuxt-link>
+      <nav-bar-item link="/">
+        <div class="flex flex-row items-center">
+          <img
+            class="w-16 h-16 object-cover object-left-top rounded-full ring-2 ring-pink-400"
+            src="~/assets/flamingo.jpeg"
+            alt="Crush your so-called peer-birds, and be the fastest flamingo in the flock"
+          >
+          <p class="font-bold text-sm text-pink-600 px-2">
+            Supercalifragilisticexpialdociously...RUN!
+          </p>
+        </div>
+      </nav-bar-item>
+
       <!-- Menu burger -->
       <div class="sm:hidden">
         <button
@@ -20,11 +29,22 @@
     </div>
     <!-- menu items -->
     <nav :class="isOpen ? 'block':'hidden'" class="px-2 pt-2 pb-4 sm:flex sm:items-center text-white sm:p-0">
-      <a href="#" class="block font-semibold rounded hover:bg-gray-400 sm:ml-2">About us</a>
-      <a href="#" class="block text-white font-semibold rounded hover:bg-gray-400 sm:ml-2">Lets play!</a>
-      <NuxtLink to="/games" class="block text-white font-semibold rounded hover:bg-gray-400 sm:ml-2">
-        Games
-      </NuxtLink>
+      <nav-bar-item link="/about">
+        💁‍♀️ About the game
+      </nav-bar-item>
+      <nav-bar-item link="/engineering">
+        👩🏽‍💻 Engineering
+      </nav-bar-item>
+      <nav-bar-item link="/challenge">
+        🦩 Challenge
+      </nav-bar-item>
+      <nav-bar-item link="/profile">
+        Profile
+      </nav-bar-item>
+      <nav-bar-item link="/signup">
+        🏃‍♀️Lets run
+      </nav-bar-item>
+
       <!-- use component on sm and larger screens, otherwise embed links -->
       <LazyAccountDropdown class="hidden sm:block mx-2 sm:ml-8 text-gray-700" />
       <div class="sm:hidden border-t-2 border-gray-600">
@@ -44,10 +64,11 @@
 
 <script>
 import { XIcon, MenuIcon, UserIcon } from '@vue-hero-icons/outline'
+import NavBarItem from './layout-utils/NavBarItem'
 
 export default {
   name: 'NavBar',
-  components: { XIcon, MenuIcon, UserIcon },
+  components: { XIcon, MenuIcon, UserIcon, NavBarItem },
   data () {
     return {
       isOpen: false
