@@ -1,7 +1,7 @@
 <template>
   <div class="">
-    <p>Received from server ... {{ fromLambda }}</p>
     <run />
+    <p>Received from server ... {{ fromLambda }}</p>
   </div>
 </template>
 
