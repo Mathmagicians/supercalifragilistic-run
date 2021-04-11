@@ -1,10 +1,12 @@
 <template>
-  <h1>Dashboard for user xxx</h1>
+  <div>
+    <h1>Sign up for the app please</h1>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Dashboard'
+  name: 'Signup'
 }
 </script>
 

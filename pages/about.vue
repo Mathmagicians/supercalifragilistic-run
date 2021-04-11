@@ -1,3 +1,3 @@
 <template>
-  <p>About...</p>
+  <p>About the game...</p>
 </template>
