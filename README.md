@@ -1,5 +1,12 @@
 # supercalifragilistic-run
 
+# For testers
+The production version of the application is available at [https://www.mathmagicians.dk/supercalifragilistic-run/profile/](https://www.mathmagicians.dk/supercalifragilistic-run/profile/)
+
+All communication, feature requests and test results happens trough [Github issues](https://github.com/Mathmagicians/supercalifragilistic-run/issues).
+You need to create a GitHub account, to be able to comment.
+# For Developers
+
 ## Build Setup
 
 ```bash
