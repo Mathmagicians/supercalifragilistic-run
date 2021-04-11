@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/engineering", {data:[{}],fetch:{"0":{fromLambda:"Hello, 13.49.158.229\n"}},mutations:[]});

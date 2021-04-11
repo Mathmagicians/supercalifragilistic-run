@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[3],{307:function(e,n,t){"use strict";t.r(n);var l={components:{Leaderboard:t(136).default}},o=t(4),component=Object(o.a)(l,(function(){var e=this.$createElement;return(this._self._c||e)("leaderboard")}),[],!1,null,null,null);n.default=component.exports;installComponents(component,{Leaderboard:t(136).default})}}]);

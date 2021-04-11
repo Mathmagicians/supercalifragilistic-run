@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/engineering", {data:[{}],fetch:{},mutations:[]});
