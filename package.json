@@ -21,7 +21,7 @@
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/pwa": "^3.3.5",
     "@vue-hero-icons/outline": "^1.7.2",
-    "core-js": "^3.8.3",
+    "core-js": "^3.10.1",
     "nuxt": "^2.15.4",
     "nuxt-leaflet": "^0.0.25",
     "polyline-encoded": "^0.0.9"
