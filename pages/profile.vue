@@ -16,6 +16,7 @@ import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
 export default {
   components: { PageSectionTitle, BasicPageLayout, Card },
+
   data () {
     return {
       fromLambda: {},
