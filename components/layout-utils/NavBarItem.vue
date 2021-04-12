@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="link" class="block text-gray- font-semibold rounded hover:bg-gray-400 sm:ml-2 px-2">
+  <nuxt-link :to="link" class="block font-semibold rounded sm:ml-2 px-2">
     <slot />
   </nuxt-link>
 </template>

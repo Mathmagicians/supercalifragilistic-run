@@ -9,6 +9,7 @@
         <l-map :zoom="15" :center="center" @ready="initMap">
           <l-tile-layer
             :url="url"
+            :attribution="attribution"
           />
           <l-marker
             :lat-lng="[center.lat, center.lng]"
@@ -20,13 +21,6 @@
         </l-map>
       </client-only>
     </div>
-
-    <p class="text-xs">
-      Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
-        href="https://www.flaticon.com/"
-        title="Flaticon"
-      >www.flaticon.com</a>
-    </p>
   </div>
 </template>
 
@@ -38,6 +32,10 @@ export default {
   data () {
     return {
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a\n' +
+          '        href="https://www.flaticon.com/"\n' +
+          '        title="Flaticon"\n' +
+          '      >www.flaticon.com</a>',
       icon: null,
       polyline: {
         latlngs: [],
