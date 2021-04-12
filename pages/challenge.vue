@@ -1,4 +1,5 @@
 <template>
+  <<<<<<< HEAD
   <basic-page-layout>
     <leaderboard />
   </basic-page-layout>
