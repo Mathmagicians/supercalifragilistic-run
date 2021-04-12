@@ -1,17 +1,30 @@
 <template>
-  <header class="fixed w-full z-30 top-0 text-white bg-gray-900 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-1">
+  <header
+    class="fixed w-full top-0 flex items-center justify-between mb-8"
+    style="z-index: 9999;"
+    :class="changeColor?'bg-white text-pink-400':'bg-transparent text-white'"
+  >
     <!-- logo + burger -->
-    <div class="flex justify-between items-center px-4 py-1 sm:p-0">
-      <nav-bar-item link="/">
-        <div class="flex flex-row items-center">
+    <div
+      class="w-full mx-auto flex flex-wrap items-center justify-between mt-0 py-2"
+    >
+      <nav-bar-item
+        link="/"
+      >
+        <div
+          class="pl-4 flex flex-col lg:flex-row items-center font-bold text-lg lg:text-xl xl:text-2xl
+        transform transition hover:text-underline hover:scale-105 hover:rotate-2 duration-300 ease-in-out"
+        >
           <img
-            class="w-16 h-16 object-cover object-left-top rounded-full ring-2 ring-pink-400"
+            class="w-16 h-16 object-cover object-left-top rounded-full ring-2 "
+            :class="changeColor?'ring-pink-400':'ring-pink-50'"
             src="~/assets/flamingo.jpeg"
             alt="Crush your so-called peer-birds, and be the fastest flamingo in the flock"
           >
-          <p class="font-bold text-sm text-pink-600 px-2">
-            Supercalifragilisticexpialdociously...RUN!
-          </p>
+          <span
+            class="px-4"
+            :class="changeColor?'text-pink-600':'text-white'"
+          >Supercalifragilisticexpialdociously...RUN!</span>
         </div>
       </nav-bar-item>
 
@@ -28,22 +41,24 @@
       </div>
     </div>
     <!-- menu items -->
-    <nav :class="isOpen ? 'block':'hidden'" class="px-2 pt-2 pb-4 sm:flex sm:items-center text-white sm:p-0">
-      <nav-bar-item link="/about">
-        💁‍♀️ About the game
-      </nav-bar-item>
-      <nav-bar-item link="/engineering">
-        👩🏽‍💻 Engineering
-      </nav-bar-item>
-      <nav-bar-item link="/challenge">
-        🦩 Challenge
-      </nav-bar-item>
-      <nav-bar-item link="/profile">
-        Profile
-      </nav-bar-item>
-      <nav-bar-item link="/signup">
-        🏃‍♀️Lets run
-      </nav-bar-item>
+    <nav
+      :class="isOpen ? 'block':'hidden'"
+      class="w-full flex-grow lg:flex lg:items-center lg:w-auto mt-2 lg:mt-0 p-4 lg:p-0 z-20"
+    >
+      <ul class="list-reset flex flex-row justify-end flex-1 items-center">
+        <li
+          v-for="item in menuItems"
+          :key="item.link"
+        >
+          <nav-bar-item
+            class="hover:border-b-8 transform transition hover:text-underline hover:scale-105 hover:-rotate-6 duration-300 ease-in-out"
+            :class="changeColor?'text-pink-400 hover:border-pink-400':'text-white hover:border-white'"
+            :link="item.link"
+          >
+            {{ item.text }}
+          </nav-bar-item>
+        </li>
+      </ul>
 
       <!-- use component on sm and larger screens, otherwise embed links -->
       <LazyAccountDropdown class="hidden sm:block mx-2 sm:ml-8 text-gray-700" />
@@ -59,6 +74,7 @@
         </div>
       </div>
     </nav>
+    <hr class="border-b border-gray-100 opacity-25 my-0 py-0">
   </header>
 </template>
 
@@ -71,7 +87,28 @@ export default {
   components: { XIcon, MenuIcon, UserIcon, NavBarItem },
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      scrollPosition: null,
+      menuItems: [
+        { link: '/engineering', text: 'Engineering' },
+        { link: '/about', text: 'Game' },
+        { link: '/challenge', text: 'Challenge' },
+        { link: '/profile', text: 'Profile' },
+        { link: '/signup', text: ' Run!' }
+      ]
+    }
+  },
+  computed: {
+    changeColor () {
+      return this.scrollPosition > 10
+    }
+  },
+  mounted () {
+    window.addEventListener('scroll', this.updateScroll)
+  },
+  methods: {
+    updateScroll () {
+      this.scrollPosition = window.scrollY
     }
   }
 }

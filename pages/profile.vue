@@ -1,22 +1,25 @@
 <template>
-  <div class="">
+  <basic-page-layout>
+    <page-section-title>Profile</page-section-title>
     <card>
-      Profile for Agata
+      User: {{ user }}
     </card>
     <card>
       <run />
     </card>
-    <p>Received from server ... {{ fromLambda }}</p>
-  </div>
+  </basic-page-layout>
 </template>
 
 <script>
 import Card from '../components/layout-utils/Card'
+import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
+import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
 export default {
-  components: { Card },
+  components: { PageSectionTitle, BasicPageLayout, Card },
   data () {
     return {
-      fromLambda: {}
+      fromLambda: {},
+      user: 'themathmagician'
     }
   },
 
