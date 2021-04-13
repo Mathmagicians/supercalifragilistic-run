@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed w-full top-0 flex items-center justify-between mb-8"
+    class="fixed w-full top-0 flex items-center justify-between mb-8 lg:mb-16"
     style="z-index: 9999;"
     :class="changeColor?'bg-white text-pink-400':'bg-transparent text-white'"
   >
@@ -12,7 +12,7 @@
         link="/"
       >
         <div
-          class="pl-4 flex flex-col lg:flex-row items-center font-bold text-lg lg:text-xl xl:text-2xl
+          class="pl-4 pb-4 flex flex-col-reverse lg:flex-row items-center font-bold text-lg lg:text-xl xl:text-2xl
         transform transition hover:text-underline hover:scale-105 hover:rotate-2 duration-300 ease-in-out"
         >
           <img
@@ -24,7 +24,7 @@
           <span
             class="px-4"
             :class="changeColor?'text-pink-600':'text-white'"
-          >Supercalifragilisticexpialdociously...RUN!</span>
+          >Supercalifragilisticexpialdociously ... RUN!</span>
         </div>
       </nav-bar-item>
 
