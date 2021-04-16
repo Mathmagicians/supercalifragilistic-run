@@ -95,18 +95,10 @@ export default {
           userinfo: process.env.user_pool_domain + '/userInfo',
           logout: process.env.user_pool_domain + '/logout'
         },
-        token: {
-          property: 'access_token',
-          type: 'Bearer',
-          maxAge: 3600
-        },
-        refreshToken: {
-          property: 'refresh_token',
-          maxAge: 3600 * 24 * 30
-        },
-        responseType: 'token',
-        redirectUri: 'https://localhost:3083/supercalifragilistic-run/profile',
-        logoutRedirectUri: 'https://localhost:3083/supercalifragilistic-run/profile/profile?action=logout',
+        responseType: 'code',
+        grantType: 'authorization_code',
+        redirectUri: 'http://localhost:3083/supercalifragilistic-run/profile',
+        logoutRedirectUri: 'http://localhost:3083/supercalifragilistic-run/profile/profile?action=logout',
         clientId: process.env.user_pool_client_id,
         clientSecret: process.env.user_pool_client_secret,
         scope: ['email', 'openid', 'profile'],
