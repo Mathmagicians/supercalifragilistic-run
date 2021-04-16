@@ -1,9 +1,10 @@
-.PHONY: c23wa clean clean-env client-id client-secret dev lambda-url lint lint-fix node query-tf smoke tf-token user-pool w3w-3wa
+.PHONY: c23wa callback check clean clean-env client-id client-secret dev .env .env-local lambda-url lint lint-fix node query-tf smoke tf-token user-pool w3w-3wa
 
 # on Github actions this is set as env variable (passed as secret), on local dev machine, you need to have the terraform token locally
 export TF_API_TOKEN ?= $(shell cat ~/.terraform.d/credentials.tfrc.json | grep "token" | awk '{print $$2}' | sed 's/"//g')
 export W3W_API_TOKEN ?= $(shell cat ~/.what3words)
-TF_API := https://app.terraform.io/api/v2/organizations/mathmagicians/
+tf_work=prod
+TF_API := https://app.terraform.io/api/v2/organizations/mathmagicians/workspaces/supercalifragilistic-run-lambda
 W3W_API := https://api.what3words.com/v3
 STRAVA_API := https://www.strava.com/api/v3
 
@@ -15,7 +16,7 @@ clean: clean-env
 clean-env:
 	@rm -f .env
 
-dev: lambda-url
+dev: .env-local
 	@docker-compose up web
 
 node:
@@ -36,11 +37,20 @@ dist: clean
 tf-token:
 	@echo $(TF_API_TOKEN)
 
+check: export tf_work=dev-ap
+check:
+	@echo $(tf_work) $(TF_API)
+	$(MAKE) lambda-url tf_work=$(tf_work)
+
+.env-local: export tf_work=dev-ap
+.env-local: .env
+
 .env: clean-env
-	$(MAKE) user-pool
-	$(MAKE) lambda-url
-	$(MAKE) client-secret
-	$(MAKE) client-id
+	$(MAKE) user-pool tf_work=$(tf_work)
+	$(MAKE) lambda-url tf_work=$(tf_work)
+	$(MAKE) client-secret tf_work=$(tf_work)
+	$(MAKE) client-id tf_work=$(tf_work)
+	$(MAKE) callback tf_work=$(tf_work)
 
 lambda-url: export query="rest_api_stage"
 lambda-url: query-tf
@@ -54,14 +64,17 @@ client-secret: query-tf
 client-id: export query="user_pool_client_id"
 client-id: query-tf
 
+callback: export query="app_auth_callback_url_root"
+callback: query-tf
+
 query-tf:
 	@curl \
 	--header "Authorization: Bearer $(TF_API_TOKEN)" \
 	--header "Content-Type: application/vnd.api+json" \
-	"$(TF_API)/workspaces/supercalifragilistic-run-lambda-prod?include=outputs" \
-	| jq '.included[] | select(.attributes.name==$(query)).attributes.value ' \
-	| xargs -t -I V echo "$(query)=V" \
-	>> .env
+	"$(TF_API)-$(tf_work)?include=outputs" \
+	| jq '.included[] | select(.attributes.name==$(query)).attributes.value' \
+                      	| xargs -t -I V echo "$(query)=V" \
+                      	>> .env
 
 w3w-3wa:
 	@curl -v \

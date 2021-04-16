@@ -11,6 +11,7 @@ import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
 import SuperRun from '~/assets/Super-run.svg?inline'
 export default {
+  auth: false,
   components: { PageSectionTitle, BasicPageLayout, SuperRun }
 
 }
