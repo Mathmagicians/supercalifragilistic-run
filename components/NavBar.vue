@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed w-full top-0 flex items-center justify-between mb-8"
+    class="fixed w-full top-0 flex items-center justify-between mb-8 lg:mb-16"
     style="z-index: 9999;"
     :class="changeColor?'bg-white text-pink-400':'bg-transparent text-white'"
   >
@@ -12,7 +12,7 @@
         link="/"
       >
         <div
-          class="pl-4 flex flex-col lg:flex-row items-center font-bold text-lg lg:text-xl xl:text-2xl
+          class="pl-4 pb-4 flex flex-col-reverse lg:flex-row items-center font-bold text-lg lg:text-xl xl:text-2xl
         transform transition hover:text-underline hover:scale-105 hover:rotate-2 duration-300 ease-in-out"
         >
           <img
@@ -24,7 +24,7 @@
           <span
             class="px-4"
             :class="changeColor?'text-pink-600':'text-white'"
-          >Supercalifragilisticexpialdociously...RUN!</span>
+          >Supercalifragilisticexpialdociously ... RUN!</span>
         </div>
       </nav-bar-item>
 
@@ -61,7 +61,36 @@
       </ul>
 
       <!-- use component on sm and larger screens, otherwise embed links -->
-      <LazyAccountDropdown class="hidden sm:block mx-2 sm:ml-8 text-gray-700" />
+
+      <div
+        class="hidden sm:block sm:relative"
+      >
+        <button
+          class="block rounded-full border-2 p-2 relative z-10 hover:ring-4"
+          :class="changeColor ? 'text-pink-400 hover:border-pink-600 border-pink-400 hover:ring-pink-600':'text-white border-white hover:ring-white'"
+          @click="isUserOpen = !isUserOpen"
+        >
+          <UserIcon size="2x" class="text-current" />
+          <p>{{ isLoggedIn }}</p>
+        </button>
+        <button
+          v-if="isUserOpen"
+          tabindex="-1"
+          class="fixed top-0 right-0 bottom-0 left-0 h-full w-full bg-grey-900 opacity-10 cursor-default"
+          @click="isUserOpen=false"
+        />
+        <div
+          v-if="isUserOpen"
+          class="absolute right-0 bg-white rounded-lg shadow-lg focus w-48 text-pink-400"
+        >
+          <a href="#" class="block px-4 py-2 hover:bg-pink-400">Your Account</a>
+          <a href="#" class="block px-4 py-2 hover:bg-pink-400">Contact us</a>
+          <a href="#" class="block px-4 py-2 hover:bg-pink-400">Logout</a>
+        </div>
+      </div>
+
+      <!-- on small screens, embed the links directly -->
+
       <div class="sm:hidden border-t-2 border-gray-600">
         <button class="flex items-center mt-2">
           <UserIcon size="2x" class="text-pink-50 rounded-full border-2 hover:border-pink-50 border-pink-600 p-2" />
@@ -88,6 +117,8 @@ export default {
   data () {
     return {
       isOpen: false,
+      isUserOpen: false,
+
       scrollPosition: null,
       menuItems: [
         { link: '/engineering', text: 'Engineering' },
@@ -95,6 +126,9 @@ export default {
         { link: '/challenge', text: 'Challenge' },
         { link: '/profile', text: 'Profile' },
         { link: '/signup', text: ' Run!' }
+      ],
+      dropDownItems: [
+        { link: '', text: 'Logout' }
       ]
     }
   },

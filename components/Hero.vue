@@ -1,14 +1,7 @@
 <template>
   <div>
     <div class="pt-24">
-      <div class="container px-3 mx-auto flex flex-wrap flex-column md:flex-row items-center">
-        <!--Left Col-->
-        <main-hero />
-        <!--Right Col-->
-        <div class="w-full md:w-3/5 py-6 text-center">
-          <img class="w-full md:w-4/5 z-50" src="~/assets/Super-run.svg">
-        </div>
-      </div>
+      <main-hero />
     </div>
     <hero-page-vawe
       :is-top="true"

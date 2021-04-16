@@ -28,7 +28,7 @@ jobs:
       - name: Retrieve API conneciton URL
         env:
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-        run: make lambda-url
+        run: make .env
 
       - name: Unit test
         run: echo npm run test - todo!
