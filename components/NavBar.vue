@@ -118,6 +118,7 @@ export default {
     return {
       isOpen: false,
       isUserOpen: false,
+
       scrollPosition: null,
       menuItems: [
         { link: '/engineering', text: 'Engineering' },
