@@ -65,7 +65,7 @@ export default {
 
   // fallback value, proper should be read from config file, see publicRuntimeConfig
   axios: {
-    baseURL: 'http://mathmagicians.dk'
+    baseURL: process.env.rest_api_stage
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -97,8 +97,8 @@ export default {
         },
         responseType: 'code',
         grantType: 'authorization_code',
-        redirectUri: process.env.rest_api_stage + '/supercalifragilistic-run/profile',
-        logoutRedirectUri: process.env.rest_api_stage + '/supercalifragilistic-run/profile/profile?action=logout',
+        redirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile',
+        logoutRedirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile/profile?action=logout',
         clientId: process.env.user_pool_client_id,
         clientSecret: process.env.user_pool_client_secret,
         scope: ['email', 'openid', 'profile'],

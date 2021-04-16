@@ -51,6 +51,7 @@ check:
 	$(MAKE) client-secret tf_work=$(tf_work)
 	$(MAKE) client-id tf_work=$(tf_work)
 	$(MAKE) callback tf_work=$(tf_work)
+	$(MAKE) facebook-app tf_work=$(tf_work)
 
 lambda-url: export query="rest_api_stage"
 lambda-url: query-tf
@@ -66,6 +67,9 @@ client-id: query-tf
 
 callback: export query="app_auth_callback_url_root"
 callback: query-tf
+
+facebook-app: export query="fb_oauth_site_url"
+facebook-app: query-tf
 
 query-tf:
 	@curl \
