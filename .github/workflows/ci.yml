@@ -25,7 +25,7 @@ jobs:
       - name: Lint code
         run: npm run lint:js
 
-      - name: Retrieve API conneciton URL
+      - name: Retrieve variables from Terraform
         env:
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: make .env
