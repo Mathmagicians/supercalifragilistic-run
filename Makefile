@@ -1,4 +1,4 @@
-.PHONY: c23wa clean dev lambda-url lint lint-fix node smoke tf-token w3w-3wa
+.PHONY: c23wa clean clean-env client-id client-secret dev lambda-url lint lint-fix node query-tf smoke tf-token user-pool w3w-3wa
 
 # on Github actions this is set as env variable (passed as secret), on local dev machine, you need to have the terraform token locally
 export TF_API_TOKEN ?= $(shell cat ~/.terraform.d/credentials.tfrc.json | grep "token" | awk '{print $$2}' | sed 's/"//g')
@@ -9,8 +9,11 @@ STRAVA_API := https://www.strava.com/api/v3
 
 all: dev
 
-clean:
+clean: clean-env
 	@rm -rf ./dist
+
+clean-env:
+	@rm -f .env
 
 dev: lambda-url
 	@docker-compose up web
@@ -33,14 +36,32 @@ dist: clean
 tf-token:
 	@echo $(TF_API_TOKEN)
 
-lambda-url:
-	curl \
+.env: clean-env
+	$(MAKE) user-pool
+	$(MAKE) lambda-url
+	$(MAKE) client-secret
+	$(MAKE) client-id
+
+lambda-url: export query="rest_api_stage"
+lambda-url: query-tf
+
+user-pool: export query="user_pool_domain"
+user-pool: query-tf
+
+client-secret: export query="user_pool_client_secret"
+client-secret: query-tf
+
+client-id: export query="user_pool_client_id"
+client-id: query-tf
+
+query-tf:
+	@curl \
 	--header "Authorization: Bearer $(TF_API_TOKEN)" \
 	--header "Content-Type: application/vnd.api+json" \
 	"$(TF_API)/workspaces/supercalifragilistic-run-lambda-prod?include=outputs" \
-	| jq '.included[] | select(.attributes.name=="rest_api_stage").attributes.value ' \
-	| xargs -t -I V echo "LAMBDA_API_ROOT=V" \
-	> .env
+	| jq '.included[] | select(.attributes.name==$(query)).attributes.value ' \
+	| xargs -t -I V echo "$(query)=V" \
+	>> .env
 
 w3w-3wa:
 	@curl -v \

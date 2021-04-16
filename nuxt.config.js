@@ -3,12 +3,13 @@ export default {
   target: 'static',
 
   router: {
-    base: '/supercalifragilistic-run/'
+    base: '/supercalifragilistic-run/',
+    middleware: ['auth']
   },
 
   publicRuntimeConfig: {
     axios: {
-      baseUrl: process.env.LAMBDA_API_ROOT
+      baseUrl: process.env.rest_api_stage
     }
   },
 
@@ -55,7 +56,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/pwa
+    '@nuxtjs/auth-next',
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
@@ -82,5 +83,35 @@ export default {
 
   tailwindcss: {
     jit: true
+  },
+
+  auth: {
+    strategies: {
+      awsCognito: {
+        scheme: 'oauth2',
+        endpoints: {
+          authorization: process.env.user_pool_domain + '/login',
+          token: process.env.user_pool_domain + '/token',
+          userinfo: process.env.user_pool_domain + '/userInfo',
+          logout: process.env.user_pool_domain + '/logout'
+        },
+        token: {
+          property: 'access_token',
+          type: 'Bearer',
+          maxAge: 3600
+        },
+        refreshToken: {
+          property: 'refresh_token',
+          maxAge: 3600 * 24 * 30
+        },
+        responseType: 'token',
+        redirectUri: 'https://localhost:3083/supercalifragilistic-run/profile',
+        logoutRedirectUri: 'https://localhost:3083/supercalifragilistic-run/profile/profile?action=logout',
+        clientId: process.env.user_pool_client_id,
+        clientSecret: process.env.user_pool_client_secret,
+        scope: ['email', 'openid', 'profile'],
+        codeChallengeMethod: 'S256'
+      }
+    }
   }
 }
