@@ -10,7 +10,8 @@ export default {
   publicRuntimeConfig: {
     axios: {
       baseUrl: process.env.rest_api_stage
-    }
+    },
+    git_commit: process.env.git_commit
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head

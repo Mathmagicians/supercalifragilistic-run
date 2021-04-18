@@ -7,7 +7,12 @@
       border-b
       py-8 text-gray-800"
     >
-      Powered by 🔥 & 🦄. © Mathmagicians, 2021.
+      <div class="mx-auto flex flex-col md:flex-row justify-around">
+        <span class="border-r-2 px-2">Powered by 🔥 & 🦄. © Mathmagicians, 2021.</span>
+        <span
+          class="border-r-2 px-2 text-gray-400"
+        > Commit id: {{ $config.git_commit }}</span>
+      </div>
     </footer>
   </div>
 </template>

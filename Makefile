@@ -1,4 +1,4 @@
-.PHONY: c23wa callback check clean clean-env client-id client-secret dev .env .env-local lambda-url lint lint-fix node query-tf smoke tf-token user-pool w3w-3wa
+.PHONY: c23wa callback check clean clean-env client-id client-secret dev .env .env-local git-commit lambda-url lint lint-fix node query-tf smoke tf-token user-pool w3w-3wa
 
 # on Github actions this is set as env variable (passed as secret), on local dev machine, you need to have the terraform token locally
 export TF_API_TOKEN ?= $(shell cat ~/.terraform.d/credentials.tfrc.json | grep "token" | awk '{print $$2}' | sed 's/"//g')
@@ -52,6 +52,7 @@ check:
 	$(MAKE) client-id tf_work=$(tf_work)
 	$(MAKE) callback tf_work=$(tf_work)
 	$(MAKE) facebook-app tf_work=$(tf_work)
+	$(MAKE) git-commit
 
 lambda-url: export query="rest_api_stage"
 lambda-url: query-tf
@@ -71,14 +72,19 @@ callback: query-tf
 facebook-app: export query="fb_oauth_site_url"
 facebook-app: query-tf
 
+git-commit:
+	@git rev-parse HEAD \
+ 	| xargs -I V echo "git_commit=V" \
+ 	>> .env
+
 query-tf:
 	@curl \
 	--header "Authorization: Bearer $(TF_API_TOKEN)" \
 	--header "Content-Type: application/vnd.api+json" \
 	"$(TF_API)-$(tf_work)?include=outputs" \
 	| jq '.included[] | select(.attributes.name==$(query)).attributes.value' \
-                      	| xargs -t -I V echo "$(query)=V" \
-                      	>> .env
+    | xargs -I V echo "$(query)=V" \
+    >> .env
 
 w3w-3wa:
 	@curl -v \

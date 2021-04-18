@@ -12,7 +12,8 @@
       </p>
     </div>
     <div class="w-full sm:w-1/2 p-6 mt-6">
-      <img :src="imageUrl">
+      <img v-if="imageUrl" :src="imageUrl">
+      <span v-if="heroName">{{ heroName }}</span>
     </div>
   </div>
 </template>
@@ -26,6 +27,10 @@ export default {
       default: 'title'
     },
     imageUrl: {
+      type: String,
+      default: ''
+    },
+    heroName: {
       type: String,
       default: ''
     },

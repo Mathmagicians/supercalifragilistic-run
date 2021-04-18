@@ -17,6 +17,7 @@
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
+    "@nuxt-hero-icons/outline": "^1.0.1",
     "@nuxt/content": "^1.14.0",
     "@nuxtjs/auth-next": "*",
     "@nuxtjs/axios": "^5.12.5",

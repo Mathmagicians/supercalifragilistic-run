@@ -9,27 +9,25 @@
           {{ title }}
         </div>
         <p class="text-gray-800 text-base px-6 mb-5">
-          <slot> info text
+          <slot name="main"> info text
           </slot>
         </p>
       </a>
     </div>
     <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
       <div class="flex items-center justify-start">
-        <button
-          class="mx-auto lg:mx-0
-          hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg
-          focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
-        >
+        <hero-button color-change="true">
           Action
-        </button>
+        </hero-button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import HeroButton from './HeroButton'
 export default {
   name: 'GettingStartedBox',
+  components: { HeroButton },
   props: {
     title: {
       type: String,
