@@ -87,10 +87,10 @@ export default {
   },
 
   auth: {
-    redirect: {
-      // callback: '/profile?action=after_login',
-      logout: '/profile?action=logout'
-    },
+    // redirect: {
+    // callback: '/profile?action=after_login',
+    //  logout: '/profile?action=logout'
+    // },
     strategies: {
       awsCognito: {
         scheme: 'oauth2',
@@ -109,8 +109,8 @@ export default {
           property: 'refresh_token',
           maxAge: 3600 * 24 * 30
         },
-        responseType: 'code',
-        grantType: 'authorization_code',
+        responseType: 'token',
+        // grantType: 'authorization_code',
         redirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile?action=after_login',
         logoutRedirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile/profile?action=logout',
         clientId: process.env.user_pool_client_id,

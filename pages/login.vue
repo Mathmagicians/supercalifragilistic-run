@@ -25,7 +25,6 @@ import HeroButton from '../components/layout-utils/HeroButton'
 export default {
   name: 'Login',
   components: { HeroButton, SigninButton, BasicPageLayout, PageSectionTitle },
-  layout: 'Unauthorized',
   data () {
     return {
       loggedIn: false
