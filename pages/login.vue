@@ -2,25 +2,29 @@
   <basic-page-layout>
     <page-section-title>Sign up to be a supercalifragilistic 🦩</page-section-title>
     <signin-button v-if="!loggedIn" @click="login" />
-    <hero-button v-if="!loggedIn" @click="login">
-      Login
-    </hero-button>
     <div v-else>
       <p> Logging in ...</p>
     </div>
-    <hero-button>Authenticate with Strava</hero-button>
+    <!-- debugging -->
+    User:
+    <hero-button @click="$auth.fetchUser()">
+      Fetch user
+    </hero-button>
+    <hero-button @click="$auth.strategy.token.get()">
+      get token
+    </hero-button>
   </basic-page-layout>
 </template>
 
 <script>
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
-import HeroButton from '../components/layout-utils/HeroButton'
 import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 import SigninButton from '../components/layout-utils/SigninButton'
+import HeroButton from '../components/layout-utils/HeroButton'
 
 export default {
   name: 'Login',
-  components: { SigninButton, BasicPageLayout, HeroButton, PageSectionTitle },
+  components: { HeroButton, SigninButton, BasicPageLayout, PageSectionTitle },
   layout: 'Unauthorized',
   data () {
     return {

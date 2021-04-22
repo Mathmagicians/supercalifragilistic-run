@@ -4,6 +4,8 @@
     <GettingStartedBox title="Basic profile info 🦩" subtitle="We take care of your data and your privacy">
       <template #main>
         name, gender, mail, picture (from facebook)
+
+        Email is: {{ email }}, userId is: {{ userId }}, logged in {{ loggedIn }}
         <!-- name -->
         <div class="md:flex mb-6">
           <div class="md:w-1/3">
@@ -102,8 +104,27 @@ export default {
       name: state => state.profile.name
     })
   },
+  data () {
+    return {
+      email: null,
+      userId: null,
+      accessToken: null,
+      profilePicture: null,
+      loggedIn: false
+    }
+  },
+  created () {
+    console.log('Fetching user')
+    this.loggedIn = this.$auth.strategy.token.get()
+    this.$auth.fetchUser()
+    this.email = this.$auth.user ? this.$auth.user.email : 'not defined, sorry'
+    this.userId = this.$auth.user ? this.$auth.user.subject : 'not defined 😣'
+  },
   mounted () {
-    console.log(this.$route.fullPath, this.$route.params)
+    console.log('Route is: ', this.$route.fullPath, '\n params are: ', this.$route.params)
+    console.log('mounted - Fetching user')
+    this.loggedIn = this.$auth.strategy.token.get()
+    this.$auth.fetchUser()
   },
   methods: {
     updateName (e) {

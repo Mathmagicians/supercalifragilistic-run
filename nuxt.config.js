@@ -87,18 +87,31 @@ export default {
   },
 
   auth: {
+    redirect: {
+      // callback: '/profile?action=after_login',
+      logout: '/profile?action=logout'
+    },
     strategies: {
       awsCognito: {
         scheme: 'oauth2',
         endpoints: {
           authorization: process.env.user_pool_domain + '/login',
-          token: process.env.user_pool_domain + '/token',
-          userinfo: process.env.user_pool_domain + '/userInfo',
+          token: process.env.user_pool_domain + '/oauth2/token',
+          userinfo: process.env.user_pool_domain + '/oauth2/userInfo',
           logout: process.env.user_pool_domain + '/logout'
+        },
+        token: {
+          property: 'access_token',
+          type: 'Bearer',
+          maxAge: 3600
+        },
+        refreshToken: {
+          property: 'refresh_token',
+          maxAge: 3600 * 24 * 30
         },
         responseType: 'code',
         grantType: 'authorization_code',
-        redirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile',
+        redirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile?action=after_login',
         logoutRedirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile/profile?action=logout',
         clientId: process.env.user_pool_client_id,
         clientSecret: process.env.user_pool_client_secret,

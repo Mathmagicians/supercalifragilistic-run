@@ -1,7 +1,7 @@
 <template>
   <div class="mt-2 lg:mt-8">
     <slot name="top" />
-    <hero-page-vawe
+    <hero-page-wave
       :is-top="true"
       :image-url="require('~/assets/hero_art_top.svg')"
     />
@@ -18,15 +18,19 @@
         </slot>
       </div>
     </section>
-    <hero-page-vawe
+    <hero-page-wave
       :is-top="false"
       :image-url="require('~/assets/hero_art_bottom.svg')"
     />
   </div>
 </template>
+
 <script>
+
+import HeroPageWave from './HeroPageWave'
 export default {
-  name: 'BasicPageLayout'
+  name: 'BasicPageLayout',
+  components: { HeroPageWave }
 }
 </script>
 

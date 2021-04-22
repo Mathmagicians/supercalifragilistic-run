@@ -3,7 +3,7 @@
     <div class="pt-24">
       <main-hero />
     </div>
-    <hero-page-vawe
+    <hero-page-wave
       :is-top="true"
       :image-url="require('~/assets/hero_art_top.svg')"
     />
@@ -80,7 +80,7 @@
       </div>
     </section>
 
-    <hero-page-vawe
+    <hero-page-wave
       :is-top="false"
       :image-url="require('~/assets/hero_art_bottom.svg')"
     />
@@ -92,8 +92,9 @@
 <script>
 import PageSectionTitle from './layout-utils/PageSectionTitle'
 import SideBySideTextPictureCard from './layout-utils/SideBySideTextPictureCard'
+import HeroPageWave from './layout-utils/HeroPageWave'
 export default {
   name: 'Hero',
-  components: { SideBySideTextPictureCard, PageSectionTitle }
+  components: { HeroPageWave, SideBySideTextPictureCard, PageSectionTitle }
 }
 </script>
