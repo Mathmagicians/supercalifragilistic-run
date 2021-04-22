@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import HeroButton from './HeroButton'
+import HeroButton from './layout-utils/HeroButton'
 import SuperRun from '~/assets/Super-run.svg?inline'
 
 export default {

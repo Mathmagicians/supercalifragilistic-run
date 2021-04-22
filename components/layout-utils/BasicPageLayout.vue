@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="mt-2 lg:mt-8">
+    <slot name="top" />
     <hero-page-vawe
       :is-top="true"
       :image-url="require('~/assets/hero_art_top.svg')"
@@ -8,7 +9,8 @@
       class="
       bg-white
       border-b
-      py-8"
+      py-8
+      mt-4"
     >
       <div class="container max-w-5xl mx-auto m-8 text-gray-800">
         <slot>

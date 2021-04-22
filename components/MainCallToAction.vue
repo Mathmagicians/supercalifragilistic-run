@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import HeroButton from './HeroButton'
+import HeroButton from './layout-utils/HeroButton'
 
 export default {
   name: 'MainCallToAction',

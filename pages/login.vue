@@ -1,6 +1,7 @@
 <template>
   <basic-page-layout>
     <page-section-title>Sign up to be a supercalifragilistic 🦩</page-section-title>
+    <signin-button v-if="!loggedIn" @click="login" />
     <hero-button v-if="!loggedIn" @click="login">
       Login
     </hero-button>
@@ -13,12 +14,13 @@
 
 <script>
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
-import HeroButton from '../components/HeroButton'
+import HeroButton from '../components/layout-utils/HeroButton'
 import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
+import SigninButton from '../components/layout-utils/SigninButton'
 
 export default {
   name: 'Login',
-  components: { BasicPageLayout, HeroButton, PageSectionTitle },
+  components: { SigninButton, BasicPageLayout, HeroButton, PageSectionTitle },
   layout: 'Unauthorized',
   data () {
     return {

@@ -51,6 +51,7 @@
       </page-section-title>
       <div class="container mx-auto flex flex-wrap flex-row pt-4 pb-12">
         <getting-started-box
+          class="md:w-1/3"
           title="Integrated with running apps"
           subtitle="Automated point tracking"
         >
@@ -60,6 +61,7 @@
         </getting-started-box>
 
         <getting-started-box
+          class="md:w-1/3"
           subtitle="We value privacy"
           title="All your data are secure"
         >
@@ -69,6 +71,7 @@
         </getting-started-box>
 
         <getting-started-box
+          class="md:w-1/3"
           title="Prize pool"
           subtitle="Increase motivation by incentives"
         >

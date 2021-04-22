@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800 text-center">
+    <h1 class="w-full my-2 text-2xl sm:text-5xl font-bold leading-tight text-center text-gray-800 text-center">
       <slot />
     </h1>
     <div class="w-full mb-4">
