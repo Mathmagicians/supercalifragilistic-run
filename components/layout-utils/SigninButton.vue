@@ -3,7 +3,7 @@
     <hero-button v-if="!loggedIn" :color-change="changeColor" @click="login">
       🦩 Sign up !
     </hero-button>
-    <nuxt-link to="/challenge">
+    <nuxt-link v-else to="/challenge">
       <hero-button>
         🦩 Check out the challenges, and join the fun!
       </hero-button>
