@@ -10,17 +10,16 @@
       <h3 class="my-4 text-3xl leading-tight">
         Don't be a laggard. Tie your shoelaces. Join your flock, and RUN.
       </h3>
-      <hero-button>
-        🦩 Sign up!
-      </hero-button>
+      <signin-button />
     </section>
   </div>
 </template>
+
 <script>
-import HeroButton from './HeroButton'
+import SigninButton from './layout-utils/SigninButton'
 
 export default {
   name: 'MainCallToAction',
-  components: { HeroButton }
+  components: { SigninButton }
 }
 </script>

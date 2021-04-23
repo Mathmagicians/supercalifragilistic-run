@@ -5,7 +5,6 @@
       About the game
     </page-section-title>
     <SuperRun class="fill-current  text-pink-400" />
-    </profileform>
   </basic-page-layout>
 </template>
 <script>

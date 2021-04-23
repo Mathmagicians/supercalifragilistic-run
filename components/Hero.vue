@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="pt-24">
+    <div class="pt-2 lg:pt-8">
       <main-hero />
     </div>
-    <hero-page-vawe
+    <hero-page-wave
       :is-top="true"
       :image-url="require('~/assets/hero_art_top.svg')"
     />
@@ -51,6 +51,7 @@
       </page-section-title>
       <div class="container mx-auto flex flex-wrap flex-row pt-4 pb-12">
         <getting-started-box
+          class="md:w-1/3"
           title="Integrated with running apps"
           subtitle="Automated point tracking"
         >
@@ -60,6 +61,7 @@
         </getting-started-box>
 
         <getting-started-box
+          class="md:w-1/3"
           subtitle="We value privacy"
           title="All your data are secure"
         >
@@ -69,6 +71,7 @@
         </getting-started-box>
 
         <getting-started-box
+          class="md:w-1/3"
           title="Prize pool"
           subtitle="Increase motivation by incentives"
         >
@@ -77,7 +80,7 @@
       </div>
     </section>
 
-    <hero-page-vawe
+    <hero-page-wave
       :is-top="false"
       :image-url="require('~/assets/hero_art_bottom.svg')"
     />
@@ -89,8 +92,9 @@
 <script>
 import PageSectionTitle from './layout-utils/PageSectionTitle'
 import SideBySideTextPictureCard from './layout-utils/SideBySideTextPictureCard'
+import HeroPageWave from './layout-utils/HeroPageWave'
 export default {
   name: 'Hero',
-  components: { SideBySideTextPictureCard, PageSectionTitle }
+  components: { HeroPageWave, SideBySideTextPictureCard, PageSectionTitle }
 }
 </script>

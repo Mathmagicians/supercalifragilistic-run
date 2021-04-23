@@ -1,5 +1,6 @@
 export default {
   // Target: https://go.nuxtjs.dev/config-target
+  ssr: false,
   target: 'static',
 
   router: {
@@ -63,10 +64,7 @@ export default {
     '@nuxt/content',
     'nuxt-leaflet'
   ],
-
-  // fallback value, proper should be read from config file, see publicRuntimeConfig
   axios: {
-    baseURL: process.env.rest_api_stage
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -92,14 +90,23 @@ export default {
         scheme: 'oauth2',
         endpoints: {
           authorization: process.env.user_pool_domain + '/login',
-          token: process.env.user_pool_domain + '/token',
-          userinfo: process.env.user_pool_domain + '/userInfo',
+          token: process.env.user_pool_domain + '/oauth2/token',
+          userInfo: process.env.user_pool_domain + '/oauth2/userInfo',
           logout: process.env.user_pool_domain + '/logout'
         },
-        responseType: 'code',
-        grantType: 'authorization_code',
-        redirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile',
-        logoutRedirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile/profile?action=logout',
+        token: {
+          property: 'access_token',
+          type: 'Bearer',
+          maxAge: 3600
+        },
+        refreshToken: {
+          property: 'refresh_token',
+          maxAge: 3600 * 24 * 30
+        },
+        responseType: 'token',
+        // grantType: 'authorization_code',
+        redirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/login',
+        logoutRedirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/login',
         clientId: process.env.user_pool_client_id,
         clientSecret: process.env.user_pool_client_secret,
         scope: ['email', 'openid', 'profile'],

@@ -1,6 +1,6 @@
 <template>
   <div
-    :class=" isTop? '-mt-6 lg:-mt-12 lg:-mb-12': 'mb-4 lg:mb-8'"
+    :class=" isTop? '-mt-4 lg:-mt-8 lg:-mb-8': 'mb-4 lg:mb-8'"
     class="relative"
   >
     <img :src="imageUrl">
