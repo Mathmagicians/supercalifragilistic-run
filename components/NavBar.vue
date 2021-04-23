@@ -54,7 +54,7 @@
       :class="isOpen ? 'block':'hidden'"
       class="w-full flex-grow sm:flex lg:items-center lg:w-auto mt-2 lg:mt-0 p-4 lg:p-0 z-20"
     >
-      <ul class="list-reset flex flex-row justify-end flex-1 items-center">
+      <ul class="list-reset flex flex-col sm:flex-row items-start justify-end flex-1 sm:items-center">
         <li
           v-for="item in menuItems"
           :key="item.link"
@@ -80,11 +80,10 @@
           class="mx-2"
         >
           <button
-            class="block rounded-full relative z-10 p-1 hover:ring-4 focus:outline-none"
-            :class="changeColorTextClass + ' ' + changeColor ? 'hover:ring-pink-600':'hover:ring-white'"
+            class="block rounded-full relative z-10 p-1 focus:outline-none hover:outline-none"
             @click="isUserOpen = !isUserOpen"
           >
-            <user-avatar class="w-full w-32" :image-uri="profileImageUri" :name="name" />
+            <user-avatar class="w-full w-32" :class="changeColorTextClass" :image-uri="profileImageUri" :name="profileName" />
           </button>
         </div>
         <signin-button
@@ -116,12 +115,8 @@
 
       <!-- on small screens, below sm, embed the links from drop down menu directly -->
       <div class="sm:hidden border-t-2 border-gray-600">
-        <button class="flex items-center mt-2 focus:outline-none hover:bg-pink-400">
-          <UserIcon
-            size="2x"
-            class="text-current text-gray-600 rounded-full border-2 hover:border-pink-50 border-pink-600 p-2"
-          />
-          <span class="ml-3 font-semibold text-gray-600">Jane Doe small</span>
+        <button v-if="loggedIn" class="mt-2 focus:outline-none hover:bg-pink-400">
+          <user-avatar class="w-32" :image-uri="profileImageUri" :name="profileName" />
         </button>
         <div class="text-gray-600">
           <nav-bar-item
@@ -140,7 +135,7 @@
 </template>
 
 <script>
-import { MenuIcon, UserIcon, XIcon } from '@vue-hero-icons/outline'
+import { MenuIcon, XIcon } from '@vue-hero-icons/outline'
 import { mapState, mapGetters } from 'vuex'
 import NavBarItem from './layout-utils/NavBarItem'
 import SigninButton from './layout-utils/SigninButton'
@@ -148,7 +143,7 @@ import UserAvatar from './layout-utils/UserAvatar'
 
 export default {
   name: 'NavBar',
-  components: { UserAvatar, SigninButton, XIcon, MenuIcon, UserIcon, NavBarItem },
+  components: { UserAvatar, SigninButton, XIcon, MenuIcon, NavBarItem },
   data () {
     return {
       isOpen: false,
@@ -182,10 +177,9 @@ export default {
       return this.changeColor ? 'text-pink-400 hover:border-pink-400' : 'text-white hover:border-white'
     },
     ...mapState({
-      loggedIn: state => state.auth.loggedIn,
-      name: state => state.auth.user.given_name
+      loggedIn: state => state.auth.loggedIn
     }),
-    ...mapGetters(['profileImageUri'])
+    ...mapGetters(['profileImageUri', 'profileName'])
 
   },
   mounted () {

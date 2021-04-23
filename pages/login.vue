@@ -1,14 +1,11 @@
 <template>
   <basic-page-layout>
     <page-section-title>Sign up to be a supercalifragilistic 🦩</page-section-title>
-    <hero-button v-if="!loggedIn" @click="login">
+    <signin-button v-if="!loggedIn" @click="login">
       hero sign in
-    </hero-button>
-    <button v-if="!loggedIn" @click="login">
-      regular button
-    </button>
+    </signin-button>
     <div v-else>
-      <p> Logging in ...</p>
+      <p> Welcome, you are signed in ...</p>
       <hero-button @click="logout">
         Log out
       </hero-button>
@@ -20,11 +17,12 @@
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
 import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 import HeroButton from '../components/layout-utils/HeroButton'
+import SigninButton from '../components/layout-utils/SigninButton'
 
 export default {
   name: 'Login',
-  // auth: false,
-  components: { HeroButton, BasicPageLayout, PageSectionTitle },
+  auth: false,
+  components: { SigninButton, HeroButton, BasicPageLayout, PageSectionTitle },
   data () {
     return {
       loggedIn: false

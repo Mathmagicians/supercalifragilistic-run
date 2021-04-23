@@ -22,7 +22,8 @@ export const state = () => ({
 })
 
 export const getters = {
-  profileImageUri: (state) => { return JSON.parse(state.auth.user.picture).data.url }
+  profileImageUri: (state) => { return (state.auth.user) ? JSON.parse(state.auth.user.picture).data.url : null },
+  profileName: (state) => { return state.auth?.user.given_name }
 }
 
 export const mutations = {
