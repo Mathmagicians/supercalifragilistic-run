@@ -33,11 +33,9 @@ export default {
   },
   methods: {
     login () {
-      console.log('Trying to log in')
       this.$auth.loginWith('awsCognito')
     },
     logout () {
-      console.log('Logging out ...')
       this.$auth.logout()
     }
   }
