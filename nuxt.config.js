@@ -85,10 +85,6 @@ export default {
   },
 
   auth: {
-    /* redirect: {
-      callback: '/profile?action=after_login',
-      logout: '/login?action=logout'
-    }, */
     strategies: {
       awsCognito: {
         scheme: 'oauth2',

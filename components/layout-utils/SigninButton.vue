@@ -1,10 +1,9 @@
 <template>
-  <nuxt-link to="/profile?action=login">
-    <hero-button :color-change="!changeColor" @click="login">
-      🦩 Sign up !
-    </hero-button>
-  </nuxt-link>
+  <hero-button :color-change="changeColor" @click="login">
+    🦩 Sign up !
+  </hero-button>
 </template>
+
 <script>
 import HeroButton from './HeroButton'
 
@@ -12,19 +11,13 @@ export default {
   name: 'SigninButton',
   components: { HeroButton },
   props: {
-    changeColor: {}
-  },
-  data () {
-    return {
-      loggedIn: false
+    changeColor: {
+      type: Boolean,
+      default: false
     }
-  },
-  created () {
-    this.loggedIn = this.$auth.strategy.token.get()
   },
   methods: {
     login () {
-      console.log('Trying to log in')
       this.$auth.loginWith('awsCognito')
     }
   }

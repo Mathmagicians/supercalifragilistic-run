@@ -1,9 +1,9 @@
 <template>
   <basic-page-layout>
-    <page-section-title v-if="error.statusCode === 404">
+    <!--  <page-section-title v-if="error?.statusCode === 404">
       {{ pageNotFound }}
-    </page-section-title>
-    <page-section-title v-else>
+    </page-section-title> -->
+    <page-section-title>
       {{ otherError }}
     </page-section-title>
     <p>
@@ -38,9 +38,11 @@ export default {
   },
   head () {
     const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
+        (this.error) && (this.error.statusCode === 404) ? this.pageNotFound : this.otherError
     return {
       title
     }
   }
 }
+
+</script>

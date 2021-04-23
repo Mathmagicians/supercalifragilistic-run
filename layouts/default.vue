@@ -35,10 +35,11 @@
 </template>
 
 <script>
+import HeroButton from '../components/layout-utils/HeroButton'
 export default {
+  components: { HeroButton },
   data () {
     return {
-      // fromLambda: {},
       accessToken: null,
       username: null,
       email: null,

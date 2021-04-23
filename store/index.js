@@ -1,6 +1,7 @@
 export const state = () => ({
   authenticated:
       {
+        is: false,
         code: '',
         id: ''
       },
@@ -19,6 +20,10 @@ export const state = () => ({
     events: []
   }
 })
+
+export const getters = {
+  profileImageUri: (state) => { return JSON.parse(state.auth.user.picture).data.url }
+}
 
 export const mutations = {
   updateProfileName (state, name) {

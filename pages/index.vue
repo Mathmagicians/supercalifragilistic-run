@@ -5,11 +5,9 @@
 </template>
 
 <script>
-import Hero from '../components/Hero'
 
 export default {
-  auth: false,
-  components: { Hero }
+  auth: false
 }
 
 </script>

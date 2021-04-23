@@ -10,7 +10,7 @@
       size >= lg:
       -->
     <div
-      class="w-full mx-auto flex flex-row flex-wrap items-center justify-between mt-0 py-2"
+      class="w-full mx-auto flex flex-col lg:flex-row flex-wrap items-center justify-between mt-0 py-2"
     >
       <!-- logo -->
       <nav-bar-item
@@ -27,7 +27,7 @@
             alt="Crush your so-called peer-birds, and be the fastest flamingo in the flock"
           >
           <span
-            class="px-4"
+            class="px-2 flex-shrink"
             :class="changeColor?'text-pink-600':'text-white'"
           >Supercalifragilisticexpialdociously ... RUN!</span>
         </div>
@@ -52,7 +52,7 @@
     <!-- menu items for screens from size sm and up-->
     <nav
       :class="isOpen ? 'block':'hidden'"
-      class="w-full flex-grow lg:flex lg:items-center lg:w-auto mt-2 lg:mt-0 p-4 lg:p-0 z-20"
+      class="w-full flex-grow sm:flex lg:items-center lg:w-auto mt-2 lg:mt-0 p-4 lg:p-0 z-20"
     >
       <ul class="list-reset flex flex-row justify-end flex-1 items-center">
         <li
@@ -77,18 +77,15 @@
         <!-- Profile picture and name if logged in, otherwise prominent login button -->
         <div
           v-if="loggedIn"
-          class="flex flex-row mx-2"
+          class="mx-2"
         >
           <button
-            class="block rounded-full border-2 p-2 relative z-10 hover:ring-4 focus:outline-none"
+            class="block rounded-full relative z-10 p-1 hover:ring-4 focus:outline-none"
             :class="changeColorTextClass + ' ' + changeColor ? 'hover:ring-pink-600':'hover:ring-white'"
             @click="isUserOpen = !isUserOpen"
           >
-            <UserIcon size="2x" class="text-current" />
+            <user-avatar class="w-full w-32" :image-uri="profileImageUri" :name="name" />
           </button>
-          <span v-if="!isUserOpen" class="flex-nowrap">
-            {{ loggedIn ? "Hello, "+ user :"Hello stranger!" }}
-          </span>
         </div>
         <signin-button
           v-else
@@ -144,13 +141,14 @@
 
 <script>
 import { MenuIcon, UserIcon, XIcon } from '@vue-hero-icons/outline'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import NavBarItem from './layout-utils/NavBarItem'
 import SigninButton from './layout-utils/SigninButton'
+import UserAvatar from './layout-utils/UserAvatar'
 
 export default {
   name: 'NavBar',
-  components: { SigninButton, XIcon, MenuIcon, UserIcon, NavBarItem },
+  components: { UserAvatar, SigninButton, XIcon, MenuIcon, UserIcon, NavBarItem },
   data () {
     return {
       isOpen: false,
@@ -161,7 +159,7 @@ export default {
         { link: '/challenge', text: 'Challenge' },
         { link: '/profile', text: 'Profile' },
         { link: '/engineering', text: 'Engineering' },
-        { link: '/about', text: 'Game' }
+        { link: '/about', text: 'Rules' }
       ],
       dropDownLoggedInItems: [
         {
@@ -184,10 +182,11 @@ export default {
       return this.changeColor ? 'text-pink-400 hover:border-pink-400' : 'text-white hover:border-white'
     },
     ...mapState({
-      gender: state => state.profile.gender,
-      user: state => state.profile.user,
-      loggedIn: state => state.auth.loggedIn
-    })
+      loggedIn: state => state.auth.loggedIn,
+      name: state => state.auth.user.given_name
+    }),
+    ...mapGetters(['profileImageUri'])
+
   },
   mounted () {
     window.addEventListener('scroll', this.updateScroll)

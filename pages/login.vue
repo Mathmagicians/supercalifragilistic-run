@@ -31,7 +31,7 @@ export default {
     }
   },
   created () {
-    this.loggedIn = this.$auth.strategy.token.get()
+    this.loggedIn = !!this.$auth.strategy.token.get()
   },
   methods: {
     login () {

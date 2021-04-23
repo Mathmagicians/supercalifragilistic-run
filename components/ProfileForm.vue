@@ -1,34 +1,43 @@
 <template>
   <div>
     <page-section-title>Your profile</page-section-title>
-    <GettingStartedBox title="Basic profile info 🦩" subtitle="We take care of your data and your privacy">
+    <GettingStartedBox
+      id="basic_profile"
+      title="Basic profile info 🦩"
+      subtitle="We take care of your data and your privacy"
+    >
       <template #main>
-        name, gender, mail, picture (from facebook)
+        <!-- rows with basic profile data  name, gender, mail, picture (from facebook) -->
+        <form-row id="picture" class="mt-2">
+          <template #field="fieldProps">
+            <UserAvatar :id="fieldProps.id" :image-uri="profileImageUri" />
+          </template>
+        </form-row>
 
-        Email is: {{ email }}, userId is: {{ userId }}, logged in {{ loggedIn }}
-        <!-- name -->
-        <div class="md:flex mb-6">
-          <div class="md:w-1/3">
-            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="name">
-              Name :
-            </label>
-          </div>
-          <div class="md:w-2/3">
-            <slot>
-              <input
-                id="name"
-                :value="name"
-                class="form-input block w-full bg-gray-100 text-pink-400 text-lg focus:bg-white"
-                type="text"
-                placeholder="Your name"
-                @input="updateName"
-              >
-            </slot>
-            <p class="py-2 text-sm text-gray-600">
-              Your name, dear {{ !name ? '🦩' : name }}
-            </p>
-          </div>
-        </div>
+        <form-row id="email">
+          <template #field="fieldProps">
+            <input
+              :id="fieldProps.id"
+              :class="inputClass"
+              type="text"
+              :placeholder="`enter content for ${fieldProps.id}`"
+              :value="email"
+            >
+          </template>
+        </form-row>
+
+        <form-row id="Name">
+          <template #field="fieldProps">
+            <input
+              :id="fieldProps.id"
+              :value="name"
+              :class="inputClass"
+              type="text"
+              placeholder="Your name"
+              @input="updateName"
+            >
+          </template>
+        </form-row>
 
         <!-- gender -->
         <div class="md:flex mb-6">
@@ -38,14 +47,14 @@
             </label>
           </div>
           <div class="md:w-2/3">
-            <div id="gender" class="relative">
+            <div id="gender" class="relative max-w-1/3">
               <Gender
-                class="static inset-0 z-0 fill-current text-gray-700 object-cover"
+                class="static inset-0 z-0 fill-current text-gray-700 object-cover w-full"
               />
               <!--female -->
               <button
                 tabindex="-1"
-                class="absolute inset-y-0 left-0 z-5 h-full w-1/2 bg-pink-400 opacity-20 cursor-default hover:opacity-40"
+                class="absolute inset-y-0 left-0 z-5 h-full w-1/2 w-1/2 bg-pink-400 opacity-20 cursor-default hover:opacity-40"
                 :class="gender === 'F' ? 'opacity-20':'opacity-0'"
                 @click="updateGender('F')"
               />
@@ -67,6 +76,17 @@
 
         <!-- profile picture -->
       </template>
+      <template #bottom>
+        <div v-if="basicInfoChanged" class="flex flex-row">
+          <hero-button>
+            Update Profile Info
+          </hero-button>
+          <hero-button>
+            Cancel
+          </hero-button>
+        </div>
+        <p>Data synchronized from Facebook.</p>
+      </template>
     </GettingStartedBox>
     <GettingStartedBox title="Authorize data access" subtitle="Authorize receiving data from your running app">
       <template #main>
@@ -83,45 +103,43 @@
           Authorize Strava
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
         </hero-button>
+        <p>todo: deauthorize + show authorized status</p>
       </template>
     </GettingStartedBox>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import PageSectionTitle from './layout-utils/PageSectionTitle'
 import HeroButton from './layout-utils/HeroButton'
 import GettingStartedBox from './GettingStartedBox'
+import FormRow from './layout-utils/FormRow'
+import UserAvatar from './layout-utils/UserAvatar'
 import Gender from '~/assets/What-sex.svg?inline'
 
 export default {
   name: 'ProfileForm',
-  components: { GettingStartedBox, HeroButton, PageSectionTitle, Gender },
+  components: { UserAvatar, FormRow, GettingStartedBox, HeroButton, PageSectionTitle, Gender },
+  data () {
+    return {
+      userId: null,
+      accessToken: null,
+      basicInfoChanged: false
+    }
+  },
   computed: {
     ...mapState({
       gender: state => state.profile.gender,
-      name: state => state.profile.name
-    })
-  },
-  data () {
-    return {
-      email: null,
-      userId: null,
-      accessToken: null,
-      profilePicture: null,
-      loggedIn: false
-    }
+      name: state => state.auth.user.given_name,
+      email: state => state.auth.user.email
+    }),
+    ...mapGetters([
+      'profileImageUri'
+    ])
   },
   created () {
-    console.log('Fetching user')
-    this.loggedIn = this.$auth.strategy.token.get()
-    this.$auth.fetchUser().then(console.log('fetched user ', this.$auth.user.userId))
-    this.email = this.$auth.user ? this.$auth.user.email : 'not defined, sorry'
-    this.userId = this.$auth.user ? this.$auth.user.subject : 'not defined 😣'
-  },
-  mounted () {
-    console.log('Route is: ', this.$route.fullPath, '\n params are: ', this.$route.params)
+    this.inputClass = 'form-input block w-full bg-gray-100 text-pink-400 text-lg focus:bg-white'
   },
   methods: {
     updateName (e) {
@@ -138,3 +156,4 @@ export default {
 <style scoped>
 
 </style>
+//{"data":{"height":50,"is_silhouette":false,"url":"https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10222488903865108&height=50&width=50&ext=1621781516&hash=AeSr7vx-V7krZhdVurs","width":50}}"

@@ -21,7 +21,7 @@
         </mock>
         </li>
       </ul>
-      <signin-button change-color="false" />
+      <signin-button :change-color="false" />
     </div>
     <!--Right Col-->
     <div class="w-full md:w-3/5 py-6 px-2 md:px-6 text-center">
