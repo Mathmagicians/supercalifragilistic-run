@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pt-24">
+    <div class="pt-2 lg:pt-8">
       <main-hero />
     </div>
     <hero-page-wave

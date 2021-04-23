@@ -2,14 +2,7 @@
   <basic-page-layout>
     <page-section-title>Profile</page-section-title>
     <card>
-      User:
-      <hero-button @click="$auth.fetchUser()">
-        Fetch user
-      </hero-button>
-      token: {{ $auth.strategy.token }}
-      <hero-button @click="$auth.strategy.token.get()">
-        Fetch user
-      </hero-button>
+      User: {{ user }}, Email: {{ email }}
     </card>
     <card>
       <run />
@@ -27,17 +20,27 @@ export default {
   data () {
     return {
       fromLambda: {},
-      token: {},
-      user: {}
+      token: null,
+      user: null,
+      email: null
     }
   },
 
-  async fetch () {
-    const res = await this.$axios.$get('/profile')
-    this.fromLambda = res
-  },
+  // async fetch () {
+  // const res = await this.$axios.$get('/profile')
+  // this.fromLambda = res
+  // const fetchuser = await this.$auth.fetchUser()
+  // console.log('fetched ', fetchuser)
+
+  //   this.email = this.$auth.user.email
+  //  this.user = this.$auth.user.username
+  //  },
   mounted () {
-    // this.$auth.fetchUser().then(() => { console.log('Done fetching user') })
+
+  },
+  created () {
+    // this.email = this.$auth.user.email
+    // this.user = this.$auth.user.username
   }
 
 }

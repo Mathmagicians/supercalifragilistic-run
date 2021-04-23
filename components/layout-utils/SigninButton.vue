@@ -11,7 +11,6 @@ import HeroButton from './HeroButton'
 export default {
   name: 'SigninButton',
   components: { HeroButton },
-  layout: 'Unauthorized',
   props: {
     changeColor: {}
   },

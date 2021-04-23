@@ -1,5 +1,6 @@
 export default {
   // Target: https://go.nuxtjs.dev/config-target
+  ssr: false,
   target: 'static',
 
   router: {
@@ -63,10 +64,7 @@ export default {
     '@nuxt/content',
     'nuxt-leaflet'
   ],
-
-  // fallback value, proper should be read from config file, see publicRuntimeConfig
   axios: {
-    baseURL: process.env.rest_api_stage
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -87,17 +85,17 @@ export default {
   },
 
   auth: {
-    // redirect: {
-    // callback: '/profile?action=after_login',
-    //  logout: '/profile?action=logout'
-    // },
+    /* redirect: {
+      callback: '/profile?action=after_login',
+      logout: '/login?action=logout'
+    }, */
     strategies: {
       awsCognito: {
         scheme: 'oauth2',
         endpoints: {
           authorization: process.env.user_pool_domain + '/login',
           token: process.env.user_pool_domain + '/oauth2/token',
-          userinfo: process.env.user_pool_domain + '/oauth2/userInfo',
+          userInfo: process.env.user_pool_domain + '/oauth2/userInfo',
           logout: process.env.user_pool_domain + '/logout'
         },
         token: {
@@ -111,8 +109,8 @@ export default {
         },
         responseType: 'token',
         // grantType: 'authorization_code',
-        redirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile?action=after_login',
-        logoutRedirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/profile/profile?action=logout',
+        redirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/login',
+        logoutRedirectUri: process.env.app_auth_callback_url_root + '/supercalifragilistic-run/login',
         clientId: process.env.user_pool_client_id,
         clientSecret: process.env.user_pool_client_secret,
         scope: ['email', 'openid', 'profile'],

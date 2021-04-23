@@ -116,15 +116,12 @@ export default {
   created () {
     console.log('Fetching user')
     this.loggedIn = this.$auth.strategy.token.get()
-    this.$auth.fetchUser()
+    this.$auth.fetchUser().then(console.log('fetched user ', this.$auth.user.userId))
     this.email = this.$auth.user ? this.$auth.user.email : 'not defined, sorry'
     this.userId = this.$auth.user ? this.$auth.user.subject : 'not defined 😣'
   },
   mounted () {
     console.log('Route is: ', this.$route.fullPath, '\n params are: ', this.$route.params)
-    console.log('mounted - Fetching user')
-    this.loggedIn = this.$auth.strategy.token.get()
-    this.$auth.fetchUser()
   },
   methods: {
     updateName (e) {

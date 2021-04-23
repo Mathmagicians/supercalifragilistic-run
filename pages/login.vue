@@ -1,30 +1,30 @@
 <template>
   <basic-page-layout>
     <page-section-title>Sign up to be a supercalifragilistic 🦩</page-section-title>
-    <signin-button v-if="!loggedIn" @click="login" />
+    <hero-button v-if="!loggedIn" @click="login">
+      hero sign in
+    </hero-button>
+    <button v-if="!loggedIn" @click="login">
+      regular button
+    </button>
     <div v-else>
       <p> Logging in ...</p>
+      <hero-button @click="logout">
+        Log out
+      </hero-button>
     </div>
-    <!-- debugging -->
-    User:
-    <hero-button @click="$auth.fetchUser()">
-      Fetch user
-    </hero-button>
-    <hero-button @click="$auth.strategy.token.get()">
-      get token
-    </hero-button>
   </basic-page-layout>
 </template>
 
 <script>
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
 import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
-import SigninButton from '../components/layout-utils/SigninButton'
 import HeroButton from '../components/layout-utils/HeroButton'
 
 export default {
   name: 'Login',
-  components: { HeroButton, SigninButton, BasicPageLayout, PageSectionTitle },
+  // auth: false,
+  components: { HeroButton, BasicPageLayout, PageSectionTitle },
   data () {
     return {
       loggedIn: false
@@ -37,6 +37,10 @@ export default {
     login () {
       console.log('Trying to log in')
       this.$auth.loginWith('awsCognito')
+    },
+    logout () {
+      console.log('Logging out ...')
+      this.$auth.logout()
     }
   }
 }

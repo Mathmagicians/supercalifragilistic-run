@@ -16,9 +16,48 @@
           class="border-r-2 px-2 text-gray-400"
         > Commit id: {{ $config.git_commit }}</span>
       </div>
+      <ul v-if="$auth.user">
+        <li>Welcome {{ username }}, you are logged in!</li>
+        <li>Token {{ accessToken }}</li>
+        <li> email {{ email }}</li>
+        <li> userId {{ userId }}</li>
+        <li>
+          <hero-button class="bg-gray-100" @click="logOut">
+            Log out
+          </hero-button>
+        </li>
+      </ul>
+      <p v-else>
+        Not logged in. Token {{ accessToken }}
+      </p>
     </footer>
   </div>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      // fromLambda: {},
+      accessToken: null,
+      username: null,
+      email: null,
+      userId: null
+    }
+  },
+  created () {
+    this.email = this.$auth.user?.email
+    this.userId = this.$auth.user?.sub
+    this.username = this.$auth.user?.username
+    this.accessToken = this.$auth.strategy.token.get()
+  },
+  methods: {
+    logOut () {
+      this.$auth.logout()
+    }
+  }
+}
+</script>
 
 <style>
 

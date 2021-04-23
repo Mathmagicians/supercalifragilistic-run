@@ -21,9 +21,7 @@
         </mock>
         </li>
       </ul>
-      <hero-button>
-        🦩Sign up!
-      </hero-button>
+      <signin-button change-color="false" />
     </div>
     <!--Right Col-->
     <div class="w-full md:w-3/5 py-6 px-2 md:px-6 text-center">
@@ -31,12 +29,13 @@
     </div>
   </div>
 </template>
+
 <script>
-import HeroButton from './layout-utils/HeroButton'
+import SigninButton from './layout-utils/SigninButton'
 import SuperRun from '~/assets/Super-run.svg?inline'
 
 export default {
   name: 'MainHero',
-  components: { HeroButton, SuperRun }
+  components: { SigninButton, SuperRun }
 }
 </script>

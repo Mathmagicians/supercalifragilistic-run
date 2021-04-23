@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed w-full top-0 flex flex-col sm:flex-row items-center justify-between mb-12 lg:mb-24"
+    class="sticky w-full top-0 flex flex-col sm:flex-row items-center justify-between lg:mb-2"
     style="z-index: 9999;"
     :class="changeColor?'bg-white text-pink-400':'bg-transparent text-white'"
   >
