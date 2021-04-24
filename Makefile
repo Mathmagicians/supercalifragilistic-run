@@ -1,8 +1,8 @@
 .PHONY: c23wa callback check clean clean-env dev .env .env-local git-commit lint lint-fix node query-jq query-tf smoke tf-token w3w-3wa
 
 # on Github actions this is set as env variable (passed as secret), on local dev machine, you need to have the terraform token locally
-#export TF_API_TOKEN ?= $(shell cat ~/.terraform.d/credentials.tfrc.json | grep "token" | awk '{print $$2}' | sed 's/"//g')
-export STRAVA_CLIENT_ID ?= $(shell jq '.client_id'  ~/.strava  | sed 's/"//g')
+export TF_API_TOKEN ?= $(shell cat ~/.terraform.d/credentials.tfrc.json | grep "token" | awk '{print $$2}' | sed 's/"//g')
+#export STRAVA_CLIENT_ID ?= $(shell jq '.client_id'  ~/.strava  | sed 's/"//g')
 #export W3W_API_TOKEN ?= $(shell cat ~/.what3words)
 
 tf_work = prod
