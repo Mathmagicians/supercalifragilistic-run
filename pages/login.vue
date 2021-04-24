@@ -1,19 +1,21 @@
 <template>
   <basic-page-layout>
-    <page-section-title>Sign up to be a supercalifragilistic 🦩</page-section-title>
-    <signin-button v-if="!loggedIn" @click="login">
-      hero sign in
-    </signin-button>
+    <div v-if="!loggedIn">
+      <page-section-title>Sign up to be a supercalifragilistic 🦩</page-section-title>
+      <signin-button @click="login" />
+    </div>
     <div v-else>
-      <p> Welcome, you are signed in ...</p>
+      <page-section-title>Welcome, {{ profileName }} 🦩</page-section-title>
+      <p> You are signed in, have fun ...</p>
       <hero-button @click="logout">
-        Log out
+        Sign out
       </hero-button>
     </div>
   </basic-page-layout>
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
 import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 import HeroButton from '../components/layout-utils/HeroButton'
@@ -23,14 +25,7 @@ export default {
   name: 'Login',
   auth: false,
   components: { SigninButton, HeroButton, BasicPageLayout, PageSectionTitle },
-  data () {
-    return {
-      loggedIn: false
-    }
-  },
-  created () {
-    this.loggedIn = !!this.$auth.strategy.token.get()
-  },
+
   methods: {
     login () {
       this.$auth.loginWith('awsCognito')
@@ -38,6 +33,12 @@ export default {
     logout () {
       this.$auth.logout()
     }
+  },
+  computed: {
+    ...mapState({
+      loggedIn: state => state.auth.loggedIn
+    }),
+    ...mapGetters(['profileName'])
   }
 }
 </script>
