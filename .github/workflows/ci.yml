@@ -28,7 +28,7 @@ jobs:
       - name: Retrieve variables from Terraform
         env:
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-        run: make .env
+        run: make .env && cat .env
 
       - name: Unit test
         run: echo npm run test - todo!
