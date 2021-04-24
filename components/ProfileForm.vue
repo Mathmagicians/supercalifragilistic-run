@@ -30,7 +30,7 @@
           <template #field="fieldProps">
             <input
               :id="fieldProps.id"
-              :value="name"
+              :value="profileName"
               :class="inputClass"
               type="text"
               placeholder="Your name"
@@ -131,11 +131,10 @@ export default {
   computed: {
     ...mapState({
       gender: state => state.profile.gender,
-      name: state => state.auth.user.given_name,
       email: state => state.auth.user.email
     }),
     ...mapGetters([
-      'profileImageUri'
+      'profileImageUri', 'profileName'
     ])
   },
   created () {
