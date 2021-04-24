@@ -4,6 +4,7 @@
 #export TF_API_TOKEN ?= $(shell cat ~/.terraform.d/credentials.tfrc.json | grep "token" | awk '{print $$2}' | sed 's/"//g')
 export STRAVA_CLIENT_ID ?= $(shell jq '.client_id'  ~/.strava  | sed 's/"//g')
 #export W3W_API_TOKEN ?= $(shell cat ~/.what3words)
+
 tf_work = prod
 TF_API := https://app.terraform.io/api/v2/organizations/mathmagicians/workspaces/supercalifragilistic-run-lambda
 W3W_API := https://api.what3words.com/v3
