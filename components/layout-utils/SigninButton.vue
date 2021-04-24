@@ -1,7 +1,7 @@
 <template>
   <div>
     <hero-button v-if="!loggedIn" :color-change="changeColor" @click="login">
-      🦩 Sign up !
+      🦩 Sign in !
     </hero-button>
     <nuxt-link v-else to="/challenge">
       <hero-button>

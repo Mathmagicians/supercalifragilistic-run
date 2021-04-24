@@ -114,8 +114,8 @@
       </div>
 
       <!-- on small screens, below sm, embed the links from drop down menu directly -->
-      <div class="sm:hidden border-t-2 border-gray-600">
-        <button v-if="loggedIn" class="mt-2 focus:outline-none hover:bg-pink-400">
+      <div v-if="loggedIn" class="sm:hidden border-t-1 border-pink-400">
+        <button class="mt-2 focus:outline-none hover:bg-pink-400">
           <user-avatar class="w-32" :image-uri="profileImageUri" :name="profileName" />
         </button>
         <div class="text-gray-600">
@@ -125,7 +125,12 @@
             :link="item.link"
             class="block px-4 py-1 hover:bg-pink-400"
           >
-            {{ item.text }}
+            <hero-button v-if="item.action" @click="handleFunctionCall(item.action)">
+              {{ item.text }}
+            </hero-button>
+            <span v-else>
+              {{ item.text }}
+            </span>
           </nav-bar-item>
         </div>
       </div>
@@ -140,10 +145,11 @@ import { mapState, mapGetters } from 'vuex'
 import NavBarItem from './layout-utils/NavBarItem'
 import SigninButton from './layout-utils/SigninButton'
 import UserAvatar from './layout-utils/UserAvatar'
+import HeroButton from './layout-utils/HeroButton'
 
 export default {
   name: 'NavBar',
-  components: { UserAvatar, SigninButton, XIcon, MenuIcon, NavBarItem },
+  components: { HeroButton, UserAvatar, SigninButton, XIcon, MenuIcon, NavBarItem },
   data () {
     return {
       isOpen: false,
@@ -162,7 +168,7 @@ export default {
           text: (this.gender === 'F' ? '🏃‍♀️\t' : '') + (this.gender === 'M' ? '🏃‍♂️\t' : '') + 'View Profile'
         },
         { link: '/profile?action=update', text: 'Update Profile' },
-        { link: '/profile?action=logout', text: 'Logout' }
+        { link: '/login', text: 'Sign out', action: 'signOut' }
       ],
       notLoggedInITems: [
         { link: '/profile?action=login', text: 'Signup' }
@@ -188,6 +194,12 @@ export default {
   methods: {
     updateScroll () {
       this.scrollPosition = window.scrollY
+    },
+    signOut () {
+      this.$auth.logout()
+    },
+    handleFunctionCall (functionName) {
+      this[functionName]()
     }
   }
 }

@@ -12,8 +12,10 @@
       </p>
     </div>
     <div class="w-full sm:w-1/2 p-6 mt-6">
-      <img v-if="imageUrl" :src="imageUrl">
-      <span v-if="heroName">{{ heroName }}</span>
+      <slot name="bottom">
+        <img v-if="imageUrl" :src="imageUrl">
+        <span v-if="heroName">{{ heroName }}</span>
+      </slot>
     </div>
   </div>
 </template>

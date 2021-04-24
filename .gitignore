@@ -8,3 +8,4 @@ env.prod
 .env
 coverage
 .strava
+.query-tf-output.JSON

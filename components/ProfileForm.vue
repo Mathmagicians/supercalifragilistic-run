@@ -30,7 +30,7 @@
           <template #field="fieldProps">
             <input
               :id="fieldProps.id"
-              :value="name"
+              :value="profileName"
               :class="inputClass"
               type="text"
               placeholder="Your name"
@@ -88,6 +88,8 @@
         <p>Data synchronized from Facebook.</p>
       </template>
     </GettingStartedBox>
+
+    <!-- Strava integration flow -->
     <GettingStartedBox title="Authorize data access" subtitle="Authorize receiving data from your running app">
       <template #main>
         <ul class="flex-col text-left">
@@ -99,18 +101,23 @@
         </ul>
       </template>
       <template #bottom>
-        <hero-button>
-          Authorize Strava
-          <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
-        </hero-button>
-        <p>todo: deauthorize + show authorized status</p>
+        <nuxt-link to="strava_liftoff">
+          <hero-button>
+            Authorize Strava
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
+          </hero-button>
+        </nuxt-link>
+
+        <p class="block">
+          todo: deauthorize + show authorized status
+        </p>
       </template>
     </GettingStartedBox>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import PageSectionTitle from './layout-utils/PageSectionTitle'
 import HeroButton from './layout-utils/HeroButton'
 import GettingStartedBox from './GettingStartedBox'
@@ -131,11 +138,10 @@ export default {
   computed: {
     ...mapState({
       gender: state => state.profile.gender,
-      name: state => state.auth.user.given_name,
       email: state => state.auth.user.email
     }),
     ...mapGetters([
-      'profileImageUri'
+      'profileImageUri', 'profileName'
     ])
   },
   created () {
@@ -147,7 +153,8 @@ export default {
     },
     updateGender (g) {
       this.$store.commit('updateProfileGender', g)
-    }
+    },
+    ...mapActions(['getStravaAuthorization'])
   }
 
 }
