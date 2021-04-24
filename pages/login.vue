@@ -1,5 +1,15 @@
 <template>
   <basic-page-layout>
+    <a
+      href="https://www.strava.com/oauth/authorize?client_id=62410&redirect_uri=https://localhost:3083/supercalifragilistic-run&response_type=code&approval_prompt=force&scope=activity:read_all"
+      target="_blank"
+    >
+      <hero-button>
+        go to strava
+      </hero-button>
+    </a>
+
+    <a href="www.google.com">Go to google</a>
     <div v-if="!loggedIn">
       <page-section-title>Sign up to be a supercalifragilistic 🦩</page-section-title>
       <signin-button @click="login" />
