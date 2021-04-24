@@ -2,6 +2,7 @@
 
 # on Github actions this is set as env variable (passed as secret), on local dev machine, you need to have the terraform token locally
 export TF_API_TOKEN ?= $(shell cat ~/.terraform.d/credentials.tfrc.json | grep "token" | awk '{print $$2}' | sed 's/"//g')
+export STRAVA_CLIENT_ID ?= $(shell jq '.client_id'  ~/.strava  | sed 's/"//g')
 export W3W_API_TOKEN ?= $(shell cat ~/.what3words)
 tf_work = prod
 TF_API := https://app.terraform.io/api/v2/organizations/mathmagicians/workspaces/supercalifragilistic-run-lambda
@@ -92,14 +93,15 @@ c23wa: #Coordinates as a comma separated string of latitude and longitude
     | jq
 
 strava-authorize: #beginning of strava authorization flow
+	@echo $(STRAVA_CLIENT_ID)
 	@curl -v -X GET \
-	-d client_id=$(shell jq '.client_id'  ~/.strava) \
-	-d redirect_uri="https://www.mathmagicians.dk/supercalifragilistic-run" \
+	-d client_id=$(STRAVA_CLIENT_ID) \
+	-d redirect_uri="https://localhost:3083/supercalifragilistic-run" \
 	-d response_type=code \
 	-d approval_prompt=force \
 	-d scope=activity:read_all \
 	-G "https://strava.com/oauth/authorize" \
-	| jq
+
 
 strava-token:
 	@curl -v \

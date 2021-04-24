@@ -1,3 +1,4 @@
+import { mapActions } from 'vuex'
 
 export const state = () => ({
   authenticated:
@@ -34,26 +35,34 @@ export const mutations = {
   updateProfileGender (state, gender) {
     state.profile.gender = gender
   },
-  setStravaAuthorization (state, authorization) {
-    state.profile.runningAppAuthentication.strava.authorization = authorization
+  setStravaAuthorization (state, { authorizationCode, scopes }) {
+    state.profile.runningAppAuthentication.strava.authorizationCode = authorizationCode
+    state.profile.runningAppAuthentication.strava.scopes = scopes
+    const time = new Date()
+    state.profile.runningAppAuthentication.strava.authorization_time = time.toDateString() + ' ' + time.toLocaleTimeString()
+  },
+  setStravaToken (state, token) {
+    state.profile.runningAppAuthentication.strava.token = token
   }
 
 }
 
 export const actions = {
 
-  /* getStravaAuthorization ({ commit }) {
-    axios({
-      method: 'get',
-      url: 'https://strava.com/oauth/authorize',
-      headers: {
-        client_id: process.env.strava_client_id,
-        response_type: 'code',
-        approval_prompt: 'force',
-        scope: 'activity:read_all'
+  async getStravaToken ({ commit, state }) {
+    const token = await this.$axios({
+      method: 'post',
+      url: this.$config.strava_token_url,
+      baseURL: this.$config.strava_base_url,
+      data: {
+        client_id: this.$config.strava_client_id,
+        client_secret: this.$config.strava_client_secret,
+        code: state.profile.runningAppAuthentication.strava.authorizationCode,
+        grant_type: 'authorization_code'
       }
-    }).then((r) => { commit('setStravaAuthorization', r.data) })
+    })
+    //  const token await $http.$post('https://www.strava.com/oauth/token')
+    commit('setStravaToken', token.data)
   }
 
-  */
 }
