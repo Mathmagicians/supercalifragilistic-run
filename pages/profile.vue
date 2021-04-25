@@ -1,7 +1,14 @@
 <template>
   <basic-page-layout>
     <profile-form />
-    <card>
+    <div
+      class="
+      w-full
+      rounded-lg
+      shadow-md
+      m-2
+      overflow-hidden"
+    >
       <h1 v-if="$fetchState.pending">
         Getting runs from Strava
       </h1>
@@ -10,25 +17,20 @@
         Your runs
       </page-section-title>
       <ul>
-        <li v-for="run in myRuns" :key="run.id">
-          {{ run }}
+        <li v-for="aRun in myRuns" :key="aRun.id">
+          <run :run="aRun" />
         </li>
       </ul>
-    </card>
-    <card>
-      <run />
-    </card>
+    </div>
   </basic-page-layout>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import Card from '../components/layout-utils/Card'
 import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
 
 export default {
-  components: { PageSectionTitle, BasicPageLayout, Card },
+  components: { PageSectionTitle, BasicPageLayout },
   data () {
     return {
       myRuns: []
@@ -36,15 +38,9 @@ export default {
   },
   async fetch () {
     const { store, error } = this.$nuxt.context
-    try {
-      await store.dispatch('fetchAthleteActivity')
-      this.myRuns = store.state.profile.runs
-    } catch (e) {
-      error({
-        statusCode: 503,
-        message: 'Unable to fetch your runs from Strava :('
-      })
-    }
+
+    await store.dispatch('fetchAthleteActivity')
+    this.myRuns = store.state.profile.runs
   }
 }
 

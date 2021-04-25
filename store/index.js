@@ -60,7 +60,7 @@ export const mutations = {
   },
   updateAthleteActivities (state, activities) {
     // fixme: we are receiving an array of runs - here we are overwriting pre-existing data instead of splicing
-    state.profile.runs = [...state.profile.runs, ...activities]
+    state.profile.runs = [...activities]
   }
 }
 
@@ -83,22 +83,25 @@ export const actions = {
       commit('setStravaToken', token.data)
     } else { console.info('[acquireStravaToken] Dont need to acquire anything, token is ', state.profile.runningAppAuthentication.strava.token) }
   },
-  async fetchAthleteActivity ({ state, getters }) {
+  async fetchAthleteActivity ({ commit, state, getters }) {
     // todo - hardwired from client to strava - refactor this once backend is up and running
     if (getters.canUseStrava) {
       // 01.04.2021 - fixme use challenge start date
-      const epoch = 1617228000
-      const activities = await this.$axios({
+      const epoch = 1615000000
+      const newAxios = this.$axios.create()
+      const activities = await newAxios({
         method: 'get',
-        baseURL: this.$config.strava_base_url,
-        url: `/athlete/activities?after=${epoch}`,
+        baseURL: this.$config.strava_api_root,
+        url: '/athlete/activities',
+        params: {
+          after: epoch
+        },
         headers: {
-          Authorization: `Bearer ${state.profile.runningAppAuthentication.strava.token.access_token}`,
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true
+          Authorization: 'Bearer ' + state.profile.runningAppAuthentication.strava.token.access_token
         }
       })
-      state.commit('updateAthleteActivities', activities.data)
+      console.info('recieved response', activities.data)
+      commit('updateAthleteActivities', activities.data)
     } else {
       console.info('[fetchAthleteActivity] Dont have strava authorization in place')
     }
