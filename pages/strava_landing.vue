@@ -1,38 +1,32 @@
 <template>
-  <div>
-    <ul>
-      <li> Welcome, you have landed succesfully from strava authorization.</li>
-      <li> code is: {{ authorizationCode }}</li>
-      <li>scope is: {{ scopes }}</li>
-      <li>queryparams are: {{ $route.query }}</li>
-    </ul>
-  </div>
+  <basic-page-layout>
+    <page-section-title>Congratulations {{ profileName }}, a successful landing, Strava authorization done!</page-section-title>
+    <strava-integation-indicator />
+  </basic-page-layout>
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
+import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
+import StravaIntegationIndicator from '../components/StravaIntegationIndicator'
+import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 
 export default {
   name: 'StravaLanding',
-
-  async asyncData ({ query, store }) {
+  components: { BasicPageLayout, StravaIntegationIndicator, PageSectionTitle },
+  async asyncData ({ query, store, error }) {
     // we receive an authorization code as query parameter, we commit this to vuex, and afterwards call the action to get a strava token
     if (query.code) {
       store.commit('setStravaAuthorization', { authorizationCode: query.code, scopes: query.scope })
-    } else { console.error('Missing code from strava') }
-    await store.dispatch('getStravaToken')
-    console.log('token from strava')
+    } else { error({ message: 'Error - didnt receive authorization token from Strava' }) }
+    await store.dispatch('acquireStravaToken')
   },
   computed: {
-    authorizationCode () {
-      return this.$route.query.code
-    },
-    scopes () {
-      return this.$route.query.scope
-    }
+    ...mapGetters(['profileName', 'canUseStrava', 'hasStravaAuthorizationCode', 'hasStravaRefreshToken', 'hasValidStravaAccessToken', 'hasRequestedScopes']),
+    ...mapState({ strava: state => state.profile.runningAppAuthentication.strava })
   },
   methods: {
-    ...mapActions(['getStravaToken']),
+    ...mapActions(['acquireStravaToken']),
     ...mapMutations(['setStravaAuthorization'])
   }
 
