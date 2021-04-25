@@ -92,15 +92,29 @@
     <!-- Strava integration flow -->
     <GettingStartedBox title="Authorize data access" subtitle="Authorize receiving data from your running app">
       <template #main>
-        <ul class="flex-col text-left">
+        <ul
+          v-if="!canUseStrava"
+          class="flex-col text-left"
+        >
           <li>Please authorize Supercalifragilistic, to receive activity data from your running app.</li>
           <li>Supercalifragilistic will automatically synchronize data from your running application*.</li>
           <li>We will compute your points for each run, and update the leaderboard.</li>
           <li>The only thing you - 🦩 - have to remember, is to turn on your running app when your run.</li>
           <li> *) We are currently only supporting Strava.</li>
         </ul>
+        <ul
+          v-else
+          class="flex-col text-left"
+        >
+          <li>Thank you for trusting us with your Strava data</li>
+          <li>We promise to keep your data safe and secure.</li>
+          <li>We will compute your points for each run, and update the leaderboard.</li>
+          <li>The only thing you - 🦩 - have to remember, is to turn on your running app when your run.</li>
+        </ul>
       </template>
+
       <template #bottom>
+        <strava-integation-indicator />
         <nuxt-link to="strava_liftoff">
           <hero-button>
             Authorize Strava
@@ -109,7 +123,7 @@
         </nuxt-link>
 
         <p class="block">
-          todo: deauthorize + show authorized status
+          todo: deauthorize
         </p>
       </template>
     </GettingStartedBox>
@@ -123,11 +137,12 @@ import HeroButton from './layout-utils/HeroButton'
 import GettingStartedBox from './GettingStartedBox'
 import FormRow from './layout-utils/FormRow'
 import UserAvatar from './layout-utils/UserAvatar'
+import StravaIntegationIndicator from './StravaIntegationIndicator'
 import Gender from '~/assets/What-sex.svg?inline'
 
 export default {
   name: 'ProfileForm',
-  components: { UserAvatar, FormRow, GettingStartedBox, HeroButton, PageSectionTitle, Gender },
+  components: { StravaIntegationIndicator, UserAvatar, FormRow, GettingStartedBox, HeroButton, PageSectionTitle, Gender },
   data () {
     return {
       userId: null,
@@ -141,7 +156,7 @@ export default {
       email: state => state.auth.user.email
     }),
     ...mapGetters([
-      'profileImageUri', 'profileName'
+      'profileImageUri', 'profileName', 'canUseStrava'
     ])
   },
   created () {

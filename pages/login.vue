@@ -25,7 +25,12 @@ export default {
   name: 'Login',
   auth: false,
   components: { SigninButton, HeroButton, BasicPageLayout, PageSectionTitle },
-
+  computed: {
+    ...mapState({
+      loggedIn: state => state.auth.loggedIn
+    }),
+    ...mapGetters(['profileName'])
+  },
   methods: {
     login () {
       this.$auth.loginWith('awsCognito')
@@ -33,12 +38,6 @@ export default {
     logout () {
       this.$auth.logout()
     }
-  },
-  computed: {
-    ...mapState({
-      loggedIn: state => state.auth.loggedIn
-    }),
-    ...mapGetters(['profileName'])
   }
 }
 </script>

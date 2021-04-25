@@ -42,6 +42,9 @@ export default {
     return {
       title
     }
+  },
+  mounted () {
+    console.error('Error is', this.error)
   }
 }
 
