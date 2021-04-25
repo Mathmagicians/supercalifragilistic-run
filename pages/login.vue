@@ -1,6 +1,5 @@
 <template>
   <basic-page-layout>
-    <a href="www.google.com">Go to google</a>
     <div v-if="!loggedIn">
       <page-section-title>Sign up to be a supercalifragilistic 🦩</page-section-title>
       <signin-button @click="login" />
