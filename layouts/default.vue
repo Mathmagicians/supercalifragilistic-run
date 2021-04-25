@@ -8,7 +8,7 @@
     <footer
       class="text-center font-mono uppercase bg-white
       border-b
-      py-8 text-gray-800"
+      py-8 text-gray-800 "
     >
       <div class="mx-auto flex flex-col md:flex-row justify-around">
         <span class="border-r-2 px-2">Powered by 🔥 & 🦄. © Mathmagicians, 2021.</span>
@@ -16,16 +16,11 @@
           class="border-r-2 px-2 text-gray-400"
         > Commit id: {{ $config.git_commit }}</span>
       </div>
-      <ul v-if="$auth.user">
+      <ul v-if="$auth.user" class="max-w-1/12">
         <li>Welcome {{ username }}, you are logged in!</li>
         <li>Token {{ accessToken }}</li>
         <li> email {{ email }}</li>
         <li> userId {{ userId }}</li>
-        <li>
-          <hero-button class="bg-gray-100" @click="logOut">
-            Log out
-          </hero-button>
-        </li>
       </ul>
       <p v-else>
         Not logged in. Token {{ accessToken }}
@@ -35,9 +30,7 @@
 </template>
 
 <script>
-import HeroButton from '../components/layout-utils/HeroButton'
 export default {
-  components: { HeroButton },
   data () {
     return {
       accessToken: null,
