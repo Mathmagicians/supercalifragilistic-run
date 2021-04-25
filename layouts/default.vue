@@ -16,13 +16,16 @@
           class="border-r-2 px-2 text-gray-400"
         > Commit id: {{ $config.git_commit }}</span>
       </div>
-      <ul v-if="$auth.user" class="max-w-1/12">
+      <ul v-if="$auth.user" class="mt-6 w-1/2 overflow-ellipsis text-xs text-left">
+        <li>This is development mode. In case of error, note following:</li>
         <li>Welcome {{ username }}, you are logged in!</li>
-        <li>Token {{ accessToken }}</li>
+        <li class="overflow-x-hidden">
+          Token {{ accessToken }}
+        </li>
         <li> email {{ email }}</li>
         <li> userId {{ userId }}</li>
       </ul>
-      <p v-else>
+      <p v-else class="overflow-ellipsis text-xs">
         Not logged in. Token {{ accessToken }}
       </p>
     </footer>

@@ -108,7 +108,12 @@
             :link="item.link"
             class="block px-4 py-2 hover:bg-pink-400"
           >
-            {{ item.text }}
+            <hero-button v-if="item.action" @click="handleFunctionCall(item.action)">
+              {{ item.text }}
+            </hero-button>
+            <span v-else>
+              {{ item.text }}
+            </span>
           </nav-bar-item>
         </div>
       </div>

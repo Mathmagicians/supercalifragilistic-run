@@ -92,39 +92,38 @@
     <!-- Strava integration flow -->
     <GettingStartedBox title="Authorize data access" subtitle="Authorize receiving data from your running app">
       <template #main>
-        <ul
-          v-if="!canUseStrava"
-          class="flex-col text-left"
-        >
-          <li>Please authorize Supercalifragilistic, to receive activity data from your running app.</li>
-          <li>Supercalifragilistic will automatically synchronize data from your running application*.</li>
-          <li>We will compute your points for each run, and update the leaderboard.</li>
-          <li>The only thing you - 🦩 - have to remember, is to turn on your running app when your run.</li>
-          <li> *) We are currently only supporting Strava.</li>
-        </ul>
-        <ul
-          v-else
-          class="flex-col text-left"
-        >
-          <li>Thank you for trusting us with your Strava data</li>
-          <li>We promise to keep your data safe and secure.</li>
-          <li>We will compute your points for each run, and update the leaderboard.</li>
-          <li>The only thing you - 🦩 - have to remember, is to turn on your running app when your run.</li>
-        </ul>
+        <div class="flex flex-col sm:flex-row-reverse mt-2">
+          <strava-integation-indicator class="w-1/2" />
+          <ul
+            v-if="!canUseStrava"
+            class="flex-col prose p-2"
+          >
+            <li>Please authorize Supercalifragilistic, to receive activity data from your running app.</li>
+            <li>Supercalifragilistic will automatically synchronize data from your running application*.</li>
+            <li>We will compute your points for each run, and update the leaderboard.</li>
+            <li>The only thing you - 🦩 - have to remember, is to turn on your running app when your run.</li>
+            <li> *) We are currently only supporting Strava.</li>
+          </ul>
+          <ul
+            v-else
+            class="flex-col prose p-2"
+          >
+            <li>Thank you for trusting us with your Strava data.</li>
+            <li>We promise to keep your data safe and secure.</li>
+            <li>We will compute your points for each run, and update the leaderboard.</li>
+            <li>The only thing you - 🦩 - have to remember, is to turn on your running app when your run.</li>
+          </ul>
+        </div>
       </template>
 
       <template #bottom>
-        <strava-integation-indicator />
-        <nuxt-link to="strava_liftoff">
+        <nuxt-link v-if="!canUseStrava" to="strava_liftoff">
           <hero-button>
-            Authorize Strava
+            Click here to authorize data access from
             <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
           </hero-button>
         </nuxt-link>
-
-        <p class="block">
-          todo: deauthorize
-        </p>
+        <div v-else />
       </template>
     </GettingStartedBox>
   </div>
