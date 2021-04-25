@@ -18,8 +18,8 @@ export default {
     // we receive an authorization code as query parameter, we commit this to vuex, and afterwards call the action to get a strava token
     if (query.code) {
       store.commit('setStravaAuthorization', { authorizationCode: query.code, scopes: query.scope })
-    } else { error({ message: 'Error - didnt receive authorization token from Strava' }) }
-    await store.dispatch('acquireStravaToken')
+      await store.dispatch('acquireStravaToken')
+    }
   },
   computed: {
     ...mapGetters(['profileName', 'canUseStrava', 'hasStravaAuthorizationCode', 'hasStravaRefreshToken', 'hasValidStravaAccessToken', 'hasRequestedScopes']),

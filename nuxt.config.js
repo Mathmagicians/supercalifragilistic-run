@@ -16,6 +16,7 @@ export default {
     app_auth_callback_url_root: process.env.app_auth_callback_url_root + '/supercalifragilistic-run',
     strava_authorize_url: `https://www.strava.com/oauth/authorize?client_id=${process.env.strava_client_id}&redirect_uri=${process.env.app_auth_callback_url_root}/supercalifragilistic-run/strava_landing&response_type=code&approval_prompt=force&scope=activity:read_all`,
     strava_base_url: 'https://www.strava.com',
+    strava_api_root: 'https://www.strava.com/api/v3',
     strava_token_url: '/oauth/token',
     strava_client_id: process.env.strava_client_id,
     strava_client_secret: process.env.strava_client_secret
@@ -71,6 +72,7 @@ export default {
     'nuxt-leaflet'
   ],
   axios: {
+
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
