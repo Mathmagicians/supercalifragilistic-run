@@ -69,7 +69,8 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
-    'nuxt-leaflet'
+    'nuxt-leaflet',
+    'nuxt-user-agent'
   ],
   axios: {
 
