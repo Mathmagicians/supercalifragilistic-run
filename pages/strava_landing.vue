@@ -18,7 +18,7 @@ export default {
     // we receive an authorization code as query parameter, we commit this to vuex, and afterwards call the action to get a strava token
     if (query.code) {
       store.commit('setStravaAuthorization', { authorizationCode: query.code, scopes: query.scope })
-      await store.dispatch('acquireStravaToken')
+      await store.dispatch('acquireStravaRefreshToken')
     }
   },
   computed: {
@@ -26,7 +26,7 @@ export default {
     ...mapState({ strava: state => state.profile.runningAppAuthentication.strava })
   },
   methods: {
-    ...mapActions(['acquireStravaToken']),
+    ...mapActions(['acquireStravaRefreshToken']),
     ...mapMutations(['setStravaAuthorization'])
   }
 
