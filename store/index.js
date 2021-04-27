@@ -1,6 +1,9 @@
 import { mapActions } from 'vuex'
 
 export const state = () => ({
+  // stravaLoadStatus: 0 - no change, 1 submitted authorization request to /auth endpoint,  2 received authorization key,
+  // 3 submitted token request to /token endpoint, 4 received acces_token and refresh_token and submitted data to backend, 5 reloaded data from backend,  10 error state
+  stravaDataAccessAuthLoadStatus: 0,
   profile: {
     id: '007',
     name: '',
@@ -16,6 +19,7 @@ export const state = () => ({
         token: ''
       }
     },
+    // fixme - move out to config file
     challenges: ['ch1', 'ch-2'],
     events: []
   },
@@ -58,11 +62,14 @@ export const mutations = {
   updateProfileGender (state, gender) {
     state.profile.gender = gender
   },
+  setStravaDataAccessAuthLoadStatus (state, statusCode) {
+    state.profile.runningAppAuthentication.stravaDataAccessAuthLoadStatus = statusCode
+  },
   setStravaAuthorization (state, { authorizationCode, scopes }) {
     state.profile.runningAppAuthentication.strava.authorizationCode = authorizationCode
     state.profile.runningAppAuthentication.strava.scopes = scopes
     const time = new Date()
-    state.profile.runningAppAuthentication.strava.authorization_time = time.toDateString() + ' ' + time.toLocaleTimeString()
+    state.profile.runningAppAuthentication.strava.authorization_time = time.toDateString()
   },
   setStravaToken (state, token) {
     state.profile.runningAppAuthentication.strava.token = token
@@ -76,22 +83,40 @@ export const mutations = {
 
 export const actions = {
 
-  async acquireStravaToken ({ commit, state, getters }) {
+  async acquireStravaRefreshToken ({ commit, state, getters, dispatch }) {
     if (!getters.hasStravaRefreshToken) {
-      const token = await this.$axios({
-        method: 'post',
-        url: this.$config.strava_token_url,
-        baseURL: this.$config.strava_base_url,
-        data: {
-          client_id: this.$config.strava_client_id,
-          client_secret: this.$config.strava_client_secret,
-          code: state.profile.runningAppAuthentication.strava.authorizationCode,
-          grant_type: 'authorization_code'
-        }
-      })
-      //  const token await $http.$post('https://www.strava.com/oauth/token')
-      commit('setStravaToken', token.data)
-    } else { console.info('[acquireStravaToken] Dont need to acquire anything, token is ', state.profile.runningAppAuthentication.strava.token) }
+      commit('setStravaDataAccessAuthLoadStatus', 3)
+      await dispatch('getStravaToken')
+      commit('setStravaDataAccessAuthLoadStatus', 4)
+      await dispatch('postProfile')
+      commit('setStravaDataAccessAuthLoadStatus', 5)
+      await dispatch('getProfile')
+      commit('setStravaDataAccessAuthLoadStatus', 0)
+    } else { console.info('[acquireStravaRefreshToken] Dont need to acquire anything, token is ', state.profile.runningAppAuthentication.strava.token) }
+  },
+
+  async getStravaToken ({ commit, state, getters }) {
+    const token = await this.$axios({
+      method: 'post',
+      url: this.$config.strava_token_url,
+      baseURL: this.$config.strava_base_url,
+      data: {
+        client_id: this.$config.strava_client_id,
+        client_secret: this.$config.strava_client_secret,
+        code: state.profile.runningAppAuthentication.strava.authorizationCode,
+        grant_type: 'authorization_code'
+      }
+    })
+    commit('setStravaToken', token.data)
+  },
+  async postProfile ({ state }) {
+    const post = await this.$axios({
+      method: 'post',
+      url: '/profile',
+      data: {
+        profile: state.profile
+      }
+    })
   },
   async fetchAthleteActivity ({ commit, state, getters }) {
     // todo - hardwired from client to strava - refactor this once backend is up and running

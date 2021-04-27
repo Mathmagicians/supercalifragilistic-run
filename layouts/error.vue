@@ -6,9 +6,12 @@
     <page-section-title>
       {{ otherError }}
     </page-section-title>
-    <p>
-      {{ error }}
-    </p>
+
+    <pre class="whitespace-pre text-left text-xs">
+      <code>
+        {{ error | pretty }}
+      </code>
+    </pre>
     <nuxt-link to="/">
       <hero-button>
         Go back home, 🦩
@@ -23,6 +26,11 @@ import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
 import HeroButton from '../components/layout-utils/HeroButton'
 export default {
   components: { HeroButton, PageSectionTitle, BasicPageLayout },
+  filters: {
+    pretty (value) {
+      return JSON.stringify(value, null, 4)
+    }
+  },
   layout: 'empty',
   props: {
     error: {
