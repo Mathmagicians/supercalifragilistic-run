@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import HeroButton from './HeroButton'
 
 export default {
@@ -32,7 +32,8 @@ export default {
   methods: {
     login () {
       this.$auth.loginWith('awsCognito')
-    }
+    },
+    ...mapActions(['handleUserLogin', 'handleUserLogout'])
   }
 }
 </script>

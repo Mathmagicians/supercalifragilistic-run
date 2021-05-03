@@ -1,13 +1,20 @@
 <template>
-  <div class="flex flex-col sm:flex-row w-full shadow-lg rounded-xl p-2">
-    <div class="flex flex-col items-center justify-center border-b-2 sm:border-r-2 sm:border-b-0 border-gray-200 max-w-1/3 mx-2">
+  <div class="flex flex-col sm:flex-row align-middle w-full shadow-lg rounded-xl p-2">
+    <div class="flex flex-col items-center  justify-center border-b-2 sm:border-r-2 sm:border-b-0 border-gray-200 max-w-1/3 mx-2">
       <CheckCircleIcon size="6x" class="text-current text-md sm:text-lg font-semibold" :class="canUseStrava ? 'text-green-600': 'text-gray-400'" />
-      <h4 class="font-semibold p-2">
-        Strava Integration
-      </h4>
       <img class="block p-2" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
+      <h4 class="font-semibold p-2">
+        Integration Status
+      </h4>
+      <nuxt-link v-if="!canUseStrava" to="strava_liftoff" class="center px-2 m-t-24">
+        <hero-button class="border-green-400 border-2 hover:ring-4 hover:ring-green-600">
+          Authorize data access
+          <img class="block p-2" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
+        </hero-button>
+      </nuxt-link>
     </div>
-    <ul v-if="showDetails">
+
+    <ul v-if="showDetails ">
       <li v-for="item in items" :key="item.slotName" class="text-base mx-2 my-1">
         <component
           :is="item.icon"
@@ -27,10 +34,11 @@
 <script>
 import { CheckCircleIcon, KeyIcon, IdentificationIcon } from '@vue-hero-icons/outline'
 import { mapGetters, mapState } from 'vuex'
+import HeroButton from './layout-utils/HeroButton'
 
 export default {
   name: 'StravaIntegationIndicator',
-  components: { CheckCircleIcon, KeyIcon, IdentificationIcon },
+  components: { HeroButton, CheckCircleIcon, KeyIcon, IdentificationIcon },
   props: {
     showDetails: {
       type: Boolean,
@@ -39,14 +47,13 @@ export default {
   },
   computed: {
     ...mapGetters(['profileName', 'canUseStrava', 'hasStravaAuthorizationCode', 'hasStravaRefreshToken', 'hasValidStravaAccessToken', 'hasRequestedScopes']),
-    ...mapState({ strava: state => state.profile.runningAppAuthentication.strava }),
     items () {
       return [
         {
           text: 'Authorization code',
           isOk: this.hasStravaAuthorizationCode,
           icon: 'KeyIcon',
-          value: this.hasStravaAuthorizationCode ? `${this.strava.authorizationCode}, issued at ${this.strava.authorization_time}` : 'missing'
+          value: this.hasStravaAuthorizationCode ? `${this.strava.authorization_code}, issued at ${this.strava.authorization_time}` : 'missing'
         },
         {
           text: 'Granted scopes',
@@ -58,16 +65,19 @@ export default {
           text: 'Refresh token',
           isOk: this.hasStravaRefreshToken,
           icon: 'KeyIcon',
-          value: this.hasStravaRefreshToken ? this.strava.token.refresh_token : 'missing'
+          value: this.hasStravaRefreshToken ? this.strava.refresh_token : 'missing'
         },
         {
           text: 'Valid Access Token',
           isOk: this.hasValidStravaAccessToken,
           icon: 'KeyIcon',
-          value: this.hasValidStravaAccessToken ? this.strava.token.access_token : 'missing'
+          value: this.hasValidStravaAccessToken ? this.strava.access_token : 'missing'
         }
       ]
     }
+  },
+  methods: {
+    ...mapState({ strava: state => state.profile.runningAppAuthentication.strava })
   }
 }
 </script>

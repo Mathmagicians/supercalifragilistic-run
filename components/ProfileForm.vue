@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-section-title>Your profile</page-section-title>
+    <page-section-title>Your profile settings</page-section-title>
     <GettingStartedBox
       id="basic_profile"
       title="Basic profile info 🦩"
@@ -30,7 +30,7 @@
           <template #field="fieldProps">
             <input
               :id="fieldProps.id"
-              :value="profileName"
+              :value="name"
               :class="inputClass"
               type="text"
               placeholder="Your name"
@@ -117,13 +117,7 @@
       </template>
 
       <template #bottom>
-        <nuxt-link v-if="!canUseStrava" to="strava_liftoff">
-          <hero-button>
-            Click here to authorize data access from
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
-          </hero-button>
-        </nuxt-link>
-        <div v-else />
+        <div />
       </template>
     </GettingStartedBox>
   </div>
@@ -151,24 +145,22 @@ export default {
   },
   computed: {
     ...mapState({
-      gender: state => state.profile.gender,
-      email: state => state.auth.user.email
+      gender: state => state.profile.basic.gender,
+      email: state => state.profile.basic.mail,
+      name: state => state.profile.basic.name
     }),
     ...mapGetters([
-      'profileImageUri', 'profileName', 'canUseStrava'
+      'profileImageUri', 'canUseStrava'
     ])
   },
   created () {
     this.inputClass = 'form-input block w-full bg-gray-100 text-pink-400 text-lg focus:bg-white'
   },
   methods: {
+    ...mapActions(['updateGender']),
     updateName (e) {
       this.$store.commit('updateProfileName', e.target.value)
-    },
-    updateGender (g) {
-      this.$store.commit('updateProfileGender', g)
-    },
-    ...mapActions(['getStravaAuthorization'])
+    }
   }
 
 }

@@ -14,7 +14,11 @@ export default {
     console.log('refresh token', store.getters.hasStravaRefreshToken)
     if (!store.getters.hasStravaRefreshToken) {
       store.commit('setStravaDataAccessAuthLoadStatus', 1)
-      redirect(302, $config.strava_authorize_url)
+      try {
+        redirect(302, $config.strava_authorize_url)
+      } catch (error) {
+        console.warn('[strava_liftoff] received an error when calling strava authorize endpoint', error)
+      }
     } else {
       redirect(302, '/strava_landing', { message: 'strava_refresh_token_exists' })
     }

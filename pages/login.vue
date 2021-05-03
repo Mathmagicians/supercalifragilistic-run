@@ -31,6 +31,14 @@ export default {
     }),
     ...mapGetters(['profileName'])
   },
+  watch: {
+    '$state.auth.loggedIn' (oldvalue, newvalue) {
+      console.log('[login] watching loggedin,', oldvalue, newvalue)
+    },
+    loggedIn (oldvalue, newvalue) {
+      console.log('[login] watching loggedin 2,', oldvalue, newvalue)
+    }
+  },
   methods: {
     login () {
       this.$auth.loginWith('awsCognito')

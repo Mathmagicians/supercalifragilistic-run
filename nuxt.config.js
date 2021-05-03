@@ -3,6 +3,13 @@ export default {
   ssr: false,
   target: 'static',
 
+  vue: {
+    config: {
+      productionTip: false,
+      devtools: true
+    }
+  },
+
   router: {
     base: '/supercalifragilistic-run/',
     middleware: ['auth']
@@ -70,6 +77,10 @@ export default {
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
     'nuxt-leaflet',
+    ['nuxt-vuex-localstorage', {
+      mode: 'debug',
+      sessionStorage: ['profile']
+    }],
     'nuxt-user-agent'
   ],
   axios: {

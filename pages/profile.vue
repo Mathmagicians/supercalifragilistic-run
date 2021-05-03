@@ -1,47 +1,38 @@
 <template>
   <basic-page-layout>
-    <profile-form />
-    <div
-      class="
-      w-full
-      rounded-lg
-      shadow-md
-      m-2
-      overflow-hidden"
-    >
-      <h1 v-if="$fetchState.pending">
-        Getting runs from Strava
-      </h1>
-      <div />
-      <page-section-title>
-        Your runs
-      </page-section-title>
-      <ul>
-        <li v-for="aRun in myRuns" :key="aRun.id">
-          <run :run="aRun" />
-        </li>
-      </ul>
+    <profile-form v-if="!$fetchState.pending" />
+    <div v-else>
+      Wait while we load data ...
     </div>
+    <my-runs v-if="!$fetchState.pending && canUseStrava" />
   </basic-page-layout>
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
 import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
-import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
+import MyRuns from '../components/myRuns'
 
 export default {
-  components: { PageSectionTitle, BasicPageLayout },
-  data () {
-    return {
-      myRuns: []
-    }
-  },
+  components: { MyRuns, BasicPageLayout },
   async fetch () {
-    const { store, error } = this.$nuxt.context
-
-    await store.dispatch('fetchAthleteActivity')
-    this.myRuns = store.state.profile.runs
+    const { store } = this.$nuxt.context
+    console.info('[profile] loading page, user is authenticated but login has not been performed.\t', 'load status: ', this.profileLoadStatus(), ', loggedIn: ', this.loggedIn())
+    if (this.profileLoadStatus() === -1 && this.loggedIn()) {
+      console.info('[profile] dispatching handleUserlogin')
+      await this.$store.dispatch('handleUserLogin')
+    } else { await store.dispatch('fetchProfile') }
+  },
+  computed: {
+    ...mapGetters(['canUseStrava'])
+  },
+  methods: {
+    ...mapState({
+      loggedIn: state => state.auth.loggedIn,
+      profileLoadStatus: state => state.profileLoadStatus
+    })
   }
+
 }
 
 </script>
