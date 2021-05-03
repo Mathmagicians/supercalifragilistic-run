@@ -18,7 +18,7 @@
       >
         <div
           class="pl-4 pb-4 flex flex-col-reverse lg:flex-row items-center font-bold text-lg lg:text-xl xl:text-2xl
-        transform transition hover:text-underline hover:scale-105 hover:rotate-2 duration-300 ease-in-out"
+        transform transition hover:text-underline hover:scale-110 hover:-translate-y-1 duration-300 ease-in-out"
         >
           <img
             class="w-16 h-16 object-cover object-left-top rounded-full ring-2 "
@@ -40,10 +40,11 @@
           type="button"
           @click="isOpen = !isOpen"
         >
-          <XIcon v-if="isOpen" />
+          <XIcon v-if="isOpen" class="text-current" :class="changeColorTextClass" />
           <MenuIcon
             v-if="!isOpen"
             class="text-current"
+            :class="changeColorTextClass"
           />
         </button>
       </div>
@@ -80,7 +81,7 @@
           class="mx-2"
         >
           <button
-            class="block rounded-full relative z-10 p-1 focus:outline-none hover:outline-none"
+            class="block rounded-full relative p-1 focus:outline-none hover:outline-none"
             @click="isUserOpen = !isUserOpen"
           >
             <user-avatar class="w-full w-32" :class="changeColorTextClass" :image-uri="profileImageUri" :name="profileName" />
@@ -130,7 +131,7 @@
             :link="item.link"
             class="block px-4 py-1 hover:bg-pink-400"
           >
-            <hero-button v-if="item.action" @click="handleFunctionCall(item.action)">
+            <hero-button v-if="item.action" :color-change="true" @click="handleFunctionCall(item.action)">
               {{ item.text }}
             </hero-button>
             <span v-else>
@@ -157,7 +158,9 @@ export default {
   components: { HeroButton, UserAvatar, SigninButton, XIcon, MenuIcon, NavBarItem },
   data () {
     return {
+      // user menu state
       isOpen: false,
+      // burger menu state
       isUserOpen: false,
 
       scrollPosition: null,
@@ -172,7 +175,7 @@ export default {
           link: '/profile?action=read',
           text: (this.gender === 'F' ? '🏃‍♀️\t' : '') + (this.gender === 'M' ? '🏃‍♂️\t' : '') + 'View Profile'
         },
-        { link: '/profile?action=update', text: 'Update Profile' },
+        { link: '/profile?action=update', text: 'Profile Settings' },
         { link: '/login', text: 'Sign out', action: 'signOut' }
       ],
       notLoggedInITems: [
