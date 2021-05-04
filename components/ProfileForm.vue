@@ -1,12 +1,62 @@
 <template>
   <div>
-    <page-section-title>Your profile settings</page-section-title>
-    <GettingStartedBox
-      id="basic_profile"
-      title="Basic profile info 🦩"
-      subtitle="We take care of your data and your privacy"
+    <page-section-title>Profile Settings</page-section-title>
+
+    <!-- Strava integration flow -->
+    <side-by-side-text-picture-card
+      class="w-full mt-6 lg:mt-12 items-end"
+      title="Authorize data access"
+      sub-title="We can register your points with data from your runs"
+      :has-errors="!canUseStrava"
+      icon="KeyIcon"
     >
-      <template #main>
+      <template #info>
+        <div v-if="!canUseStrava">
+          Supercalifragilistic will automatically synchronize data from your running application*.
+          <br>
+          We will compute your points for each run, and update the leaderboard.
+          <br>
+          The only thing you - 🦩 - have to remember, is to turn on your running app when your run.
+          <br>
+          <span class="text-xs italic">*) We are currently only supporting Strava. </span>
+        </div>
+        <div
+          v-else
+        >
+          Thank you for trusting us with your Strava data.
+          We promise to keep your data safe and secure.
+          We will compute your points for each run, and update the leaderboard.
+          The only thing you - 🦩 - have to remember, is to turn on your running app when your run.
+        </div>
+      </template>
+      <template #error>
+        Please authorize Supercalifragilistic, to receive activity data from your running app.
+      </template>
+      <template #bottom>
+        <strava-integation-indicator class="w-1/2" />
+      </template>
+    </side-by-side-text-picture-card>
+
+    <!-- basic profile -->
+    <side-by-side-text-picture-card
+      :has-errors="!isBasicProfileReady"
+      class="w-full mt-6 lg:mt-12"
+      title="Basic Profile"
+      :border="true"
+      icon="IdentificationIcon"
+    >
+      <template #info>
+        We take care of your data and your privacy.
+        <br>
+        Wherever possible, profile information is prefilled with data, obtained from your Facebook profile.
+      </template>
+      <template #error>
+        We are missing information for your basic profile. Please fill out the form fields.
+      </template>
+      <!--    <template #default>
+        <IdentificationIcon size="2x" />
+      </template> -->
+      <template #bottom>
         <!-- rows with basic profile data  name, gender, mail, picture (from facebook) -->
         <form-row id="picture" class="mt-2">
           <template #field="fieldProps">
@@ -22,6 +72,7 @@
               type="text"
               :placeholder="`enter content for ${fieldProps.id}`"
               :value="email"
+              @change="changeMail"
             >
           </template>
         </form-row>
@@ -32,24 +83,34 @@
               :id="fieldProps.id"
               :value="name"
               :class="inputClass"
+              class="rounded-lg"
               type="text"
               placeholder="Your name"
-              @input="updateName"
+              @change="changeName"
+            >
+          </template>
+        </form-row>
+
+        <!-- fav emoji avatar -->
+        <form-row id="fav">
+          <template #field="fieldProps">
+            <input
+              :id="fieldProps.fav"
+              :value="fav"
+              :class="inputClass"
+              type="text"
+              placeholder="Your favorite emoji"
+              @change="changeFav"
             >
           </template>
         </form-row>
 
         <!-- gender -->
-        <div class="md:flex mb-6">
-          <div class="md:w-1/3">
-            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="gender">
-              Gender :
-            </label>
-          </div>
-          <div class="md:w-2/3">
-            <div id="gender" class="relative max-w-1/3">
+        <form-row id="gender">
+          <template #field="fieldProps">
+            <div :id="fieldProps.gender" class="relative max-w-1/3">
               <Gender
-                class="static inset-0 z-0 fill-current text-gray-700 object-cover w-full"
+                class="static inset-0 z-0 fill-current text-gray-700 object-cover w-full border-b-2 border-gray-400"
               />
               <!--female -->
               <button
@@ -66,76 +127,83 @@
                 @click="updateGender('M')"
               />
             </div>
-            <p />
-            <p class="py-2 text-sm text-gray-600">
+            <p class="py-2 text-sm font-semibold text-gray-600">
               {{ !gender ? 'Select your gender, my dear.' : 'Your gender is ' }}
               {{ gender === 'F' ? '♀' : '' }}{{ gender === 'M' ? '♂' : '' }}
             </p>
-          </div>
-        </div>
+          </template>
+        </form-row>
 
-        <!-- profile picture -->
+        <!-- health -->
+        <form-row id="health">
+          <template #field="fieldProps">
+            <div :id="fieldProps.health" class="relative max-w-1/3">
+              <div
+                class="flex flex-row rounded-lg border-2"
+                :class="healthy ?'border-green-600 ring-4 ring-green-400': 'border-yellow-600 ring-4 ring-yellow-400'"
+              >
+                <span class="block text-4xl w-1/2 border-2 border-green-400 text-center leading-loose">🏃‍♂ 🏃‍♀️️</span>
+                <span class="block text-4xl w-1/2 border-2 border-yellow-400 text-center leading-loose">🆘 🏥</span>
+              </div>
+              <button
+                tabindex="-1"
+                class="absolute inset-y-0 left-0 z-5 h-full w-1/2 bg-green-400 opacity-20 cursor-default hover:opacity-40 border-none"
+                :class="healthy ? 'opacity-20':'opacity-0'"
+                @click="updateHealthy(true)"
+              />
+              <!-- male -->
+              <button
+                tabindex="-1"
+                class="absolute inset-y-0 right-0 z-5 h-full w-1/2 bg-yellow-400 opacity-20 cursor-default hover:opacity-40 border-none"
+                :class=" !healthy ? 'opacity-20':'opacity-0'"
+                @click="updateHealthy(false)"
+              />
+            </div>
+            <p class="py-2 text-sm font-semibold text-gray-600">
+              Please indicate, if you are ready for a running challenge:
+            </p>
+            <p>
+              {{ healthy === true ? ' Oh yes, I am so ready!':' Uh, oh, barely alive, I need time off to heal 🏥' }}
+            </p>
+          </template>
+        </form-row>
+      </template>
+    </side-by-side-text-picture-card>
+
+    <!-- join a challenge -->
+    <side-by-side-text-picture-card
+      title="Join a challenge"
+      sub-title="That's why you are here, right?"
+      icon="UserAddIcon"
+      :has-errors="!isChallengeReady"
+    >
+      <template #info>
+        Now, join a challenge, tie your shoe laces, and the fun part can begin.
+      </template>
+      <template #error>
+        You need to join a challenge, and select some stars ⭐️.
       </template>
       <template #bottom>
-        <div v-if="basicInfoChanged" class="flex flex-row">
-          <hero-button>
-            Update Profile Info
-          </hero-button>
-          <hero-button>
-            Cancel
-          </hero-button>
-        </div>
-        <p>Data synchronized from Facebook.</p>
+        button to join challenge
+        map
+        form fields to pick stars
       </template>
-    </GettingStartedBox>
-
-    <!-- Strava integration flow -->
-    <GettingStartedBox title="Authorize data access" subtitle="Authorize receiving data from your running app">
-      <template #main>
-        <div class="flex flex-col sm:flex-row-reverse mt-2">
-          <strava-integation-indicator class="w-1/2" />
-          <ul
-            v-if="!canUseStrava"
-            class="flex-col prose p-2"
-          >
-            <li>Please authorize Supercalifragilistic, to receive activity data from your running app.</li>
-            <li>Supercalifragilistic will automatically synchronize data from your running application*.</li>
-            <li>We will compute your points for each run, and update the leaderboard.</li>
-            <li>The only thing you - 🦩 - have to remember, is to turn on your running app when your run.</li>
-            <li> *) We are currently only supporting Strava.</li>
-          </ul>
-          <ul
-            v-else
-            class="flex-col prose p-2"
-          >
-            <li>Thank you for trusting us with your Strava data.</li>
-            <li>We promise to keep your data safe and secure.</li>
-            <li>We will compute your points for each run, and update the leaderboard.</li>
-            <li>The only thing you - 🦩 - have to remember, is to turn on your running app when your run.</li>
-          </ul>
-        </div>
-      </template>
-
-      <template #bottom>
-        <div />
-      </template>
-    </GettingStartedBox>
+    </side-by-side-text-picture-card>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import PageSectionTitle from './layout-utils/PageSectionTitle'
-import HeroButton from './layout-utils/HeroButton'
-import GettingStartedBox from './GettingStartedBox'
 import FormRow from './layout-utils/FormRow'
+import SideBySideTextPictureCard from './layout-utils/SideBySideTextPictureCard'
 import UserAvatar from './layout-utils/UserAvatar'
 import StravaIntegationIndicator from './StravaIntegationIndicator'
 import Gender from '~/assets/What-sex.svg?inline'
 
 export default {
   name: 'ProfileForm',
-  components: { StravaIntegationIndicator, UserAvatar, FormRow, GettingStartedBox, HeroButton, PageSectionTitle, Gender },
+  components: { StravaIntegationIndicator, UserAvatar, FormRow, PageSectionTitle, Gender, SideBySideTextPictureCard },
   data () {
     return {
       userId: null,
@@ -147,19 +215,28 @@ export default {
     ...mapState({
       gender: state => state.profile.basic.gender,
       email: state => state.profile.basic.mail,
-      name: state => state.profile.basic.name
+      name: state => state.profile.basic.name,
+      healthy: state => state.profile.basic.healthy,
+      fav: state => state.profile.basic.fav
     }),
     ...mapGetters([
-      'profileImageUri', 'canUseStrava'
+      'profileImageUri', 'canUseStrava', 'isBasicProfileReady', 'isChallengeReady'
     ])
   },
   created () {
-    this.inputClass = 'form-input block w-full bg-gray-100 text-pink-400 text-lg focus:bg-white'
+    this.inputClass = 'form-input block w-full bg-gray-50 text-pink-600 text-lg focus:bg-white rounded-lg'
   },
   methods: {
-    ...mapActions(['updateGender']),
-    updateName (e) {
-      this.$store.commit('updateProfileName', e.target.value)
+    ...mapActions(['updateGender', 'updateName', 'updateFav', 'updateMail', 'updateHealthy']),
+    changeName (e) {
+      console.log('changing name ', e.target.value)
+      this.updateName(e.target.value)
+    },
+    changeFav (e) {
+      this.updateFav(e.target.value)
+    },
+    changeMail (e) {
+      this.updateMail(e.target.value)
     }
   }
 

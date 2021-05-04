@@ -24,7 +24,18 @@
 <script>
 import DebugMode from '../components/DebugMode'
 export default {
-  components: { DebugMode }
+  components: { DebugMode },
+  fetch () {
+    const { store } = this.$nuxt.context
+    if (this.$auth.loggedIn && store.profileLoadStatus < 0) {
+      console.log(`[loggedIn-fetch] detected change, we should log the user in: ${this.$auth.loggedIn}, loadstate ${store.profileLoadStatus}`)
+      store.dispatch('handleUserLogin')
+    }
+  },
+  created () {
+    this.$auth.$storage.watchState('loggedIn', (newValue) => { console.log(`[loggedIn-created] change, new value: ${newValue}`) })
+  }
+
 }
 </script>
 

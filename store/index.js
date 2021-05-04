@@ -3,7 +3,7 @@
 
 export const state = () => ({
   // stravaLoadStatus: 0 - no change, 1 submitted authorization request to /auth endpoint,  2 received authorization key,
-  // 3 submitted token request to /token endpoint, 4 received acces_token and refresh_token and submitted data to backend, 5 reloaded data from backend,  10 error state
+  // 3 submitted token request to /token endpoint, 4 received acces_token and refresh_token and submitted data to backend, 5 reloaded data from backend, 6 revoked access token, 7 pushed changes, 10 error state
 
   stravaDataAccessAuthLoadStatus: -1,
 
@@ -21,7 +21,8 @@ export const state = () => ({
       name: null,
       mail: null,
       gender: null,
-      fav: null
+      fav: null,
+      healthy: true
     },
     stars: null,
     badges: null,
@@ -61,7 +62,10 @@ export const getters = {
     return (state.auth.loggedIn) && (state.auth.user) ? state.auth.user.given_name : null
   },
   isBasicProfileReady: (state) => {
-    return false
+    return !!state.profile.basic && !!state.profile.basic.gender && !!state.profile.basic.fav && !!state.profile.basic.mail && !!state.profile.basic.name
+  },
+  isChallengeReady: (state) => {
+    return state.profile.challenges && state.profile.stars && length(state.profile.stars) === 3
   },
   // strava integration
   canUseStrava: (state, getters) => {
@@ -78,8 +82,22 @@ export const getters = {
   },
   hasValidStravaAccessToken: (state) => {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.access_token
+  },
+  authorization_code: (state) => {
+    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.authorization_code
+  },
+  authorization_time: (state) => {
+    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.authorization_time
+  },
+  scopes: (state) => {
+    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.scopes
+  },
+  refresh_token: (state) => {
+    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.refresh_token
+  },
+  access_token: (state) => {
+    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.access_token
   }
-  // challenge
 
 }
 
@@ -93,8 +111,11 @@ export const mutations = {
   setProfile (state, profile) {
     this.state.profile = { ...profile }
   },
-  updateProfileName (state, name) {
+  setProfileName (state, name) {
     state.profile.basic.name = name
+  },
+  setProfileMail (state, mail) {
+    state.profile.basic.mail = mail
   },
   setProfileGender (state, gender) {
     if (gender === 'M' || gender === 'F') {
@@ -102,6 +123,12 @@ export const mutations = {
     } else {
       console.warn(`[setProfileGender] gender needs to be M or F, not ${gender}`)
     }
+  },
+  setProfileFav (state, fav) {
+    state.profile.basic.fav = fav
+  },
+  setProfileHealthy (state, b) {
+    state.profile.basic.healthy = b
   },
   setStravaDataAccessAuthLoadStatus (state, statusCode) {
     state.stravaDataAccessAuthLoadStatus = statusCode
@@ -118,6 +145,10 @@ export const mutations = {
     state.profile.runningAppAuthentication.strava.id = String(token.athlete.id)
     state.profile.runningAppAuthentication.strava.access_token = token.access_token
     state.profile.runningAppAuthentication.strava.refresh_token = token.refresh_token
+  },
+  nukeStrava (state) {
+    state.profile.runningAppAuthentication.strava = null
+    state.strava_token = null
   },
   updateAthleteActivities (state, activities) {
     // fixme: we are receiving an array of runs - here we are overwriting pre-existing data instead of splicing
@@ -137,8 +168,8 @@ export const actions = {
         commit('setProfileGender', token.athlete.sex)
       }
       await dispatch('postProfile')
-      //  commit('setStravaDataAccessAuthLoadStatus', 5)
-      //  await dispatch('fetchProfile')
+      commit('setStravaDataAccessAuthLoadStatus', 5)
+      await dispatch('fetchProfile')
       commit('setStravaDataAccessAuthLoadStatus', 0)
     } else {
       console.info('[acquireStravaRefreshToken] Dont need to acquire anything, token is ', state.profile.runningAppAuthentication.strava.token)
@@ -294,6 +325,42 @@ export const actions = {
     commit('setProfileLoadStatus', 5)
     dispatch('postProfile')
     dispatch('loadProfile')
+  },
+
+  updateFav ({ commit, dispatch }, f) {
+    commit('setProfileFav', f)
+    commit('setProfileLoadStatus', 5)
+    dispatch('postProfile')
+    dispatch('loadProfile')
+  },
+  updateHealthy ({ commit, dispatch }, b) {
+    commit('setProfileHealthy', b)
+    commit('setProfileLoadStatus', 5)
+    dispatch('postProfile')
+    dispatch('loadProfile')
+  },
+  updateMail ({ commit, dispatch }, m) {
+    commit('setProfileMail', m)
+    commit('setProfileLoadStatus', 5)
+    dispatch('postProfile')
+    dispatch('loadProfile')
+  },
+  updateName ({ commit, dispatch }, n) {
+    commit('setProfileName', n)
+    commit('setProfileLoadStatus', 5)
+    dispatch('postProfile')
+    dispatch('loadProfile')
+  },
+
+  revokeStravaAccess ({ commit, dispatch }) {
+    console.info('[revokeStravaAccess] Clearing codes')
+    commit('nukeStrava', null)
+    commit('setStravaDataAccessAuthLoadStatus', 6)
+    dispatch('postProfile')
+    commit('setStravaDataAccessAuthLoadStatus', 7)
+    dispatch('loadProfile')
+    commit('setStravaDataAccessAuthLoadStatus', 0)
+    console.info('[revokeStravaAccess] Profile updated, codes cleared')
   }
 
 }

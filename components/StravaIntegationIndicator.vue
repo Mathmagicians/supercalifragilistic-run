@@ -12,6 +12,14 @@
           <img class="block p-2" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
         </hero-button>
       </nuxt-link>
+      <hero-button
+        v-if="canUseStrava"
+        class="border-red-400 border-2 hover:ring-4 hover:ring-red-600 center px-2 m-t-24 mx-2"
+        @click="revokeStravaAccess()"
+      >
+        Revoke data access
+        <img class="block p-2" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
+      </hero-button>
     </div>
 
     <ul v-if="showDetails ">
@@ -33,7 +41,7 @@
 
 <script>
 import { CheckCircleIcon, KeyIcon, IdentificationIcon } from '@vue-hero-icons/outline'
-import { mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import HeroButton from './layout-utils/HeroButton'
 
 export default {
@@ -53,31 +61,33 @@ export default {
           text: 'Authorization code',
           isOk: this.hasStravaAuthorizationCode,
           icon: 'KeyIcon',
-          value: this.hasStravaAuthorizationCode ? `${this.strava.authorization_code}, issued at ${this.strava.authorization_time}` : 'missing'
+          value: this.hasStravaAuthorizationCode ? `${this.authorization_code()}, issued at ${this.authorization_time()}` : 'missing'
         },
         {
           text: 'Granted scopes',
           isOk: this.hasRequestedScopes,
           icon: 'IdentificationIcon',
-          value: this.hasRequestedScopes ? this.strava.scopes : 'missing'
+          value: this.hasRequestedScopes ? this.scopes() : 'missing'
         },
         {
           text: 'Refresh token',
           isOk: this.hasStravaRefreshToken,
           icon: 'KeyIcon',
-          value: this.hasStravaRefreshToken ? this.strava.refresh_token : 'missing'
+          value: this.hasStravaRefreshToken ? this.refresh_token() : 'missing'
         },
         {
           text: 'Valid Access Token',
           isOk: this.hasValidStravaAccessToken,
           icon: 'KeyIcon',
-          value: this.hasValidStravaAccessToken ? this.strava.access_token : 'missing'
+          value: this.hasValidStravaAccessToken ? this.access_token() : 'missing'
         }
       ]
     }
   },
   methods: {
-    ...mapState({ strava: state => state.profile.runningAppAuthentication.strava })
+    // ...mapState({ strava: state => state.profile.runningAppAuthentication.strava }),
+    ...mapGetters(['authorization_code', 'authorization_time', 'scopes', 'refresh_token', 'access_token']),
+    ...mapActions(['revokeStravaAccess'])
   }
 }
 </script>

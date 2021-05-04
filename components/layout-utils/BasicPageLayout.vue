@@ -12,7 +12,7 @@
       py-8
       mt-4"
     >
-      <div class="container max-w-5xl mx-auto m-8 text-gray-800">
+      <div class="container w-full mx-auto m-8 text-gray-800">
         <slot>
           content <slot />
         </slot>
