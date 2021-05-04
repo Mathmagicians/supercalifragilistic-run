@@ -1,8 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-console */
 
-import profile from '~/pages/profile'
-
 export const state = () => ({
   // stravaLoadStatus: 0 - no change, 1 submitted authorization request to /auth endpoint,  2 received authorization key,
   // 3 submitted token request to /token endpoint, 4 received acces_token and refresh_token and submitted data to backend, 5 reloaded data from backend, 6 revoked access token, 7 pushed changes, 10 error state
@@ -74,7 +72,7 @@ export const getters = {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.authorization_code
   },
   hasRequestedScopes: (state) => {
-    return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.scopes === 'read,activity:read_all'
+    return state.profile.runningAppAuthentication.strava && (state.profile.runningAppAuthentication.strava.scopes === 'read,activity:read_all')
   },
   hasStravaRefreshToken: (state) => {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.refresh_token
@@ -133,10 +131,11 @@ export const mutations = {
     state.stravaDataAccessAuthLoadStatus = statusCode
   },
   setStravaAuthorization (state, { authorization_code, scopes }) {
-    console.log(`[setStravaAuthorization] received code ${authorization_code}, \t scopes ${scopes}, strava is \t`, state.profile.runningAppAuthentication.strava)
-    state.profile.runningAppAuthentication.strava.authorization_time = new Date().toDateString()
-    state.profile.runningAppAuthentication.strava.authorization_code = authorization_code
-    state.profile.runningAppAuthentication.strava.scopes = scopes
+    console.log(`[setStravaAuthorization] received code ${authorization_code}, \t scopes ${scopes}`)
+    state.profile.runningAppAuthentication.strava = { authorization_time: new Date(), authorization_code, scopes }
+    // state.profile.runningAppAuthentication.strava.authorization_time = new Date().toDateString()
+    // state.profile.runningAppAuthentication.strava.authorization_code = authorization_code
+    // state.profile.runningAppAuthentication.strava.scopes = scopes
     console.log('[setStravaAuthorization] update done, strava is \t', JSON.stringify(state.profile.runningAppAuthentication.strava))
   },
   setStravaToken (state, token) {
@@ -204,7 +203,8 @@ export const actions = {
     commit('setStravaToken', token.data)
     return token.data
   },
-  async postProfile ({ state }) {
+  async postProfile ({ state, dispatch }) {
+    dispatch('grabProfileIdFromAuth')
     const post = await this.$axios({
       method: 'post',
       url: `/profile/${state.profile.id}`,
@@ -240,12 +240,12 @@ export const actions = {
 
   async putNewProfile ({ state, commit }) {
     try {
-      const get = await this.$axios({
+      const put = await this.$axios({
         method: 'put',
         url: `/profile/${state.profile.id}`,
         data: state.profile
       })
-      commit('setProfile', get.data)
+      commit('setProfile', put.data)
     } catch (error) {
       console.error(`[putNewProfile] ${state.profile.id}`)
       throw (error)
@@ -278,24 +278,30 @@ export const actions = {
 
   async loadProfile ({ commit, dispatch, state }) {
     commit('setProfileLoadStatus', 1)
+    dispatch('grabProfileIdFromAuth')
     await dispatch('fetchProfile')
     commit('setProfileLoadStatus', 0)
     console.info(`[loadProfile] Loading profile for user ${state.profile.id}`)
   },
-
+  grabProfileIdFromAuth ({ commit, state }) {
+    if (!state.profile.id) {
+      commit('setProfileId', `U-${state.auth.user.sub}`)
+      console.log('[grabProfileIdFromAuth] setting profile id, as it was empty ', state.profile.id)
+    }
+  },
   async handleUserLogin ({ commit, state, dispatch }) {
     // check if user is already logged in, if so, we can safely exit
     if (!state.auth.loggedIn) {
       throw new Error('[handleUserLogin] User not authenticated, cant log in.')
     }
-    if (state.profileLoadStatus === 0) {
+    if (state.profileLoadStatus === 0 && !!state.profile.id) {
       console.info('[handleUserLogin] User already logged in, cant do it twice 😉. Will just fetch data instead.')
       dispatch('loadProfile')
     }
 
     // set user id in store and fetch profile data from backend
     commit('setProfileLoadStatus', 1)
-    commit('setProfileId', `U-${state.auth.user.sub}`)
+    dispatch('grabProfileIdFromAuth')
 
     // fetch profile from backend
     const status = await dispatch('fetchProfile')
@@ -316,14 +322,15 @@ export const actions = {
     }
   },
 
-  fillDefaultValuesForProfile ({ commit, state }) {
+  fillDefaultValuesForProfile ({ commit, state, dispatch }) {
     console.info('[fillDefaultValuesForProfile] kind of empty here, grabbing default values')
+    dispatch('grabProfileIdFromAuth')
     const name = (state.auth.user) ? (state.auth.user.givenName || state.auth.user.username || state.auth.user.sub) : 'guest'
     commit('setProfileName', name)
     commit('setProfileMail', state.auth.user.email)
     commit('setProfileGender', state.auth.user.gender)
     commit('setProfileHealthy', true)
-    console.info('[fillDefaultValuesForProfile] kind of empty here, grabbing default values', profile)
+    console.info('[fillDefaultValuesForProfile] kind of empty here, grabbing default values', state.profile)
   },
 
   handleUserLogout ({ commit, state }) {
