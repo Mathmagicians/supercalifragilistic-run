@@ -1,6 +1,12 @@
 <template>
   <basic-page-layout>
-    <page-section-title>Congratulations {{ profileName }}, a successful landing, Strava authorization done!</page-section-title>
+    <page-section-title>A successful landing</page-section-title>
+    <h4 class="text-gray-600 font-semibold text-xl text-center">
+      Congratulations {{ profileName }}, Strava authorization done!
+    </h4>
+    <nuxt-link to="/profile">
+      Click here to go back to your profile
+    </nuxt-link>
     <strava-integation-indicator />
   </basic-page-layout>
 </template>

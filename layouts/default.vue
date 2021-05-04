@@ -22,9 +22,31 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import DebugMode from '../components/DebugMode'
 export default {
-  components: { DebugMode }
+  components: { DebugMode },
+  methods: {
+    ...mapActions(['handleUserLogin', 'handleUserLogout'])
+  },
+  fetch () {
+    const { store } = this.$nuxt.context
+    if (this.$auth.loggedIn && store.profileLoadStatus < 0) {
+      console.log(`[loggedIn-fetch] detected change, we should log the user in: ${this.$auth.loggedIn}, loadstate ${store.profileLoadStatus}`)
+      store.dispatch('handleUserLogin')
+    }
+  },
+  created () {
+    this.$auth.$storage.watchState('loggedIn', (newValue) => {
+      console.log(`[loggedIn-created] change of login status, new value: ${newValue}`)
+      if (this.$auth.loggedIn) {
+        this.handleUserLogin()
+      } else {
+        this.handleUserLogout()
+      }
+    })
+  }
+
 }
 </script>
 
