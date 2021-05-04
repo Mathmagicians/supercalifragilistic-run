@@ -1,7 +1,7 @@
 <template>
   <div
     :class="reverse ? 'md:flex-row-reverse flex-col-reverse' : 'md:flex-row flex-col' +' ' + border ? 'border-t-1 border-b-2':''"
-    class="flex flex-wrap items-end"
+    class="flex flex-wrap items-start"
   >
     <div class="w-5/6 sm:w-1/2 p-8">
       <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">

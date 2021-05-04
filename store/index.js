@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-console */
 
+import profile from '~/pages/profile'
+
 export const state = () => ({
   // stravaLoadStatus: 0 - no change, 1 submitted authorization request to /auth endpoint,  2 received authorization key,
   // 3 submitted token request to /token endpoint, 4 received acces_token and refresh_token and submitted data to backend, 5 reloaded data from backend, 6 revoked access token, 7 pushed changes, 10 error state
@@ -30,8 +32,6 @@ export const state = () => ({
     runningAppAuthentication: {
       strava: null
     },
-    // fixme - move out to config file
-
     challenges: [{ id: 'ch1' }, { id: 'ch-2' }],
     events: null
   },
@@ -50,16 +50,15 @@ export const state = () => ({
       toEpoch: 1623621599
     }
   ]
-
 })
 
 export const getters = {
   // basic profile
   profileImageUri: (state) => {
-    return (state.auth.loggedIn) && (state.auth.user) ? JSON.parse(state.auth.user.picture).data.url : null
+    return (!!state.auth.loggedIn) && (!!state.auth.user) && (!!state.auth.user.picture) ? JSON.parse(state.auth.user.picture).data.url : null
   },
   profileName: (state) => {
-    return (state.auth.loggedIn) && (state.auth.user) ? state.auth.user.given_name : null
+    return state.profile.basic.name
   },
   isBasicProfileReady: (state) => {
     return !!state.profile.basic && !!state.profile.basic.gender && !!state.profile.basic.fav && !!state.profile.basic.mail && !!state.profile.basic.name
@@ -75,7 +74,7 @@ export const getters = {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.authorization_code
   },
   hasRequestedScopes: (state) => {
-    return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.scopes && state.profile.runningAppAuthentication.strava.scopes === 'read,activity:read_all'
+    return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.scopes === 'read,activity:read_all'
   },
   hasStravaRefreshToken: (state) => {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.refresh_token
@@ -149,6 +148,20 @@ export const mutations = {
   nukeStrava (state) {
     state.profile.runningAppAuthentication.strava = null
     state.strava_token = null
+  },
+  // we empty the object, but keep the structure
+  nukeProfile (state) {
+    const nuke = (o) => {
+      Object.getOwnPropertyNames(o).forEach((p) => {
+        o[p] = null
+      })
+    }
+    const b = nuke(state.profile.basic)
+    const r = nuke(state.profile.runningAppAuthentication)
+    nuke(state.profile)
+    state.profile.basic = b
+    state.profile.runningAppAuthentication = r
+    console.log('[nukeProfile] profile = ', state.profile)
   },
   updateAthleteActivities (state, activities) {
     // fixme: we are receiving an array of runs - here we are overwriting pre-existing data instead of splicing
@@ -229,7 +242,8 @@ export const actions = {
     try {
       const get = await this.$axios({
         method: 'put',
-        url: `/profile/${state.profile.id}`
+        url: `/profile/${state.profile.id}`,
+        data: state.profile
       })
       commit('setProfile', get.data)
     } catch (error) {
@@ -292,11 +306,8 @@ export const actions = {
       // check if it is a new user?
     } else if (status === 404) {
       commit('setProfileLoadStatus', 12)
-      dispatch('putNewProfile')
-      commit('setProfileLoadStatus', 13)
       dispatch('fillDefaultValuesForProfile')
-      commit('setProfileLoadStatus', 14)
-      dispatch('postProfile')
+      dispatch('putNewProfile')
       commit('setProfileLoadStatus', 15)
       dispatch('loadProfile')
     } else {
@@ -305,19 +316,21 @@ export const actions = {
     }
   },
 
-  fillDefaultValuesForProfile ({ commit, state, getters }) {
-    const defaultValues = { ...state.profile }
-    defaultValues.basic.name = getters('getProfileName')
-    defaultValues.basic.mail = state.auth.user.email
-    defaultValues.basic.gender = state.auth.user.gender
-
-    // todo fill them out
-    commit('setProfile', defaultValues)
+  fillDefaultValuesForProfile ({ commit, state }) {
+    console.info('[fillDefaultValuesForProfile] kind of empty here, grabbing default values')
+    const name = (state.auth.user) ? (state.auth.user.givenName || state.auth.user.username || state.auth.user.sub) : 'guest'
+    commit('setProfileName', name)
+    commit('setProfileMail', state.auth.user.email)
+    commit('setProfileGender', state.auth.user.gender)
+    commit('setProfileHealthy', true)
+    console.info('[fillDefaultValuesForProfile] kind of empty here, grabbing default values', profile)
   },
 
   handleUserLogout ({ commit, state }) {
-    // fixme flush state!
-    throw new Error('not implemented')
+    commit('nukeStrava')
+    commit('nukeProfile')
+    commit('setStravaDataAccessAuthLoadStatus', 0)
+    commit('setProfileLoadStatus', -1)
   },
 
   updateGender ({ commit, dispatch }, g) {

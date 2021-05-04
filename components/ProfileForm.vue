@@ -25,7 +25,9 @@
         >
           Thank you for trusting us with your Strava data.
           We promise to keep your data safe and secure.
+          <br>
           We will compute your points for each run, and update the leaderboard.
+          <br>
           The only thing you - 🦩 - have to remember, is to turn on your running app when your run.
         </div>
       </template>
@@ -53,9 +55,6 @@
       <template #error>
         We are missing information for your basic profile. Please fill out the form fields.
       </template>
-      <!--    <template #default>
-        <IdentificationIcon size="2x" />
-      </template> -->
       <template #bottom>
         <!-- rows with basic profile data  name, gender, mail, picture (from facebook) -->
         <form-row id="picture" class="mt-2">
@@ -129,7 +128,7 @@
             </div>
             <p class="py-2 text-sm font-semibold text-gray-600">
               {{ !gender ? 'Select your gender, my dear.' : 'Your gender is ' }}
-              {{ gender === 'F' ? '♀' : '' }}{{ gender === 'M' ? '♂' : '' }}
+              <span class="text-xl font-bold">{{ gender === 'F' ? '♀' : '' }}{{ gender === 'M' ? '♂' : '' }}</span>
             </p>
           </template>
         </form-row>
