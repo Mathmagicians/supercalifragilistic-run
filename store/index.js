@@ -325,6 +325,7 @@ export const actions = {
   fillDefaultValuesForProfile ({ commit, state, dispatch }) {
     console.info('[fillDefaultValuesForProfile] kind of empty here, grabbing default values')
     dispatch('grabProfileIdFromAuth')
+
     const name = (state.auth.user) ? (state.auth.user.preferred_username || state.auth.user.given_name || state.auth.user.username || state.auth.user.sub) : 'guest'
     commit('setProfileName', name)
     commit('setProfileMail', state.auth.user.email)
