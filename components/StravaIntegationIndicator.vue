@@ -14,11 +14,10 @@
       </nuxt-link>
       <hero-button
         v-if="canUseStrava"
-        class="border-red-400 border-2 hover:ring-4 hover:ring-red-600 center px-2 m-t-24 mx-2"
+        class="border-red-500 border-2 bg-red-400 text-white hover:ring-2 hover:ring-red-600 center px-2 m-t-24 mx-4"
         @click="revokeStravaAccess()"
       >
         Revoke data access
-        <img class="block p-2" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Strava_Logo.svg">
       </hero-button>
     </div>
 

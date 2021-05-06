@@ -82,7 +82,6 @@
               :id="fieldProps.id"
               :value="name"
               :class="inputClass"
-              class="rounded-lg"
               type="text"
               placeholder="Your name"
               @change="changeName"
@@ -109,20 +108,24 @@
           <template #field="fieldProps">
             <div :id="fieldProps.gender" class="relative max-w-1/3">
               <Gender
-                class="static inset-0 z-0 fill-current text-gray-700 object-cover w-full border-b-2 border-gray-400"
+                class="static inset-0 z-0 fill-current text-gray-700 object-cover w-full rounded-lg"
               />
               <!--female -->
               <button
                 tabindex="-1"
-                class="absolute inset-y-0 left-0 z-5 h-full w-1/2 w-1/2 bg-pink-400 opacity-20 cursor-default hover:opacity-40"
-                :class="gender === 'F' ? 'opacity-20':'opacity-0'"
+                class="absolute inset-y-0 left-0 z-5 h-full w-1/2 w-1/2  cursor-default rounded-l-lg
+                hover:border-2 hover:border-pink-600  hover:opacity-40 hover:bg-pink-400
+                transform transition hover:scale-105 duration-300 ease-in-out"
+                :class="gender === 'F' ? 'border-2 border-pink-400':'border-2 opacity-60 border-gray-400 bg-gray-400'"
                 @click="updateGender('F')"
               />
               <!-- male -->
               <button
                 tabindex="-1"
-                class="absolute inset-y-0 right-0 z-5 h-full w-1/2 bg-blue-400 opacity-20 cursor-default hover:opacity-40"
-                :class="gender === 'M' ? 'opacity-20':'opacity-0'"
+                class="absolute inset-y-0 right-0 z-5 h-full w-1/2  cursor-default rounded-r-lg
+                hover:border-2 hover:border-blue-600 hover:opacity-40 hover:bg-blue-400
+                transform transition hover:scale-105 duration-300 ease-in-out"
+                :class="gender === 'M' ? 'border-2 border-blue-400':'border-2 opacity-60 border-gray-400 bg-gray-400'"
                 @click="updateGender('M')"
               />
             </div>
@@ -136,25 +139,26 @@
         <!-- health -->
         <form-row id="health">
           <template #field="fieldProps">
-            <div :id="fieldProps.health" class="relative max-w-1/3">
+            <div :id="fieldProps.health" class="relative max-w-1/3 ">
               <div
-                class="flex flex-row rounded-lg border-2"
-                :class="healthy ?'border-green-600 ring-4 ring-green-400': 'border-yellow-600 ring-4 ring-yellow-400'"
+                class="flex flex-row rounded-lg border-none"
               >
-                <span class="block text-4xl w-1/2 border-2 border-green-400 text-center leading-loose">🏃‍♂ 🏃‍♀️️</span>
-                <span class="block text-4xl w-1/2 border-2 border-yellow-400 text-center leading-loose">🆘 🏥</span>
+                <span class="block text-4xl w-1/2  text-center leading-loose">🏃‍♂ 🏃‍♀️️</span>
+                <span class="block text-4xl w-1/2  text-center leading-loose">🆘 🏥</span>
               </div>
               <button
                 tabindex="-1"
-                class="absolute inset-y-0 left-0 z-5 h-full w-1/2 bg-green-400 opacity-20 cursor-default hover:opacity-40 border-none"
-                :class="healthy ? 'opacity-20':'opacity-0'"
+                class="absolute inset-y-0 left-0 z-5 h-full w-1/2 cursor-default hover:opacity-40 hover:bg-green-400 rounded-l-lg
+                 transform transition hover:scale-105 duration-300 ease-in-out"
+                :class="healthy ? 'border-2 border-green-600 ':'border-2 opacity-60 border-gray-400 bg-gray-400'"
                 @click="updateHealthy(true)"
               />
               <!-- male -->
               <button
                 tabindex="-1"
-                class="absolute inset-y-0 right-0 z-5 h-full w-1/2 bg-yellow-400 opacity-20 cursor-default hover:opacity-40 border-none"
-                :class=" !healthy ? 'opacity-20':'opacity-0'"
+                class="absolute inset-y-0 right-0 z-5 h-full w-1/2  cursor-default hover:opacity-40 hover:bg-yellow-400 rounded-r-lg
+                transform transition hover:scale-105 duration-300 ease-in-out"
+                :class=" !healthy ? 'border-2 border-yellow-600 ':'border-2 opacity-60 border-gray-400 bg-gray-400'"
                 @click="updateHealthy(false)"
               />
             </div>
@@ -223,7 +227,7 @@ export default {
     ])
   },
   created () {
-    this.inputClass = 'form-input block w-full bg-gray-50 text-pink-600 text-lg focus:bg-white rounded-lg'
+    this.inputClass = 'form-input block w-full bg-gray-50 text-pink-600 text-lg rounded-lg focus:bg-white focus:ring-4 focus:ring-gray-600 hover:bg-white hover:ring-gray-400 hover:ring-4'
   },
   methods: {
     ...mapActions(['updateGender', 'updateName', 'updateFav', 'updateMail', 'updateHealthy']),

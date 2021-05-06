@@ -21,7 +21,7 @@
       </slot>
       <div
         v-if="hasErrors"
-        class="border-4 py-2 border-red-600 text-sm text-gray-600 bg-gray-50 rounded-lg prose-sm my-4 lg:my-8"
+        class="border-b-2 border-t-2 py-2 border-red-600 text-sm text-gray-700 prose-sm my-4 lg:my-8"
       >
         <slot name="error" />
       </div>
@@ -39,11 +39,11 @@
 
 <script>
 
-import { KeyIcon, IdentificationIcon, UserAddIcon } from '@vue-hero-icons/outline'
+import { KeyIcon, IdentificationIcon, UserAddIcon, ExclamationIcon } from '@vue-hero-icons/outline'
 
 export default {
   name: 'SideBySideTextPictureCard',
-  components: { IdentificationIcon, KeyIcon, UserAddIcon },
+  components: { IdentificationIcon, KeyIcon, UserAddIcon, ExclamationIcon },
   props: {
     title: {
       type: String,
