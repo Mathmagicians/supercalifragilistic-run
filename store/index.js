@@ -32,22 +32,8 @@ export const state = () => ({
     },
     challenges: [{ id: 'ch1' }, { id: 'ch-2' }],
     events: null
-  },
+  }
 
-  challenges: [
-    {
-      id: 'ch-1',
-      name: 'TestTest',
-      fromEpoch: 1615000000,
-      toEpoch: 1623621599
-    },
-    {
-      id: 'ch-2',
-      name: 'Løbeudfordringen 2021',
-      fromEpoch: 1619992800,
-      toEpoch: 1623621599
-    }
-  ]
 })
 
 export const getters = {
