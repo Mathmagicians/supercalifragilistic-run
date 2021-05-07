@@ -52,7 +52,7 @@ export const getters = {
   },
   // strava integration
   canUseStrava: (state, getters) => {
-    return getters.hasRequestedScopes && getters.hasStravaAuthorizationCode && getters.hasStravaRefreshToken && getters.hasValidStravaAccessToken
+    return getters.hasRequestedScopes && getters.hasStravaAuthorizationCode && getters.hasStravaRefreshToken && getters.hasStravaAccessToken
   },
   hasStravaAuthorizationCode: (state) => {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.authorization_code
@@ -63,8 +63,11 @@ export const getters = {
   hasStravaRefreshToken: (state) => {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.refresh_token
   },
-  hasValidStravaAccessToken: (state) => {
+  hasStravaAccessToken: (state) => {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.access_token
+  },
+  isStravaAccessTokenValid: (state, getters) => {
+    return getters.hasStravaAccessToken && !!state.profile.runningAppAuthentication.strava.expires_at && (state.profile.runningAppAuthentication.strava.expires_at > Date.now())
   },
   authorization_code: (state) => {
     return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.authorization_code
@@ -80,6 +83,9 @@ export const getters = {
   },
   access_token: (state) => {
     return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.access_token
+  },
+  expires_at: (state) => {
+    return !!state.profile.runningAppAuthentication.strava && new Date(state.profile.runningAppAuthentication.strava.expires_at * 1000).toLocaleTimeString()
   }
 
 }
@@ -129,6 +135,7 @@ export const mutations = {
     state.profile.runningAppAuthentication.strava.id = String(token.athlete.id)
     state.profile.runningAppAuthentication.strava.access_token = token.access_token
     state.profile.runningAppAuthentication.strava.refresh_token = token.refresh_token
+    state.profile.runningAppAuthentication.strava.expires_at = token.expires_at
   },
   nukeStrava (state) {
     state.profile.runningAppAuthentication.strava = null

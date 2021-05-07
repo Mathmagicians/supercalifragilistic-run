@@ -32,7 +32,7 @@ export default {
     } else { error({ message: 'Didnt receive authorization code from Strava', statusCode: 400 }) }
   },
   computed: {
-    ...mapGetters(['profileName', 'canUseStrava', 'hasStravaAuthorizationCode', 'hasStravaRefreshToken', 'hasValidStravaAccessToken', 'hasRequestedScopes']),
+    ...mapGetters(['profileName', 'canUseStrava', 'hasStravaAuthorizationCode', 'hasStravaRefreshToken', 'hasStravaAccessToken', 'hasRequestedScopes']),
     ...mapState({ strava: state => state.profile.runningAppAuthentication.strava })
   },
   methods: {

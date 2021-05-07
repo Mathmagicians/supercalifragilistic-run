@@ -39,13 +39,13 @@
 </template>
 
 <script>
-import { CheckCircleIcon, KeyIcon, IdentificationIcon } from '@vue-hero-icons/outline'
+import { CheckCircleIcon, KeyIcon, IdentificationIcon, ClockIcon } from '@vue-hero-icons/outline'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import HeroButton from './layout-utils/HeroButton'
 
 export default {
   name: 'StravaIntegationIndicator',
-  components: { HeroButton, CheckCircleIcon, KeyIcon, IdentificationIcon },
+  components: { HeroButton, CheckCircleIcon, KeyIcon, IdentificationIcon, ClockIcon },
   props: {
     showDetails: {
       type: Boolean,
@@ -53,7 +53,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['profileName', 'canUseStrava', 'hasStravaAuthorizationCode', 'hasStravaRefreshToken', 'hasValidStravaAccessToken', 'hasRequestedScopes']),
+    ...mapGetters(['profileName', 'canUseStrava', 'hasStravaAuthorizationCode', 'hasStravaRefreshToken', 'hasStravaAccessToken', 'hasRequestedScopes', 'isAccessTokenValid']),
     items () {
       return [
         {
@@ -75,17 +75,23 @@ export default {
           value: this.hasStravaRefreshToken ? this.refresh_token() : 'missing'
         },
         {
-          text: 'Valid Access Token',
-          isOk: this.hasValidStravaAccessToken,
+          text: 'Access Token',
+          isOk: this.hasStravaAccessToken,
           icon: 'KeyIcon',
-          value: this.hasValidStravaAccessToken ? this.access_token() : 'missing'
+          value: this.hasStravaAccessToken ? this.access_token() : 'missing'
+        },
+        {
+          text: 'Token valid until',
+          isOk: this.isAccessTokenValid ? this.expires_at() : 'missing',
+          icon: 'ClockIcon',
+          value: this.hasStravaAccessToken && !!this.expires_at() ? this.expires_at() : 'missing'
         }
       ]
     }
   },
   methods: {
     // ...mapState({ strava: state => state.profile.runningAppAuthentication.strava }),
-    ...mapGetters(['authorization_code', 'authorization_time', 'scopes', 'refresh_token', 'access_token']),
+    ...mapGetters(['authorization_code', 'authorization_time', 'scopes', 'refresh_token', 'access_token', 'expires_at']),
     ...mapActions(['revokeStravaAccess'])
   }
 }
