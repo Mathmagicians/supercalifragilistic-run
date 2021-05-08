@@ -36,13 +36,14 @@
       <!-- Menu burger, only visible below size sm -->
       <div class="sm:hidden">
         <button
-          class="block font-bold text-2xl text-gray-600 hover:text-gray-400 focus:text-gray-400 focus:outline-none py-2"
+          class="block font-bold text-2xl focus:outline-none py-2"
           type="button"
           @click="isOpen = !isOpen"
         >
-          <XIcon v-if="isOpen" class="text-current" :class="changeColorTextClass" />
+          <XIcon v-if="isOpen" class="text-current" size="1.5x" :class="changeColorTextClass" />
           <MenuIcon
             v-if="!isOpen"
+            size="1.5x"
             class="text-current"
             :class="changeColorTextClass"
           />
@@ -50,7 +51,7 @@
       </div>
     </div>
 
-    <!-- menu items for screens from size sm and up-->
+    <!-- menu items for screens below size sm -->
     <nav
       :class="isOpen ? 'block':'hidden'"
       class="w-full flex-grow sm:flex lg:items-center lg:w-auto mt-2 lg:mt-0 p-4 lg:p-0 z-20"
@@ -71,7 +72,6 @@
       </ul>
 
       <!-- use component on sm and larger screens, otherwise embed links -->
-
       <div
         class="hidden sm:block sm:relative"
       >
@@ -84,7 +84,12 @@
             class="block rounded-full relative p-1 focus:outline-none hover:outline-none"
             @click="isUserOpen = !isUserOpen"
           >
-            <user-avatar class="w-full w-32" :class="changeColorTextClass" :image-uri="profileImageUri" :name="profileName" />
+            <user-avatar
+              class="w-full w-32"
+              :class="changeColorTextClass"
+              :image-uri="profileImageUri"
+              :name="profileName"
+            />
           </button>
         </div>
         <signin-button
@@ -107,7 +112,8 @@
             v-for="item in dropDownLoggedInItems"
             :key="item.link"
             :link="item.link"
-            class="block px-4 py-2 hover:bg-pink-400"
+            class="block px-4 py-2 hover:border-pink-400
+              hover:border-b-8 transform transition hover:text-underline hover:scale-105 hover:-rotate-6 duration-300 ease-in-out"
           >
             <hero-button v-if="item.action" @click="handleFunctionCall(item.action)">
               {{ item.text }}
@@ -124,21 +130,24 @@
         <button class="mt-2 focus:outline-none">
           <user-avatar class="w-32" :image-uri="profileImageUri" :name="profileName" />
         </button>
-        <div class="text-gray-600">
-          <nav-bar-item
-            v-for="item in dropDownLoggedInItems"
-            :key="item.link"
-            :link="item.link"
-            class="block px-4 py-1 hover:bg-pink-400 hover:text-white"
-          >
-            <hero-button v-if="item.action" :color-change="true" @click="handleFunctionCall(item.action)">
-              {{ item.text }}
-            </hero-button>
-            <span v-else>
-              {{ item.text }}
-            </span>
-          </nav-bar-item>
-        </div>
+        <ul class="flex flex-col items-start justify-end flex-1 list-reset">
+          <li>
+            <nav-bar-item
+              v-for="item in dropDownLoggedInItems"
+              :key="item.link"
+              :link="item.link"
+              class="hover:border-b-8 transform transition hover:scale-105 hover:-rotate-6 duration-300 ease-in-out"
+              :class="changeColor?'text-pink-400 hover:border-pink-400':'text-white hover:border-white'"
+            >
+              <hero-button v-if="item.action" :color-change="true" @click="handleFunctionCall(item.action)">
+                {{ item.text }}
+              </hero-button>
+              <span v-else>
+                {{ item.text }}
+              </span>
+            </nav-bar-item>
+          </li>
+        </ul>
       </div>
     </nav>
     <hr class="border-b border-gray-100 opacity-25 my-0 py-0">
@@ -188,7 +197,7 @@ export default {
       return this.scrollPosition > 10
     },
     changeColorTextClass () {
-      return this.changeColor ? 'text-pink-400 hover:border-pink-400' : 'text-white hover:border-white'
+      return this.changeColor ? 'text-pink-400 hover:border-pink-400 focus:border-pink-400' : 'text-white hover:border-white focus:border-white'
     },
     ...mapState({
       loggedIn: state => state.auth.loggedIn
