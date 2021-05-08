@@ -7,12 +7,12 @@
     <h1 v-if="$fetchState.pending">
       Getting runs from Strava
     </h1>
-    <div v-if="!$fetchState.pending && !!runs">
+    <div v-if="!$fetchState.pending ">
       <page-section-title>
         Your runs
       </page-section-title>
       <p class="text-xs text-gray-400">
-        Data fetched at {{ new Date() }}
+        Data fetched at {{ new Date( latest_fetch*1000).toISOString() }}
       </p>
       <ul>
         <li v-for="aRun in myRuns" :key="aRun.id">
@@ -42,7 +42,7 @@ export default {
     this.myRuns = store.state.profile.runs
   },
   computed: {
-    ...mapGetters(['runs'])
+    ...mapGetters(['runs', 'latest_fetch'])
   }
 }
 </script>

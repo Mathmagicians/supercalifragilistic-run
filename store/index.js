@@ -71,7 +71,7 @@ export const getters = {
   },
   // 1 hour throttle in s, or if no runs at all
   stravaIsThrottled: (state) => {
-    return !!state.profile.runningAppAuthentication.strava && (!state.runs || (Date.now() / 1000 - state.profile.runningAppAuthentication.strava.latest_fetch < 3600))
+    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.latest_fetch > 0 && (Date.now() / 1000 - state.profile.runningAppAuthentication.strava.latest_fetch < 3600)
   },
   authorization_code: (state) => {
     return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.authorization_code
@@ -90,6 +90,9 @@ export const getters = {
   },
   expires_at: (state) => {
     return !!state.profile.runningAppAuthentication.strava && new Date(state.profile.runningAppAuthentication.strava.expires_at * 1000).toISOString()
+  },
+  latest_fetch: (state) => {
+    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.latest_fetch
   },
   runs: (state) => {
     return state.profile.runs
@@ -341,7 +344,7 @@ export const actions = {
       await dispatch('postProfile')
       await dispatch('loadProfile')
     } else {
-      console.warn(`[fetchAthleteActivity] Blocked by: Strava use: ${getters.canUseStrava}, throttle: ${getters.stravaNotThrottled} so cant fetch fresh activities.`)
+      console.warn(`[fetchAthleteActivity] Blocked by: Strava use: ${getters.canUseStrava}, throttle: ${getters.stravaIsThrottled} so cant fetch fresh activities.`)
     }
   },
 
