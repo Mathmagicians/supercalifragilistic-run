@@ -2,27 +2,29 @@
   <div
     class="
       w-full
-      rounded-lg
-      shadow-md
-      m-2
       overflow-hidden"
   >
     <h1 v-if="$fetchState.pending">
       Getting runs from Strava
     </h1>
-    <div />
-    <page-section-title>
-      Your runs
-    </page-section-title>
-    <ul>
-      <li v-for="aRun in myRuns" :key="aRun.id">
-        <run :run="aRun" />
-      </li>
-    </ul>
+    <div v-if="!$fetchState.pending && !!runs">
+      <page-section-title>
+        Your runs
+      </page-section-title>
+      <p class="text-xs text-gray-400">
+        Data fetched at {{ new Date() }}
+      </p>
+      <ul>
+        <li v-for="aRun in myRuns" :key="aRun.id">
+          <run :run="aRun" />
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import PageSectionTitle from './layout-utils/PageSectionTitle'
 
 export default {
@@ -36,9 +38,11 @@ export default {
   },
   async fetch () {
     const { store, error } = this.$nuxt.context
-
     await store.dispatch('fetchAthleteActivity')
     this.myRuns = store.state.profile.runs
+  },
+  computed: {
+    ...mapGetters(['runs'])
   }
 }
 </script>

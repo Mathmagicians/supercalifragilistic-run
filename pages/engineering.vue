@@ -27,7 +27,7 @@ export default {
   },
 
   async fetch () {
-    this.fromLambda = await this.$axios.$get('/profile')
+    this.fromLambda = await this.$axios.$get('/')
   }
 
 }

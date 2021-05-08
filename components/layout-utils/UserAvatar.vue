@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col sm:flex-row justify-center items-center min-h-full transform transition hover:border-b-8 hover:scale-105 hover:-rotate-6 duration-300 ease-in-out">
+  <div class="flex flex-col sm:flex-row justify-center items-center min-h-full transform transition hover:scale-125 hover:-rotate-12 duration-300 ease-in-out">
     <img
       v-if="imageUri"
       class="block w-16 h-16 object-cover object-top rounded-full ring-4 ring-pink-100 "
