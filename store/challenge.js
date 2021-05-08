@@ -11,6 +11,7 @@ export const state = () => ({
       name: 'Løbeudfordringen 2021',
       fromEpoch: 1619992800,
       toEpoch: 1623621599
+
     }
   ]
 })

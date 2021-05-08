@@ -4,7 +4,7 @@
     <div v-else>
       Wait while we load data ...
     </div>
-    <my-runs v-if="!$fetchState.pending && canUseStrava" />
+    <my-runs v-if="!$fetchState.pending && hasStravaRefreshToken" />
   </basic-page-layout>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     } else { await store.dispatch('fetchProfile') }
   },
   computed: {
-    ...mapGetters(['canUseStrava'])
+    ...mapGetters(['hasStravaRefreshToken'])
   },
   methods: {
     ...mapState({

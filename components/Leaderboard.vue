@@ -35,7 +35,7 @@ import Overtaking from '~/assets/Overtaking.svg?inline'
 
 export default {
   name: 'Leaderboard',
-  components: { SideBySideTextPictureCard },
+  components: { SideBySideTextPictureCard, Overtaking },
   props: {
     challenge: {
       type: Object,

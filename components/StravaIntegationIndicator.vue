@@ -53,7 +53,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['profileName', 'canUseStrava', 'hasStravaAuthorizationCode', 'hasStravaRefreshToken', 'hasStravaAccessToken', 'hasRequestedScopes', 'isAccessTokenValid']),
+    ...mapGetters(['profileName', 'canUseStrava', 'hasStravaAuthorizationCode', 'hasStravaRefreshToken', 'hasStravaAccessToken', 'hasRequestedScopes', 'isStravaAccessTokenValid']),
     items () {
       return [
         {
@@ -82,9 +82,9 @@ export default {
         },
         {
           text: 'Token valid until',
-          isOk: this.isAccessTokenValid ? this.expires_at() : 'missing',
+          isOk: this.isStravaAccessTokenValid,
           icon: 'ClockIcon',
-          value: this.hasStravaAccessToken && !!this.expires_at() ? this.expires_at() : 'missing'
+          value: this.isStravaAccessTokenValid ? this.expires_at() : `expired at ${this.expires_at()}`
         }
       ]
     }

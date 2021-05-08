@@ -52,7 +52,7 @@ export const getters = {
   },
   // strava integration
   canUseStrava: (state, getters) => {
-    return getters.hasRequestedScopes && getters.hasStravaAuthorizationCode && getters.hasStravaRefreshToken && getters.hasStravaAccessToken
+    return getters.hasRequestedScopes && getters.hasStravaAuthorizationCode && getters.hasStravaRefreshToken && getters.hasStravaAccessToken && getters.isStravaAccessTokenValid
   },
   hasStravaAuthorizationCode: (state) => {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.authorization_code
@@ -67,7 +67,11 @@ export const getters = {
     return !!state.profile.runningAppAuthentication.strava && !!state.profile.runningAppAuthentication.strava.access_token
   },
   isStravaAccessTokenValid: (state, getters) => {
-    return getters.hasStravaAccessToken && !!state.profile.runningAppAuthentication.strava.expires_at && (state.profile.runningAppAuthentication.strava.expires_at > Date.now())
+    return getters.hasStravaAccessToken && !!state.profile.runningAppAuthentication.strava.expires_at && (state.profile.runningAppAuthentication.strava.expires_at > Date.now() / 1000)
+  },
+  // 1 hour throttle in s, or if no runs at all
+  stravaIsThrottled: (state) => {
+    return !!state.profile.runningAppAuthentication.strava && (!state.runs || (Date.now() / 1000 - state.profile.runningAppAuthentication.strava.latest_fetch < 3600))
   },
   authorization_code: (state) => {
     return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.authorization_code
@@ -85,7 +89,10 @@ export const getters = {
     return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.access_token
   },
   expires_at: (state) => {
-    return !!state.profile.runningAppAuthentication.strava && new Date(state.profile.runningAppAuthentication.strava.expires_at * 1000).toLocaleTimeString()
+    return !!state.profile.runningAppAuthentication.strava && new Date(state.profile.runningAppAuthentication.strava.expires_at * 1000).toISOString()
+  },
+  runs: (state) => {
+    return state.profile.runs
   }
 
 }
@@ -137,6 +144,11 @@ export const mutations = {
     state.profile.runningAppAuthentication.strava.refresh_token = token.refresh_token
     state.profile.runningAppAuthentication.strava.expires_at = token.expires_at
   },
+  setStravaAccess (state, accessPass) {
+    console.log('[setStravaAccess] received new access token for strava ', accessPass)
+    state.profile.runningAppAuthentication.strava.access_token = accessPass.access_token
+    state.profile.runningAppAuthentication.strava.expires_at = accessPass.expires_at
+  },
   nukeStrava (state) {
     state.profile.runningAppAuthentication.strava = null
     state.strava_token = null
@@ -157,7 +169,41 @@ export const mutations = {
   },
   updateAthleteActivities (state, activities) {
     // fixme: we are receiving an array of runs - here we are overwriting pre-existing data instead of splicing
-    state.profile.runs = [...activities]
+    console.log('[updateAthleteActivities] received from Strava', activities)
+    const runs = activities.filter(act => act.type === 'Run').map(
+      ({
+        id,
+        name,
+        distance,
+        elapsed_time,
+        type,
+        start_date,
+        map: { summary_polyline },
+        average_speed,
+        start_latitude,
+        start_longitude
+      }) =>
+        ({
+          id,
+          name,
+          distance,
+          elapsed_time,
+          type,
+          start_date,
+          summary_polyline,
+          average_speed,
+          start_latitude,
+          start_longitude
+        }))
+    console.log('[updateAthleteActivities] destructured ', runs)
+    if (activities.length > 0) {
+      state.profile.runs = runs
+    } else {
+      console.warn('[updateAthleteActivities] no runs received from strava')
+    }
+  },
+  updateLatestFetch (state) {
+    state.profile.runningAppAuthentication.strava.latest_fetch = Date.now() / 1000 | 0
   }
 }
 
@@ -178,6 +224,25 @@ export const actions = {
       commit('setStravaDataAccessAuthLoadStatus', 0)
     } else {
       console.info('[acquireStravaRefreshToken] Dont need to acquire anything, token is ', state.profile.runningAppAuthentication.strava.token)
+    }
+  },
+
+  async refreshStravaAccessToken ({ commit, state, getters, dispatch }) {
+    if (getters.hasStravaRefreshToken && !getters.isStravaAccessTokenValid) {
+      const accessPass = await this.$axios({
+        method: 'post',
+        url: this.$config.strava_token_url,
+        baseURL: this.$config.strava_base_url,
+        data: {
+          client_id: this.$config.strava_client_id,
+          client_secret: this.$config.strava_client_secret,
+          grant_type: 'refresh_token',
+          refresh_token: getters.refresh_token
+        }
+      })
+
+      commit('setStravaAccess', accessPass.data)
+      console.log(`[refreshStravaAccessToken] token refreshed, new access_token ${getters.access_token}`)
     }
   },
 
@@ -245,11 +310,18 @@ export const actions = {
     }
   },
 
-  async fetchAthleteActivity ({ commit, state, getters }) {
+  async fetchAthleteActivity ({ commit, state, getters, dispatch }) {
     // todo - hardwired from client to strava - refactor this once backend is up and running
-    if (getters.canUseStrava) {
+    console.info(`[fetchAthleteActivity] strava status - ${getters.canUseStrava}, access token valid - ${getters.isStravaAccessTokenValid} - has refresh token - ${getters.hasStravaRefreshToken}`)
+    // does strava token need a refresh
+    if (getters.hasStravaRefreshToken && !getters.isStravaAccessTokenValid) {
+      console.info('[fetchAthleteActivity] need to refresh access token ')
+      await dispatch('refreshStravaAccessToken')
+    }
+    // can we use strava at all, then load fresh data
+    if (getters.canUseStrava && !getters.stravaIsThrottled) {
       // 01.04.2021 - fixme use challenge start date
-      const epoch = 1615000000
+      const epoch = 1619992800
       const newAxios = this.$axios.create()
       const activities = await newAxios({
         method: 'get',
@@ -262,10 +334,14 @@ export const actions = {
           Authorization: 'Bearer ' + state.profile.runningAppAuthentication.strava.access_token
         }
       })
-      console.info('[fetchAthleteActivity] recieved response', activities.data)
+      console.info('[fetchAthleteActivity] received response', activities.data)
       commit('updateAthleteActivities', activities.data)
+      commit('updateLatestFetch')
+      commit('setProfileLoadStatus', 5)
+      await dispatch('postProfile')
+      await dispatch('loadProfile')
     } else {
-      console.error('[fetchAthleteActivity] Can not use Strava, so cant fetch activities.')
+      console.warn(`[fetchAthleteActivity] Blocked by: Strava use: ${getters.canUseStrava}, throttle: ${getters.stravaNotThrottled} so cant fetch fresh activities.`)
     }
   },
 

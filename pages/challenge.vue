@@ -1,6 +1,6 @@
 <template>
   <basic-page-layout>
-    <leaderboard v-for="challenge in 'challenge/list'" :key="challenge.id" :is-mine="isMine(challenge.id)" :challenge="challenge" />
+    <leaderboard v-for="challenge in list" :key="challenge.id" :is-mine="isMine(challenge.id)" :challenge="challenge" />
   </basic-page-layout>
 </template>
 <script>
@@ -10,7 +10,7 @@ import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 export default {
   components: { BasicPageLayout, Leaderboard },
   computed: {
-    ...mapGetters(['challenge/list'])
+    ...mapGetters({ list: 'challenge/list' })
   },
   methods: {
     isMine (id) {
