@@ -120,8 +120,8 @@
       </div>
 
       <!-- on small screens, below sm, embed the links from drop down menu directly -->
-      <div v-if="loggedIn" class="sm:hidden border-t-1 border-pink-400">
-        <button class="mt-2 focus:outline-none hover:bg-pink-400">
+      <div v-if="loggedIn" class="sm:hidden">
+        <button class="mt-2 focus:outline-none">
           <user-avatar class="w-32" :image-uri="profileImageUri" :name="profileName" />
         </button>
         <div class="text-gray-600">
@@ -129,7 +129,7 @@
             v-for="item in dropDownLoggedInItems"
             :key="item.link"
             :link="item.link"
-            class="block px-4 py-1 hover:bg-pink-400"
+            class="block px-4 py-1 hover:bg-pink-400 hover:text-white"
           >
             <hero-button v-if="item.action" :color-change="true" @click="handleFunctionCall(item.action)">
               {{ item.text }}
