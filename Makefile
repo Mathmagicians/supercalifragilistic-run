@@ -49,7 +49,7 @@ check: .env-local
 .env-local: .env
 
 .env: clean-env
-	@echo $(tf_work)
+	@echo "Grabbing variables from workspace" $(tf_work)
 	@$(MAKE) query-tf tf_work=$(tf_work)
 	@$(MAKE) query-jq query="\"rest_api_stage\""
 	@$(MAKE) query-jq query="\"user_pool_domain\""

@@ -92,7 +92,7 @@ export const getters = {
     return !!state.profile.runningAppAuthentication.strava && new Date(state.profile.runningAppAuthentication.strava.expires_at * 1000).toISOString()
   },
   latest_fetch: (state) => {
-    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.latest_fetch
+    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.latest_server_fetch
   },
   runs: (state) => {
     return state.profile.runs
@@ -105,10 +105,10 @@ export const mutations = {
     state.profileLoadStatus = statusCode
   },
   setProfileId (state, id) {
-    this.state.profile.id = id
+    state.profile.id = id
   },
   setProfile (state, profile) {
-    this.state.profile = { ...profile }
+    state.profile = { ...profile }
   },
   setProfileName (state, name) {
     state.profile.basic.name = name
@@ -182,6 +182,7 @@ export const mutations = {
         type,
         start_date,
         map: { summary_polyline },
+        // athlete: {id},
         average_speed,
         start_latitude,
         start_longitude
@@ -315,37 +316,8 @@ export const actions = {
 
   async fetchAthleteActivity ({ commit, state, getters, dispatch }) {
     // todo - hardwired from client to strava - refactor this once backend is up and running
-    console.info(`[fetchAthleteActivity] strava status - ${getters.canUseStrava}, access token valid - ${getters.isStravaAccessTokenValid} - has refresh token - ${getters.hasStravaRefreshToken}`)
-    // does strava token need a refresh
-    if (getters.hasStravaRefreshToken && !getters.isStravaAccessTokenValid) {
-      console.info('[fetchAthleteActivity] need to refresh access token ')
-      await dispatch('refreshStravaAccessToken')
-    }
-    // can we use strava at all, then load fresh data
-    if (getters.canUseStrava && !getters.stravaIsThrottled) {
-      // 01.04.2021 - fixme use challenge start date
-      const epoch = 1619992800
-      const newAxios = this.$axios.create()
-      const activities = await newAxios({
-        method: 'get',
-        baseURL: this.$config.strava_api_root,
-        url: '/athlete/activities',
-        params: {
-          after: epoch
-        },
-        headers: {
-          Authorization: 'Bearer ' + state.profile.runningAppAuthentication.strava.access_token
-        }
-      })
-      console.info('[fetchAthleteActivity] received response', activities.data)
-      commit('updateAthleteActivities', activities.data)
-      commit('updateLatestFetch')
-      commit('setProfileLoadStatus', 5)
-      await dispatch('postProfile')
-      await dispatch('loadProfile')
-    } else {
-      console.warn(`[fetchAthleteActivity] Blocked by: Strava use: ${getters.canUseStrava}, throttle: ${getters.stravaIsThrottled} so cant fetch fresh activities.`)
-    }
+    console.warn('[fetchAthleteActivity] should be removed')
+    await dispatch('loadProfile')
   },
 
   async loadProfile ({ commit, dispatch, state }) {
