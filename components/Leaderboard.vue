@@ -1,30 +1,18 @@
 <template>
   <div class="relative container max-w-full mx-auto m-8 min-h-screen items-center justify-center">
     <!-- container with scrolling ticker -->
-    <div>
-      <side-by-side-text-picture-card :title="challenge.name">
-        <template #default>
-          <h4 class="text-gray-600 text-md italic font-light">
-            Motto: Crush your so-called peer-birds, and be the fastest flamingo in the flock
-          </h4>
-          <h1 class="text-gray-700 text-xl">
-            Leaderboard
-          </h1>
-          <ul>
-            <li v-for="athlete in athletes" :key="athlete.id" class="border-t-2 border-b-1 border-gray-200 text-lg py-2">
-              {{ athlete.basic.fav ? athlete.basic.fav : '⁇' }} {{ athlete.basic.name }}  🏃‍♂️{{ athlete.runs? athlete.runs.length : '-' }} Kilometers: <span class="italic">pending</span>  ⭐ <span class="italic">pending</span>
-            </li>
-          </ul>
-          ..
-          <h1 class="text-gray-700 text-lg">
-            Events
-          </h1>
-          ...
-        </template>
-        <template #bottom>
-          <Overtaking />
-        </template>
-      </side-by-side-text-picture-card>
+    <side-by-side-text-picture-card :title="challenge.name" sub-title="Leaderboard">
+      <template #default>
+        <h4 class="text-gray-600 text-md italic font-light">
+          Motto: Crush your so-called peer-birds, and be the fastest flamingo in the flock
+        </h4>
+      </template>
+      <template #bottom>
+        <Overtaking />
+      </template>
+    </side-by-side-text-picture-card>
+    <div class="flex flex-col">
+      <leader-entry v-for="athlete in athletes" :key="athlete.id" :athlete="athlete" />
     </div>
   </div>
 </template>
@@ -32,11 +20,12 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 import SideBySideTextPictureCard from './layout-utils/SideBySideTextPictureCard'
+import LeaderEntry from './layout-utils/LeaderEntry'
 import Overtaking from '~/assets/Overtaking.svg?inline'
 
 export default {
   name: 'Leaderboard',
-  components: { SideBySideTextPictureCard, Overtaking },
+  components: { SideBySideTextPictureCard, Overtaking, LeaderEntry },
   props: {
     challenge: {
       type: Object,
