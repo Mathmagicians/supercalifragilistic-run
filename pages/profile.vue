@@ -17,7 +17,7 @@ export default {
   components: { MyRuns, BasicPageLayout },
   async fetch () {
     const { store } = this.$nuxt.context
-    console.info('[profile] dispatching handleUserlogin')
+    console.info('[profile] dispatching handleUserLogin')
     await store.dispatch('handleUserLogin')
   },
   computed: {
