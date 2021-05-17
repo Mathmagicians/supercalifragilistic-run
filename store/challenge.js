@@ -29,7 +29,7 @@ export const mutations = {
     athletes.forEach((a) => {
       a.scores = {}
       console.log(`[setChallenge] about to compute scores for athlete ${a.id}`)
-      a.scores.startBonus = 2 * (a.runs ? a.runs.map(r => r.distance).filter(filterRunsOver3Km).reduce(runCountReducer, 0) : 0)
+      a.scores.startBonus = 3 * (a.runs ? a.runs.map(r => r.distance).filter(filterRunsOver3Km).reduce(runCountReducer, 0) : 0)
       a.scores.distanceTotal = (a.runs ? a.runs.map(r => r.distance).filter(filterRunsOver3Km).reduce(distanceCountReducer, 0) : 0) / 1000
 
       a.scores.total = a.scores.startBonus + a.scores.distanceTotal
