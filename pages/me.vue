@@ -1,7 +1,7 @@
 <template>
   <basic-page-layout title="My Runs">
     <my-runs v-if="!$fetchState.pending && hasStravaRefreshToken" />
-    <div v-if="!$fetchState.pending">
+    <div v-if="$fetchState.pending">
       Wait while we load data ...
     </div>
     <div

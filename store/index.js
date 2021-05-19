@@ -169,45 +169,6 @@ export const mutations = {
     state.profile.basic = b
     state.profile.runningAppAuthentication = r
     console.log('[nukeProfile] profile = ', state.profile)
-  },
-  updateAthleteActivities (state, activities) {
-    // fixme: we are receiving an array of runs - here we are overwriting pre-existing data instead of splicing
-    console.log('[updateAthleteActivities] received from Strava', activities)
-    const runs = activities.filter(act => act.type === 'Run').map(
-      ({
-        id,
-        name,
-        distance,
-        elapsed_time,
-        type,
-        start_date,
-        map: { summary_polyline },
-        // athlete: {id},
-        average_speed,
-        start_latitude,
-        start_longitude
-      }) =>
-        ({
-          id,
-          name,
-          distance,
-          elapsed_time,
-          type,
-          start_date,
-          summary_polyline,
-          average_speed,
-          start_latitude,
-          start_longitude
-        }))
-    console.log('[updateAthleteActivities] destructured ', runs)
-    if (activities.length > 0) {
-      state.profile.runs = runs
-    } else {
-      console.warn('[updateAthleteActivities] no runs received from strava')
-    }
-  },
-  updateLatestFetch (state) {
-    state.profile.runningAppAuthentication.strava.latest_fetch = Date.now() / 1000 | 0
   }
 }
 
@@ -228,25 +189,6 @@ export const actions = {
       commit('setStravaDataAccessAuthLoadStatus', 0)
     } else {
       console.info('[acquireStravaRefreshToken] Dont need to acquire anything, token is ', state.profile.runningAppAuthentication.strava.token)
-    }
-  },
-
-  async refreshStravaAccessToken ({ commit, state, getters, dispatch }) {
-    if (getters.hasStravaRefreshToken && !getters.isStravaAccessTokenValid) {
-      const accessPass = await this.$axios({
-        method: 'post',
-        url: this.$config.strava_token_url,
-        baseURL: this.$config.strava_base_url,
-        data: {
-          client_id: this.$config.strava_client_id,
-          client_secret: this.$config.strava_client_secret,
-          grant_type: 'refresh_token',
-          refresh_token: getters.refresh_token
-        }
-      })
-
-      commit('setStravaAccess', accessPass.data)
-      console.log(`[refreshStravaAccessToken] token refreshed, new access_token ${getters.access_token}`)
     }
   },
 
@@ -312,12 +254,6 @@ export const actions = {
       console.error(`[putNewProfile] ${state.profile.id}`)
       throw (error)
     }
-  },
-
-  async fetchAthleteActivity ({ commit, state, getters, dispatch }) {
-    // todo - hardwired from client to strava - refactor this once backend is up and running
-    console.warn('[fetchAthleteActivity] should be removed')
-    await dispatch('loadProfile')
   },
 
   async loadProfile ({ commit, dispatch, state }) {
