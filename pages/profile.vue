@@ -17,17 +17,8 @@ export default {
     const { store } = this.$nuxt.context
     console.info('[profile] dispatching handleUserLogin')
     await store.dispatch('handleUserLogin')
-  },
-  computed: {
-    ...mapGetters(['hasStravaRefreshToken'])
-  },
-  methods: {
-    ...mapState({
-      loggedIn: state => state.auth.loggedIn,
-      profileLoadStatus: state => state.profileLoadStatus
-    })
+    console.info('[profile] user is logged in and profile loaded')
   }
-
 }
 
 </script>

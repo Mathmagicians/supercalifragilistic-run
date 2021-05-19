@@ -42,7 +42,7 @@ export const getters = {
     return (!!state.auth.loggedIn) && (!!state.auth.user) && (!!state.auth.user.picture) ? JSON.parse(state.auth.user.picture).data.url : null
   },
   profileName: (state) => {
-    return state.profile.basic.name
+    return state.profile.basic?.name
   },
   isBasicProfileReady: (state) => {
     return !!state.profile.basic && !!state.profile.basic.gender && !!state.profile.basic.fav && !!state.profile.basic.mail && !!state.profile.basic.name
