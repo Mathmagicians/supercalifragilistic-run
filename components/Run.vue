@@ -5,10 +5,10 @@
         {{ run.name }}
       </h3>
       <h4 class="text-md text-gray-600 font-semibold leading-none mb-3">
-        Stats
+        Your run  {{ run.start_date | timeAgo }}
       </h4>
       <h5 class="text-sm">
-        Average speed {{ run.average_speed }}, Distance {{ (run.distance / 1000).toFixed(2) }} km
+        Average speed {{ (run.average_speed/3.6).toFixed(1) }} km/hour, Distance {{ (run.distance / 1000).toFixed(2) }} km
       </h5>
     </div>
 

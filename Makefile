@@ -119,3 +119,9 @@ strava-activity: #single example activity
 	--header "Authorization: Bearer $(shell cat .strava)" \
 	"$(STRAVA_API)/athlete/activities" \
 	| jq '.[0]'
+
+strava-check:
+	@curl -v -X GET \
+	--header "Authorization: Bearer .." \
+	"$(STRAVA_API)/athlete/activities" \
+	| jq '.'
