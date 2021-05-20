@@ -7,6 +7,10 @@
           Motto: Crush your so-called peer-birds, and be the fastest flamingo in the flock
         </h4>
       </template>
+      <template #info>
+        <p> Challenge started {{ challenge.Start | timeSince }}</p>
+        <p> Challenge ends in {{ challenge.End | timeSince }}</p>
+      </template>
       <template #bottom>
         <Overtaking />
       </template>
@@ -44,7 +48,7 @@
       <tbody class="mx-2 font-medium text-lg">
         <tr v-for="(athlete, key) in challenge.Athletes" :key="athlete.id">
           <td class="text-6xl text-right">
-            {{ key+1 }}
+            {{ key + 1 }}
           </td>
           <td class="text-center px-4">
             {{ athlete.Meta.Fav ? athlete.Meta.Fav : '⁇' }}
@@ -53,7 +57,7 @@
             {{ athlete.Meta.Name ? athlete.Meta.Name : 'name missing' }}
           </td>
           <td class="text-right px-4" :class="athlete.Runs ? 'text-green-600': 'text-red-600'">
-            ️{{ athlete.Runs ? athlete.Runs.length: 0 }}
+            ️{{ athlete.Runs ? athlete.Runs.length : 0 }}
           </td>
           <td class="text-right px-4" :class="athlete.Score.StartBonus ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.StartBonus }}
@@ -62,7 +66,7 @@
             ️{{ athlete.Score.Kilometer.toFixed(1) }}
           </td>
           <td :class="athlete.Score.Stars ? 'text-green-600': 'text-red-600'" class="text-center px-4">
-            {{ athlete.Score.Stars ? athlete.Score.Stars: 'pending' }}
+            {{ athlete.Score.Stars ? athlete.Score.Stars : 'pending' }}
           </td>
           <td class="text-right px-4 text-6xl" :class="athlete.Score.Total ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.Total.toFixed(1) }}
@@ -72,7 +76,10 @@
           </td>
           <td v-else class="text-right text-xs text-gray-400">
             <p>So sorry 🦩 ... </p>
-            <p> Can not show scores for user {{ athlete.Meta.Fav ? athlete.Meta.Fav : '⁇' }} {{ athlete.Meta.Name ? athlete.Meta.Name : 'name missing' }} .</p>
+            <p>
+              Can not show scores for user {{ athlete.Meta.Fav ? athlete.Meta.Fav : '⁇' }}
+              {{ athlete.Meta.Name ? athlete.Meta.Name : 'name missing' }} .
+            </p>
             <p> User needs to authorize data fetch from Strava.</p>
           </td>
         </tr>
