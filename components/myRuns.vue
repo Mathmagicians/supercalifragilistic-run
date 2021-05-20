@@ -8,9 +8,10 @@
     </p>
     <div class="flex flex-col sm:flex-row flex-wrap">
       <run
-        v-for="aRun in runs"
+        v-for="(aRun, key) in runs"
         :key="aRun.id"
         :run="aRun"
+        :number="runs.length - key"
         class="w-1/2"
       />
     </div>

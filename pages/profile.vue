@@ -18,6 +18,7 @@ export default {
     console.info('[profile] dispatching handleUserLogin')
     await store.dispatch('handleUserLogin')
     console.info('[profile] user is logged in and profile loaded')
+    await store.dispatch('challenge/fetchChallenges')
   }
 }
 

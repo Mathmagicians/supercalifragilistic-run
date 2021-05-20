@@ -26,7 +26,8 @@ export default {
     strava_api_root: 'https://www.strava.com/api/v3',
     strava_token_url: '/oauth/token',
     strava_client_id: process.env.strava_client_id,
-    strava_client_secret: process.env.strava_client_secret
+    strava_client_secret: process.env.strava_client_secret,
+    mapbox_url: process.env.mapbox_url
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head

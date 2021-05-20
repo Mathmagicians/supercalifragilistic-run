@@ -22,15 +22,17 @@
 <script>
 import MyRuns from '@/components/myRuns'
 import BasicPageLayout from '@/components/layout-utils/BasicPageLayout'
-import { mapGetters } from 'vuex'
+import HeroButton from '@/components/layout-utils/HeroButton'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'Me',
-  components: { MyRuns, BasicPageLayout },
+  components: { MyRuns, BasicPageLayout, HeroButton },
   async fetch () {
     const { store } = this.$nuxt.context
     console.info('[me] dispatching handleUserLogin')
     await store.dispatch('handleUserLogin')
+    await store.dispatch('challenge/fetchMyChallenge', store.state.profile.my_challenges)
   },
   computed: {
     ...mapGetters(['hasStravaRefreshToken'])
