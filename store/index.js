@@ -48,7 +48,7 @@ export const getters = {
     return !!state.profile.basic && !!state.profile.basic.gender && !!state.profile.basic.fav && !!state.profile.basic.mail && !!state.profile.basic.name
   },
   isChallengeReady: (state) => {
-    return state.profile.challenges && state.profile.stars && length(state.profile.stars) === 3
+    return state.profile.my_challenges?.length
   },
   // strava integration
   canUseStrava: (state, getters) => {

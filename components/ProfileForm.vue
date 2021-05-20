@@ -187,9 +187,32 @@
         You need to join a challenge, and select some stars ⭐️.
       </template>
       <template #bottom>
-        button to join challenge
-        map
-        form fields to pick stars
+        <div
+          v-for="c in challenges"
+          :key="c.ID"
+          class="rounded-lg flex flex-row items-center shadow-xl"
+          :class="joined(c.ID)?'border-green-400 text-green-600':'border-gray-400 text-gray-400'"
+        >
+          <div v-if="joined(c.ID)" class="center px-4">
+            <CheckCircleIcon size="4x" class="text-current" />
+            <h3 class="text-gray-600 text-lg">
+              Yay, you are participating in this challenge {{ fav }} !!
+            </h3>
+            <nuxt-link to="/challenge">
+              <HeroButton>🦩 Check your position</HeroButton>
+            </nuxt-link>
+          </div>
+          <div v-else>
+            Contact admin to join this challenge...
+          </div>
+          <div class="border-gray-200 border-l-2 px-2">
+            <h1 class="text-gray-600 text-xl font-semibold text-center">
+              {{ c.Name }}
+            </h1>
+            <h2>Start: {{ c.Start | timeSince }}</h2>
+            <h2>End: {{ c.End | timeSince }}</h2>
+          </div>
+        </div>
       </template>
     </side-by-side-text-picture-card>
   </div>
@@ -197,16 +220,18 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import { CheckCircleIcon } from '@vue-hero-icons/outline'
 import PageSectionTitle from './layout-utils/PageSectionTitle'
 import FormRow from './layout-utils/FormRow'
 import SideBySideTextPictureCard from './layout-utils/SideBySideTextPictureCard'
+import HeroButton from './layout-utils/HeroButton'
 import UserAvatar from './layout-utils/UserAvatar'
 import StravaIntegationIndicator from './StravaIntegationIndicator'
 import Gender from '~/assets/What-sex.svg?inline'
 
 export default {
   name: 'ProfileForm',
-  components: { StravaIntegationIndicator, UserAvatar, FormRow, PageSectionTitle, Gender, SideBySideTextPictureCard },
+  components: { StravaIntegationIndicator, UserAvatar, FormRow, PageSectionTitle, Gender, SideBySideTextPictureCard, CheckCircleIcon, HeroButton },
   data () {
     return {
       userId: null,
@@ -220,7 +245,9 @@ export default {
       email: state => state.profile.basic.mail,
       name: state => state.profile.basic.name,
       healthy: state => state.profile.basic.healthy,
-      fav: state => state.profile.basic.fav
+      fav: state => state.profile.basic.fav,
+      challenges: state => state.challenge.challenges,
+      myChallenges: state => state.profile.my_challenges
     }),
     ...mapGetters([
       'profileImageUri', 'canUseStrava', 'isBasicProfileReady', 'isChallengeReady'
@@ -240,6 +267,9 @@ export default {
     },
     changeMail (e) {
       this.updateMail(e.target.value)
+    },
+    joined (chid) {
+      return this.myChallenges.includes(chid)
     }
   }
 

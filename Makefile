@@ -59,6 +59,7 @@ check: .env-local
 	@$(MAKE) query-jq query="\"facebook_app_url\""
 	@$(MAKE) query-jq query="\"strava_client_id\""
 	@$(MAKE) query-jq query="\"strava_client_secret\""
+	@$(MAKE) query-jq query="\"mapbox_url\""
 	@$(MAKE) git-commit
 	@rm .query-tf-output.JSON
 

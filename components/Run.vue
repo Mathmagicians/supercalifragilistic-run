@@ -1,14 +1,27 @@
 <template>
   <div class="m-4 b-2 rounded-lg border-gray-200 p-4 flex flex-col items-center">
     <div id="title" class="border-t-2 border-pink-400 mt-4 lg:m-t-8 h-32 flex flex-row p-2 ">
-      <div v-for="s in stats" :key="s.title" class="border-r-2 text-pink-600 border-gray-100 px-2 flex flex-col align-baseline">
+      <div>
+        <h2 class="font-extrabold text-8xl font-bold leading-tight text-gray-600 px-8">
+          {{ number }}
+        </h2>
+      </div>
+      <div
+        v-for="s in stats"
+        :key="s.title"
+        class="border-r-2 text-pink-600 border-gray-100 px-2 flex flex-col align-baseline"
+      >
         <component
           :is="s.icon"
           size="2.5x"
           class="text-current"
         />
-        <span v-if="s.title!=='When'" class="mt-4 text-lg text-gray-600">{{ s.value }}<span class="text-sm text-gray-400 px-1">{{ s.unit }}</span></span>
-        <span v-if="s.title==='When'" class="mt-4 text-lg text-gray-600"> {{ run.start_date | dateSince }}<span class="text-sm text-gray-400 px-1">{{ s.unit }}</span></span>
+        <span v-if="s.title!=='When'" class="mt-4 text-lg text-gray-600">{{ s.value }}<span
+          class="text-sm text-gray-400 px-1"
+        >{{ s.unit }}</span></span>
+        <span v-if="s.title==='When'" class="mt-4 text-lg text-gray-600"> {{ run.start_date | dateSince }}<span
+          class="text-sm text-gray-400 px-1"
+        >{{ s.unit }}</span></span>
         <span class="mt-2 text-xs text-gray-400">{{ s.title }}</span>
       </div>
     </div>
@@ -21,14 +34,21 @@
             :attribution="attribution"
           />
           <l-marker
-            :lat-lng="star"
+            v-for="s in stars"
+            :key="s.ID"
+            :lat-lng="[s.Lat, s.Lang]"
             :icon="icon"
           >
             <l-popup>
-              <p>Hello, this is a star ⭐created by 🥦 ️</p>
-              <p>{{ center }}</p>
+              <h1>{{ s.Name }}️</h1>
+              <p>({{ s.Lat }}, {{ s.Lang }})</p>
+              <p>{{ s.Description }}</p>
             </l-popup>
           </l-marker>
+          <l-marker
+            :lat-lng="center"
+            :icon="runnerIcon"
+          />
           <l-polyline :lat-lngs="polyline.latlngs" :color="polyline.color" />
         </l-map>
       </client-only>
@@ -38,6 +58,8 @@
 
 <script>
 import { StarIcon, MapIcon, ClockIcon, CalendarIcon, LightningBoltIcon } from '@vue-hero-icons/outline'
+import { mapState } from 'vuex'
+
 const polyUtil = require('polyline-encoded')
 
 export default {
@@ -47,14 +69,19 @@ export default {
     run: {
       type: Object,
       default: null
+    },
+    number: {
+      type: Number,
+      default: 1
     }
   },
   data () {
     return {
-      attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors |',
+      attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> | © <a href="https://www.mapbox.com/about/maps/">MapBox</a>',
       worldsNavel: [55.67644, 12.56824],
-      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      url: this.$config.mapbox_url,
       icon: null,
+      runnerIcon: null,
       polyline: {
         latlngs: [],
         color: 'DeepPink'
@@ -97,7 +124,7 @@ export default {
         {
           title: 'Distance',
           unit: 'km',
-          value: this.run.distance,
+          value: (this.run.distance / 1000).toFixed(1),
           icon: 'MapIcon'
         },
         {
@@ -107,7 +134,11 @@ export default {
           icon: 'StarIcon'
         }
       ]
-    }
+    },
+    ...mapState({
+      fav: state => state.profile.basic.fav,
+      stars: state => state.challenge.myChallenge.Stars
+    })
   },
   methods: {
 
@@ -117,8 +148,21 @@ export default {
     },
 
     setIconStyles () {
-      this.icon = this.$L.icon({
-        iconUrl: require('~/assets/bw_star_marker.png')
+      // const iconsvg = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><text y="0.9em" font-size="90">⭐️</text></svg>'
+      // this.icon = this.$L.icon({
+      // iconUrl: require('~/assets/bw_star_marker.png')
+      //  html: '⭐️',
+      // iconUrl: 'data:image/svg+xml;base64,' + btoa(iconsvg)
+
+      // })
+      const starHtml = '<h1 style="font-size: 25px">⭐️</h1>'
+      const favHtml = `<h1 style="font-size: 75px">${this.fav}</h1>`
+      this.icon = this.$L.divIcon({ iconSize: [64, 64], iconAnchor: [32, 32 + 9], html: starHtml, className: 'mymarker' })
+      this.runnerIcon = this.$L.divIcon({
+        iconSize: [64, 64],
+        iconAnchor: [32, 32 + 9],
+        html: favHtml,
+        className: 'mymarker'
       })
     },
     decode () {
@@ -133,5 +177,7 @@ export default {
 </script>
 
 <style scoped>
-
+.mymarker {
+  font-size: 75px;
+}
 </style>
