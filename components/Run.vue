@@ -1,32 +1,32 @@
 <template>
-  <div class="m-4 b-2 rounded-lg border-gray-200 p-4 flex flex-col items-center">
+  <div class="mt-6 mb-8 sm:mt-12 b-2 rounded-lg border-gray-200 p-4 flex flex-col items-center w-full">
     <div id="title" class="border-t-2 border-pink-400 mt-4 lg:m-t-8 h-32 flex flex-row p-2 ">
       <div>
-        <h2 class="font-extrabold text-8xl font-bold leading-tight text-gray-600 px-8">
+        <h2 class="font-bold sm:font-extrabold text-4xl sm:text-8xl font-bold leading-tight text-gray-600 px-8">
           {{ number }}
         </h2>
       </div>
       <div
         v-for="s in stats"
         :key="s.title"
-        class="border-r-2 text-pink-600 border-gray-100 px-2 flex flex-col align-baseline"
+        class="border-r-2 text-pink-600 border-gray-100 px-1 sm:px-2 flex flex-col align-bottom"
       >
         <component
           :is="s.icon"
-          size="2.5x"
+          size="2x"
           class="text-current"
         />
-        <span v-if="s.title!=='When'" class="mt-4 text-lg text-gray-600">{{ s.value }}<span
+        <span v-if="s.title!=='When'" class="mt-4 text-md sm:text-lg text-gray-600">{{ s.value }}<span
           class="text-sm text-gray-400 px-1"
         >{{ s.unit }}</span></span>
-        <span v-if="s.title==='When'" class="mt-4 text-lg text-gray-600"> {{ run.start_date | dateSince }}<span
+        <span v-if="s.title==='When'" class="mt-4 text-md sm:text-lg text-gray-600"> {{ run.start_date | dateSince }}<span
           class="text-sm text-gray-400 px-1"
         >{{ s.unit }}</span></span>
         <span class="mt-2 text-xs text-gray-400">{{ s.title }}</span>
       </div>
     </div>
 
-    <div id="map-wrap" style="height: 30vw; width: 40vw; overflow: hidden;">
+    <div id="map-wrap" style="height: 50vw; width: 80vw; overflow: hidden;">
       <client-only>
         <l-map :zoom="14" :center="center" @ready="initMap">
           <l-tile-layer
@@ -155,12 +155,12 @@ export default {
       // iconUrl: 'data:image/svg+xml;base64,' + btoa(iconsvg)
 
       // })
-      const starHtml = '<h1 style="font-size: 25px">⭐️</h1>'
+      const starHtml = '<h1 style="font-size: 35px">⭐️</h1>'
       const favHtml = `<h1 style="font-size: 75px">${this.fav}</h1>`
-      this.icon = this.$L.divIcon({ iconSize: [64, 64], iconAnchor: [32, 32 + 9], html: starHtml, className: 'mymarker' })
+      this.icon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: starHtml, className: 'mymarker' })
       this.runnerIcon = this.$L.divIcon({
-        iconSize: [64, 64],
-        iconAnchor: [32, 32 + 9],
+        iconSize: [32, 32],
+        iconAnchor: [16, 16 + 9],
         html: favHtml,
         className: 'mymarker'
       })
