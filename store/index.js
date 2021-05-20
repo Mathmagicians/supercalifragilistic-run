@@ -109,6 +109,8 @@ export const mutations = {
   },
   setProfile (state, profile) {
     state.profile = { ...profile }
+    console.log('Runs before:', state.profile.runs)
+    state.profile.runs = state.profile.runs.reverse()
   },
   setProfileName (state, name) {
     state.profile.basic.name = name
