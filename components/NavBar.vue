@@ -62,11 +62,11 @@
           :key="item.link"
         >
           <nav-bar-item
-            class="hover:border-b-8 transform transition hover:text-underline hover:scale-105 hover:-rotate-6 duration-300 ease-in-out"
+            class="hover:border-b-8 transform transition hover:scale-105 hover:-rotate-6 duration-300 ease-in-out"
             :class="changeColor?'text-pink-400 hover:border-pink-400':'text-white hover:border-white'"
             :link="item.link"
           >
-            {{ item.text }}
+            <span class="whitespace-nowrap">{{ item.text }}</span>
           </nav-bar-item>
         </li>
       </ul>
@@ -112,8 +112,7 @@
             v-for="item in dropDownLoggedInItems"
             :key="item.link"
             :link="item.link"
-            class="block px-4 py-2 hover:border-pink-400
-              hover:border-b-8 transform transition hover:text-underline hover:scale-105 hover:-rotate-6 duration-300 ease-in-out"
+            :class="! item.action ? 'px-4 py-2 hover:border-pink-400 hover:border-b-8 transform transition hover:scale-105 hover:-rotate-6 duration-300 ease-in-out':''"
           >
             <hero-button v-if="item.action" @click="handleFunctionCall(item.action)">
               {{ item.text }}
@@ -175,7 +174,7 @@ export default {
       scrollPosition: null,
       menuItems: [
         { link: '/challenge', text: 'Challenge' },
-        { link: '/profile', text: 'Profile' },
+        { link: '/me', text: 'My Runs' },
         { link: '/engineering', text: 'Engineering' },
         { link: '/about', text: 'Rules' }
       ],

@@ -1,18 +1,19 @@
 <template>
-  <div class="my-4">
-    <div id="title" class="border-t-2 mt-4 lg:m-t-8">
-      <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3 py-4">
-        {{ run.name }}
-      </h3>
-      <h4 class="text-md text-gray-600 font-semibold leading-none mb-3">
-        Stats
-      </h4>
-      <h5 class="text-sm">
-        Average speed {{ run.average_speed }}, Distance {{ (run.distance / 1000).toFixed(2) }} km
-      </h5>
+  <div class="m-4 b-2 rounded-lg border-gray-200 p-4 flex flex-col items-center">
+    <div id="title" class="border-t-2 border-pink-400 mt-4 lg:m-t-8 h-32 flex flex-row p-2 ">
+      <div v-for="s in stats" :key="s.title" class="border-r-2 text-pink-600 border-gray-100 px-2 flex flex-col align-baseline">
+        <component
+          :is="s.icon"
+          size="2.5x"
+          class="text-current"
+        />
+        <span v-if="s.title!=='When'" class="mt-4 text-lg text-gray-600">{{ s.value }}<span class="text-sm text-gray-400 px-1">{{ s.unit }}</span></span>
+        <span v-if="s.title==='When'" class="mt-4 text-lg text-gray-600"> {{ run.start_date | dateSince }}<span class="text-sm text-gray-400 px-1">{{ s.unit }}</span></span>
+        <span class="mt-2 text-xs text-gray-400">{{ s.title }}</span>
+      </div>
     </div>
 
-    <div id="map-wrap" style="height: 60vw; width: 80vw; overflow: auto;">
+    <div id="map-wrap" style="height: 30vw; width: 40vw; overflow: hidden;">
       <client-only>
         <l-map :zoom="14" :center="center" @ready="initMap">
           <l-tile-layer
@@ -36,11 +37,12 @@
 </template>
 
 <script>
-
+import { StarIcon, MapIcon, ClockIcon, CalendarIcon, LightningBoltIcon } from '@vue-hero-icons/outline'
 const polyUtil = require('polyline-encoded')
 
 export default {
   name: 'Run',
+  components: { StarIcon, MapIcon, ClockIcon, CalendarIcon, LightningBoltIcon },
   props: {
     run: {
       type: Object,
@@ -65,6 +67,46 @@ export default {
     },
     center () {
       return this.run ? [this.run.start_latitude, this.run.start_longitude] : this.worldsNavel
+    },
+    stats () {
+      return [
+        {
+          title: 'Your went running',
+          unit: '',
+          value: this.run.name,
+          icon: 'LightningBoltIcon'
+        },
+        {
+          title: 'When',
+          unit: '',
+          value: '',
+          icon: 'CalendarIcon'
+        },
+        {
+          title: 'Average speed',
+          unit: 'km/h',
+          value: (this.run.average_speed * 3.6).toFixed(1),
+          icon: 'ClockIcon'
+        },
+        {
+          title: 'Pace',
+          unit: 'min/km',
+          value: (100 / (6 * this.run.average_speed)).toFixed(1),
+          icon: 'ClockIcon'
+        },
+        {
+          title: 'Distance',
+          unit: 'km',
+          value: this.run.distance,
+          icon: 'MapIcon'
+        },
+        {
+          title: 'Stars',
+          unit: '',
+          value: 12,
+          icon: 'StarIcon'
+        }
+      ]
     }
   },
   methods: {

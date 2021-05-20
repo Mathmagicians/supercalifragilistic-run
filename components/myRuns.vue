@@ -1,24 +1,18 @@
 <template>
-  <div
-    class="
-      w-full
-      overflow-hidden"
-  >
-    <h1 v-if="$fetchState.pending">
-      Getting runs from Strava
-    </h1>
-    <div v-if="!$fetchState.pending ">
-      <page-section-title>
-        Your runs
-      </page-section-title>
-      <p class="text-xs text-gray-400">
-        Data fetched at {{ new Date( latest_fetch*1000).toISOString() }}
-      </p>
-      <ul>
-        <li v-for="aRun in myRuns" :key="aRun.id">
-          <run :run="aRun" />
-        </li>
-      </ul>
+  <div class="w-full ">
+    <page-section-title>
+      Your runs
+    </page-section-title>
+    <p class="text-xs text-gray-400">
+      Data fetched {{ latest_fetch| timeSince }}
+    </p>
+    <div class="flex flex-col sm:flex-row flex-wrap">
+      <run
+        v-for="aRun in runs"
+        :key="aRun.id"
+        :run="aRun"
+        class="w-1/2"
+      />
     </div>
   </div>
 </template>
@@ -30,17 +24,6 @@ import PageSectionTitle from './layout-utils/PageSectionTitle'
 export default {
   name: 'MyRuns',
   components: { PageSectionTitle },
-
-  data () {
-    return {
-      myRuns: []
-    }
-  },
-  async fetch () {
-    const { store, error } = this.$nuxt.context
-    await store.dispatch('fetchAthleteActivity')
-    this.myRuns = store.state.profile.runs
-  },
   computed: {
     ...mapGetters(['runs', 'latest_fetch'])
   }
