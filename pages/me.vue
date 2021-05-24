@@ -32,7 +32,6 @@ export default {
     const { store } = this.$nuxt.context
     console.info('[me] dispatching handleUserLogin')
     await store.dispatch('handleUserLogin')
-    await store.dispatch('challenge/fetchMyChallenge', store.state.profile.my_challenges)
   },
   computed: {
     ...mapGetters(['hasStravaRefreshToken'])
