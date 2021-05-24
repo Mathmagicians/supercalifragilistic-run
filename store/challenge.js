@@ -16,28 +16,6 @@ export const mutations = {
 
   setChallenges (state, challenges) {
     state.challenges = [...challenges]
-  },
-  setAthletes (state, myChallenge) {
-    const filterRunsOver3Km = r => r >= 3000.0
-    const runCountReducer = (acc, r) => acc + 1
-    const distanceCountReducer = (acc, r) => acc + r
-    // we want reverse order
-    const compareByTotalScore = (a, b) => b.Score.Total - a.Score.Total
-
-    const athletes = myChallenge.Athletes
-    console.log(`[computeInterimScores] received data for ${athletes?.length} athletes`)
-
-    athletes.forEach((a) => {
-      console.log(`[computeInterimScores] about to compute scores for athlete ${a.ProfileId}`)
-      a.Score.StartBonus = 3 * (a.Runs ? a.Runs.map(r => r.distance).filter(filterRunsOver3Km).reduce(runCountReducer, 0) : 0)
-      a.Score.Kilometer = (a.Runs ? a.Runs.map(r => r.distance).filter(filterRunsOver3Km).reduce(distanceCountReducer, 0) : 0) / 1000
-
-      a.Score.Total = a.Score.StartBonus + a.Score.Kilometer
-      console.log(`[computeInterimScores] interim computation of scores for athlete ${a.id}:`, a.Score.Total)
-    })
-    athletes.sort(compareByTotalScore)
-    console.log('[computeInterimScores] sorted data')
-    state.myChallenge.Athletes = [...athletes]
   }
 }
 
@@ -56,7 +34,6 @@ export const actions = {
       })
       console.log('[FetchMyChallenge] received data from server')
       commit('setMyChallenge', get.data)
-      commit('setAthletes', get.data)
       console.log('[FetchMyChallenge] Challenge data fetched for athlete')
     } catch (error) {
       // if status code is 404 return as value

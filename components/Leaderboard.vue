@@ -15,63 +15,101 @@
         <Overtaking />
       </template>
     </side-by-side-text-picture-card>
-    <table class="table-auto border-collapse border-t-4 border-b-4 border-pink-400 text-gray-700 w-full">
-      <thead class="font-semibold text-md sm:text-xl px-2 py-4 border-b-2 mx-2">
+    <table class="table table-auto border-collapse border-t-4 border-b-4 border-pink-400 text-gray-700 w-full">
+      <thead class="text-md sm:text-xl px-2 py-4 mx-2 text-current text-center text-pink-600">
         <th>
-          Position
-        </th>
-        <th>
-          Fav
-        </th>
-        <th class="border-r-2 sm:border-none">
-          Name
+          <ClipboardListIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
         <th>
-          Runs
+          <UserIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
         <th>
-          Bonus
+          <CalendarIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
-        <th class="break-words sm:break-normal mx-2">
-          Kilometers
+        <th>
+          <MapIcon size="1.5x" class="text-pink-600 inline-block" />
+        </th>
+        <th class="border-r-2 border-pink-400 w-1/12">
+          <StarIcon size="1.5x" class="text-pink-600 inline-block" />
+        </th>
+        <th class="break-words sm:break-normal mx-2 w-1/12">
+          Km
         </th>
         <th>
           Stars
         </th>
-        <th class="border-r-2 border-l-2 sm:border-none">
-          Score
+        <th>
+          Starts
+        </th>
+        <th class="border-r-2 border-l-2 sm:border-none w-1/8">
+          <CalculatorIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
         <th>
-          Latest Data Sync
+          <CloudDownloadIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
       </thead>
-      <tbody class="mx-2 font-medium text-sm">
-        <tr v-for="(athlete, key) in challenge.Athletes" :key="athlete.id">
-          <td class="text-2xl sm:text-6xl text-right">
+      <thead class="font-extralight text-xs sm:text-sm px-1 py-1 border-b-2 mx-2 text-gray-400 whitespace-normal text-center">
+        <th>
+          Position
+        </th>
+        <th>
+          Athlete
+        </th>
+        <th>
+          Run Days
+        </th>
+        <th>
+          Distance
+        </th>
+        <th class="border-r-2 border-pink-400 ">
+          Stars
+        </th>
+        <th>
+          Km Bonus
+        </th>
+        <th>
+          Star Bonus
+        </th>
+        <th>
+          Start Bonus
+        </th>
+        <th>
+          Total
+        </th>
+        <th>
+          Sync
+        </th>
+      </thead>
+      <tbody class="mx-2 font-medium text-sm sm:text-lg">
+        <tr v-for="(athlete, key) in challenge.Athletes" :key="athlete.id" class="table-row">
+          <td class="text-2xl sm:text-6xl text-right table-cell">
             {{ key + 1 }}
           </td>
-          <td class="text-center px-2 sm:px-4 text-lg sm:text-md">
-            {{ athlete.Meta.Fav ? athlete.Meta.Fav : '⁇' }}
+          <td class="text-center px-2 sm:px-4 text-lg sm:text-md table-cell">
+            {{ athlete.Meta.Fav ? athlete.Meta.Fav : '⁇' }} {{ athlete.Meta.Name ? athlete.Meta.Name : 'name missing' }}
           </td>
-          <td class="text-center px-2 sm:px-4 border-r-2 sm:border-none">
-            {{ athlete.Meta.Name ? athlete.Meta.Name : 'name missing' }}
+          <td class="text-center px-2 sm:px-4 border-r-2 sm:border-none text-lg">
+            {{ athlete.Score.RunDays }}
           </td>
-          <td class="text-right px-2 sm:px-4" :class="athlete.Runs ? 'text-green-600': 'text-red-600'">
-            ️{{ athlete.Runs ? athlete.Runs.length : 0 }}
+          <td class="text-right px-2 sm:px-4" :class="athlete.Score.KmsTotal ? 'text-green-600': 'text-red-600'">
+            ️{{ athlete.Score.KmsTotal.toFixed(1) }}
           </td>
-          <td class="text-right px-2 sm:px-4" :class="athlete.Score.StartBonus ? 'text-green-600': 'text-red-600'">
-            ️{{ athlete.Score.StartBonus }}
+          <td class="text-right px-2 sm:px-4 border-r-2 border-pink-400 text-lg" :class="athlete.Score.StarsCollected ? 'text-green-600': 'text-red-600'">
+            ️{{ athlete.Score.StarsCollected }}
           </td>
-          <td class="text-right px-2 sm:px-4" :class="athlete.Score.Kilometer ? 'text-green-600': 'text-red-600'">
-            ️{{ athlete.Score.Kilometer.toFixed(1) }}
+          <td class="text-right px-2 sm:px-4 text-lg" :class="athlete.Score.KmsTotal ? 'text-green-600': 'text-red-600'">
+            ️{{ athlete.Score.KilometerBonus.toFixed(1) }}
           </td>
-          <td :class="athlete.Score.Stars ? 'text-green-600': 'text-red-600'" class="text-center px-2 sm:px-4">
-            {{ athlete.Score.Stars ? athlete.Score.Stars : 'pending' }}
+          <td :class="athlete.Score.StarsCollected ? 'text-green-600': 'text-red-600'" class="text-right px-2 sm:px-4 text-lg">
+            {{ athlete.Score.StarBonus }}
           </td>
-          <td class="text-right px-2 sm:px-4 text-2xl sm:text-6xl border-l-2 border-r-2 sm:border-none" :class="athlete.Score.Total ? 'text-green-600': 'text-red-600'">
+          <td :class="athlete.Score.RunDays ? 'text-green-600': 'text-red-600'" class="text-right px-2 sm:px-4 text-lg">
+            {{ athlete.Score.StartBonus }}
+          </td>
+          <td class="text-right px-2 sm:px-4 text-2xl sm:text-6xl border-l-2 border-r-2 sm:border-none" :class="athlete.Score.RunDays ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.Total.toFixed(1) }}
           </td>
-          <td v-if="athlete.Meta.RapStatus" class="text-right text-sm text-gray-400">
+          <td v-if="athlete.Meta.RapStatus" class="text-right text-xs text-gray-400">
             {{ athlete.Meta.LatestFetch | timeSince }}
           </td>
           <td v-else class="text-right text-xs text-gray-400">
@@ -79,28 +117,25 @@
               So sorry 🦩 ...
             </p>
             <p class="hidden sm:block">
-              Can not show scores for user {{ athlete.Meta.Fav ? athlete.Meta.Fav : '⁇' }}
-              {{ athlete.Meta.Name ? athlete.Meta.Name : 'name missing' }} .
+              Can not show scores
             </p>
-            <p> User needs to authorize data fetch from Strava.</p>
+            <p>Strava not authorized</p>
           </td>
         </tr>
       </tbody>
     </table>
-    <div class="flex flex-col">
-      <leader-entry v-for="athlete in challenge.Athletes" :key="athlete.id" :athlete="athlete" />
-    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import { StarIcon, MapIcon, CalendarIcon, LightningBoltIcon, UserIcon, CloudDownloadIcon, CalculatorIcon, ClipboardListIcon } from '@vue-hero-icons/outline'
 import SideBySideTextPictureCard from './layout-utils/SideBySideTextPictureCard'
 import Overtaking from '~/assets/Overtaking.svg?inline'
 
 export default {
   name: 'Leaderboard',
-  components: { SideBySideTextPictureCard, Overtaking },
+  components: { SideBySideTextPictureCard, Overtaking, StarIcon, MapIcon, CalendarIcon, UserIcon, CloudDownloadIcon, CalculatorIcon, ClipboardListIcon },
   computed: {
     ...mapGetters({
       athletes: 'challenge/getAthletes',
