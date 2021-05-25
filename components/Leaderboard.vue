@@ -29,10 +29,10 @@
         <th>
           <MapIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
-        <th class="border-r-2 border-pink-400 w-1/12">
+        <th class="border-r-2 border-gray-200">
           <StarIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
-        <th class="break-words sm:break-normal mx-2 w-1/12">
+        <th class="break-words sm:break-normal mx-2 ">
           Km
         </th>
         <th>
@@ -41,7 +41,7 @@
         <th>
           Starts
         </th>
-        <th class="border-r-2 border-l-2 sm:border-none w-1/8">
+        <th class="border-r-2 border-l-2 sm:border-none">
           <CalculatorIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
         <th>
@@ -61,7 +61,7 @@
         <th>
           Distance
         </th>
-        <th class="border-r-2 border-pink-400 ">
+        <th class="border-r-2 border-gray-200 ">
           Stars
         </th>
         <th>
@@ -94,7 +94,7 @@
           <td class="text-right px-2 sm:px-4" :class="athlete.Score.KmsTotal ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.KmsTotal.toFixed(1) }}
           </td>
-          <td class="text-right px-2 sm:px-4 border-r-2 border-pink-400 text-lg" :class="athlete.Score.StarsCollected ? 'text-green-600': 'text-red-600'">
+          <td class="text-right px-2 sm:px-4 border-r-2 border-gray-200 text-lg" :class="athlete.Score.StarsCollected ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.StarsCollected }}
           </td>
           <td class="text-right px-2 sm:px-4 text-lg" :class="athlete.Score.KmsTotal ? 'text-green-600': 'text-red-600'">
