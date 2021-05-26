@@ -3,7 +3,8 @@
     <div id="title" class="border-t-2 border-pink-400 mt-4 lg:m-t-8 h-32 flex flex-row p-2 ">
       <div>
         <h2 class="font-bold sm:font-extrabold text-4xl sm:text-8xl font-bold leading-tight text-gray-600 px-8">
-          {{ number }}
+          {{ number[0] }}
+          <span v-if="number[1]>1" class="text-sm text-gray-400">/{{ number[1] }}</span>
         </h2>
       </div>
       <div
@@ -53,6 +54,11 @@
         </l-map>
       </client-only>
     </div>
+    <ul>
+      <li v-for="sv in starVisits" :key="sv.StarId+sv.RunId">
+        ⭐ You found a star at {{ sv.StarName }} <span class="text-xs text-gray-400">({{ sv.StarId }})</span>. Flyby distance was {{ (sv.Distance*1000).toFixed(0) }} m.
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -71,8 +77,16 @@ export default {
       default: null
     },
     number: {
-      type: Number,
-      default: 1
+      type: Array,
+      required: true
+    },
+    starVisits: {
+      type: Array,
+      required: true
+    },
+    runValue: {
+      type: Object,
+      required: true
     }
   },
   data () {
@@ -130,7 +144,7 @@ export default {
         {
           title: 'Stars',
           unit: '',
-          value: 12,
+          value: this.runValue.NewStars,
           icon: 'StarIcon'
         }
       ]
