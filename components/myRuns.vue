@@ -10,9 +10,9 @@
     <div class="flex flex-col sm:flex-row flex-wrap">
       <div v-for="(e, k) in myAthlete.Events" :key="e.Date">
         <div class="bg-gray-900 text-white text-3xl my-4 text-current p-overflow-hidden">
-          <h2 class="p-2">
+          <h2 class="p-2 text-center">
             <CalendarIcon size="1.5x" class="inline-block" /> Run Day {{ myAthlete.Events.length - k }} ✨ {{ e.Date }}
-            ✨  <LightningBoltIcon class="inline-block" /> Runs {{ e.Runs.length }}
+            ✨  <LightningBoltIcon size="1.5x" class="inline-block" /> Runs {{ e.Runs.length }}
             ✨ <CalculatorIcon size="1.5x" class="inline-block" />
             Score {{ (e.Score.Total).toFixed(0) }}
             ✨ <MapIcon size="1.5x" class="inline-block" />
