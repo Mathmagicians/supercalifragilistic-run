@@ -87,6 +87,10 @@ export default {
     runValue: {
       type: Object,
       required: true
+    },
+    fav: {
+      type: String,
+      required: true
     }
   },
   data () {
@@ -149,9 +153,6 @@ export default {
         }
       ]
     },
-    ...mapState({
-      fav: state => state.profile.basic.fav
-    }),
     ...mapGetters({
       stars: 'challenge/getStars'
     })
