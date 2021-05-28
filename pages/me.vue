@@ -1,6 +1,6 @@
 <template>
   <basic-page-layout title="My Runs">
-    <my-runs v-if="!$fetchState.pending && hasStravaRefreshToken" />
+    <my-runs v-if="!$fetchState.pending && hasStravaRefreshToken" :my-athlete="myAthlete" />
     <div v-if="$fetchState.pending">
       Wait while we load data ...
     </div>
@@ -33,7 +33,7 @@ export default {
     console.info('[me] dispatching handleUserLogin')
     await store.dispatch('handleUserLogin')
     await store.dispatch('challenge/fetchMyAthlete', { athlete: store.state.profile.id, challenges: store.state.profile.my_challenges })
-    await store.dispatch('challenge/fetchMyChallenge', store.state.profile.my_challenges)
+    await store.dispatch('challenge/fetchStars', store.state.profile.my_challenges)
   },
   computed: {
     ...mapGetters({

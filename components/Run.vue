@@ -64,7 +64,7 @@
 
 <script>
 import { StarIcon, MapIcon, ClockIcon, CalendarIcon, LightningBoltIcon } from '@vue-hero-icons/outline'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 const polyUtil = require('polyline-encoded')
 
@@ -150,8 +150,10 @@ export default {
       ]
     },
     ...mapState({
-      fav: state => state.profile.basic.fav,
-      stars: state => state.challenge.myChallenge.Stars
+      fav: state => state.profile.basic.fav
+    }),
+    ...mapGetters({
+      stars: 'challenge/getStars'
     })
   },
   methods: {

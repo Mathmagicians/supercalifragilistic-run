@@ -8,6 +8,7 @@ export const state = () => ({
 export const getters = {
   getAthletes: (state) => { return state.myChallenge.Athletes },
   getMyChallenge: (state) => { return state.myChallenge },
+  getStars: (state) => { return state.myChallenge?.Stars },
   getMyAthlete: (state) => { return state.myAthlete },
   getAthletePosition: state => (id) => {
     const matchId = athlete => athlete.ProfileId === id
@@ -89,6 +90,12 @@ export const actions = {
         console.error('[fetchChallenge] : Cant communicate with backend')
         throw (error)
       }
+    }
+  },
+
+  async fetchStars ({ getters, dispatch }) {
+    if (!getters.getStars) {
+      await dispatch('fetchMyChallenge')
     }
   },
 
