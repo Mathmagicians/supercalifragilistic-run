@@ -44,6 +44,7 @@
             :run-value="aRun.RunValue"
             :fav="myAthlete.Meta.Fav"
             :number="[myAthlete.Events.length - k, e.Runs.length - j]"
+            :fav="myAthlete.Meta.Fav"
           />
         </div>
       </div>
@@ -52,9 +53,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { StarIcon, MapIcon, CalendarIcon, LightningBoltIcon, UserIcon, CloudDownloadIcon, CalculatorIcon, ChevronRightIcon, ChevronDownIcon } from '@vue-hero-icons/outline'
-import HeroButton from '@/components/layout-utils/HeroButton'
 import PageSectionTitle from './layout-utils/PageSectionTitle'
 
 export default {

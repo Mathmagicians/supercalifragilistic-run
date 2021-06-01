@@ -29,7 +29,7 @@
 
     <div id="map-wrap" style="height: 50vw; width: 80vw; overflow: hidden;">
       <client-only>
-        <l-map :zoom="14" :center="center" @ready="initMap">
+        <l-map :zoom="zoom" :center="center" :min-zoom="8" @ready="initMap">
           <l-tile-layer
             :url="url"
             :attribution="attribution"
@@ -38,7 +38,7 @@
             v-for="s in stars"
             :key="s.ID"
             :lat-lng="[s.Lat, s.Lang]"
-            :icon="icon"
+            :icon="starStatusIcon(s.ID)"
           >
             <l-popup>
               <h1>{{ s.Name }}️</h1>
@@ -55,8 +55,12 @@
       </client-only>
     </div>
     <ul>
+      <li v-if="starVisits && starVisits.length>0" class="font-semibold capitalize">
+        Visited stars
+      </li>
       <li v-for="sv in starVisits" :key="sv.StarId+sv.RunId">
-        ⭐ You found a star at {{ sv.StarName }} <span class="text-xs text-gray-400">({{ sv.StarId }})</span>. Flyby distance was {{ (sv.Distance*1000).toFixed(0) }} m.
+        <span :class="sv.FirstTime?'text-pink-600':'text-green-600'">★</span> You found a <span v-if="sv.FirstTime" class="text-pink-600">NEW </span> star at {{ sv.StarName }} <span class="text-xs text-gray-400">({{ sv.StarId }})</span>. Flyby distance was {{ (sv.Distance*1000).toFixed(0) }} m.
+        <span v-if="!sv.FirstTime" class="text-gray-400">You have been here before, so no extra points 🦩</span>
       </li>
     </ul>
   </div>
@@ -82,7 +86,7 @@ export default {
     },
     starVisits: {
       type: Array,
-      required: true
+      default: () => []
     },
     runValue: {
       type: Object,
@@ -98,7 +102,9 @@ export default {
       attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> | © <a href="https://www.mapbox.com/about/maps/">MapBox</a>',
       worldsNavel: [55.67644, 12.56824],
       url: this.$config.mapbox_url,
-      icon: null,
+      starIcon: null,
+      newStarIcon: null,
+      revisitIcon: null,
       runnerIcon: null,
       polyline: {
         latlngs: [],
@@ -112,6 +118,14 @@ export default {
     },
     center () {
       return this.run ? [this.run.start_latitude, this.run.start_longitude] : this.worldsNavel
+    },
+    zoom () {
+      // 15 is a nice default zoom value, that shows a run of about 3-4 km on one map
+      let z = 15
+      if (this?.run?.distance) {
+        z -= (Math.floor(Math.log2(this.run.distance)) - 11)
+      }
+      return z
     },
     stats () {
       return [
@@ -154,7 +168,8 @@ export default {
       ]
     },
     ...mapGetters({
-      stars: 'challenge/getStars'
+      stars: 'challenge/getStars',
+      visited: 'challenge/getVisitedStars'
     })
   },
   methods: {
@@ -165,28 +180,35 @@ export default {
     },
 
     setIconStyles () {
-      // const iconsvg = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><text y="0.9em" font-size="90">⭐️</text></svg>'
-      // this.icon = this.$L.icon({
-      // iconUrl: require('~/assets/bw_star_marker.png')
-      //  html: '⭐️',
-      // iconUrl: 'data:image/svg+xml;base64,' + btoa(iconsvg)
+      const starHtml = '<h1 style="font-size: 5rem; color: #f9cd0b;">★</h1>'
+      const newStarHtml = '<h1 style="font-size: 5rem; color: #d53f8c;">★</h1>'
+      const revisitHtml = '<h1 style="font-size: 5rem; color: #38a169;">★</h1>'
+      const favHtml = `<h1 style="font-size: 5rem">${this.fav}</h1>`
 
-      // })
-      const starHtml = '<h1 style="font-size: 35px">⭐️</h1>'
-      const favHtml = `<h1 style="font-size: 75px">${this.fav}</h1>`
-      this.icon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: starHtml, className: 'mymarker' })
-      this.runnerIcon = this.$L.divIcon({
-        iconSize: [32, 32],
-        iconAnchor: [16, 16 + 9],
-        html: favHtml,
-        className: 'mymarker'
-      })
+      this.starIcon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: starHtml, className: 'mymarker' })
+      this.newStarIcon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: newStarHtml, className: 'mymarker' })
+      this.revisitIcon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: revisitHtml, className: 'mymarker' })
+      this.runnerIcon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: favHtml, className: 'mymarker' })
     },
     decode () {
       // const encoded = 'im}zFkjlCWpADBGHLBCUISIK@FCGKI[e@Om@KUC[EU@CJHCc@GM?Y@@@ABHALHB\\\\GNAPGNSZQf@Af@ICDDA?BNA?HLPXDl@Qb@UHBVn@NVRR`@HJFpBnC^^LXHh@JVVZVBNHdABRD`A@h@C@?C@D?fAe@ZELBPNTFf@A`@JFANDDARJl@p@Pj@HFLAHDHL@NAKDCBVRp@A@JTRTVPZh@BHFD^p@@DCL@RDV?NRLHLLh@HJRh@JNZx@Hp@BH?PCRCEDa@DM@KGQ?QK_@m@{AWw@U_@KW@WKe@O_@MMc@y@gAqAEM?IQ]C?SOIC_@o@IEa@e@_@OMA?@MGC@M?A@E?CDQKm@SKMG?M?GB?AIHOBs@\\\\UA_@DUEI@q@AI@ME_@A_@GC@E?UOIQOs@We@q@y@}@wAIGU]SGIAWMa@k@O]@QDCLWGSIA[Ha@@GBONKDICGKI_@Eu@YaBAUDSHgBHe@@k@TwAH[Hs@b@m@Ty@HMRk@l@}@E?EBGLWRGJ]|@Sv@MTMJEJGZK~@M`@Ij@S|BEz@En@Z`BLfADNHNAHEBIJq@FO?KBc@AWP[DEDUBOFE@OICB?FHHEJ?LCDDFABGCAH@XD`@AL@PDF@LHJ@HDJf@j@DCB@@JABHF?D?CMOm@_@IFE@BHCFO?Qb@MPOx@Iz@FPBA@DAEE@r@R'
       if (this.run.summary_polyline) {
         this.polyline.latlngs = polyUtil.decode(this.run.summary_polyline)
-        console.info('polyline decoded', this.polyline.latlngs)
+      }
+    },
+    starStatusIcon (id) {
+      const idMatch = sv => sv?.StarId === id
+      const isVisited = this.starVisits?.filter(idMatch)
+      const isFirstTime = isVisited?.find(sv => sv.FirstTime)
+      if (isFirstTime) {
+        return this.newStarIcon
+      }
+
+      const previousVisit = this.visited?.filter(idMatch)
+      if (previousVisit && previousVisit?.length > 0) {
+        return this.revisitIcon
+      } else {
+        return this.starIcon
       }
     }
   }

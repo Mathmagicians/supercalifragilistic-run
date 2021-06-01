@@ -23,7 +23,8 @@ jobs:
         run: npm install
 
       - name: Lint code
-        run: npm run lint:js
+        continue-on-error: true
+        run: make lint
 
       - name: Retrieve variables from Terraform
         env:
