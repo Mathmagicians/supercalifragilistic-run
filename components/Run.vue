@@ -55,9 +55,12 @@
       </client-only>
     </div>
     <ul>
+      <li v-if="starVisits && starVisits.length>0" class="font-semibold capitalize">
+        Visited stars
+      </li>
       <li v-for="sv in starVisits" :key="sv.StarId+sv.RunId">
-        ⭐ You found a <span v-if="sv.FirstTime" class="text-green-600">NEW </span>star at {{ sv.StarName }} <span class="text-xs text-gray-400">({{ sv.StarId }})</span>. Flyby distance was {{ (sv.Distance*1000).toFixed(0) }} m.
-        <span v-if="!sv.FirstTime" class="text-gray-400">You have been here before, so no extra points 🦩.</span>
+        ⭐ You found a <span v-if="sv.FirstTime" class="text-green-600">NEW </span> star at {{ sv.StarName }} <span class="text-xs text-gray-400">({{ sv.StarId }})</span>. Flyby distance was {{ (sv.Distance*1000).toFixed(0) }} m.
+        <span v-if="!sv.FirstTime" class="text-gray-400">You have been here before, so no extra points 🦩</span>
       </li>
     </ul>
   </div>
