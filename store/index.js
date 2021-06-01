@@ -69,10 +69,6 @@ export const getters = {
   isStravaAccessTokenValid: (state, getters) => {
     return getters.hasStravaAccessToken && !!state.profile.runningAppAuthentication.strava.expires_at && (state.profile.runningAppAuthentication.strava.expires_at > Date.now() / 1000)
   },
-  // 1 hour throttle in s, or if no runs at all
-  stravaIsThrottled: (state) => {
-    return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.latest_fetch > 0 && (Date.now() / 1000 - state.profile.runningAppAuthentication.strava.latest_fetch < 3600)
-  },
   authorization_code: (state) => {
     return !!state.profile.runningAppAuthentication.strava && state.profile.runningAppAuthentication.strava.authorization_code
   },
@@ -109,8 +105,6 @@ export const mutations = {
   },
   setProfile (state, profile) {
     state.profile = { ...profile }
-    console.log('Runs before:', state.profile.runs)
-    state.profile.runs = state.profile.runs.reverse()
   },
   setProfileName (state, name) {
     state.profile.basic.name = name

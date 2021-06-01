@@ -9,6 +9,13 @@ export const getters = {
   getAthletes: (state) => { return state.myChallenge.Athletes },
   getMyChallenge: (state) => { return state.myChallenge },
   getStars: (state) => { return state.myChallenge?.Stars },
+  getVisitedStars: (state) => {
+    console.log('[getVisitedStars] athlete  ', JSON.stringify(state.myAthlete))
+    console.log('[getVisitedStars] athlete events ', JSON.stringify(state.myAthlete?.Events))
+    const svs = state.myAthlete?.Events?.flatMap(e => e.Runs).flatMap(re => re.StarVisits)
+    console.log('[getVisitedStars] all svs ', JSON.stringify(svs))
+    return svs
+  },
   getMyAthlete: (state) => { return state.myAthlete },
   getAthletePosition: state => (id) => {
     const matchId = athlete => athlete.ProfileId === id
@@ -56,9 +63,8 @@ export const actions = {
         method: 'get',
         url: `/athlete/${athlete}?challenge=${challenge}`
       })
-      console.log('[FetchAthlete] received data from server')
       commit('setMyAthlete', get.data)
-      console.log('[FetchMyAthlete] Challenge data fetched for athlete')
+      console.log('[FetchMyAthlete] Challenge data fetched for athlete ', athlete)
       return get.data
     } catch (error) {
 
