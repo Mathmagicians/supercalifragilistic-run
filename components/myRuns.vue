@@ -43,6 +43,7 @@
             :star-visits="aRun.StarVisits"
             :run-value="aRun.RunValue"
             :number="[myAthlete.Events.length - k, e.Runs.length - j]"
+            :fav="myAthlete.Meta.Fav"
           />
         </div>
       </div>

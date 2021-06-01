@@ -29,7 +29,7 @@
 
     <div id="map-wrap" style="height: 50vw; width: 80vw; overflow: hidden;">
       <client-only>
-        <l-map :zoom="14" :center="center" @ready="initMap">
+        <l-map :zoom="zoom" :center="center" :min-zoom="8" @ready="initMap">
           <l-tile-layer
             :url="url"
             :attribution="attribution"
@@ -91,6 +91,10 @@ export default {
     runValue: {
       type: Object,
       required: true
+    },
+    fav: {
+      type: String,
+      required: true
     }
   },
   data () {
@@ -112,6 +116,15 @@ export default {
     },
     center () {
       return this.run ? [this.run.start_latitude, this.run.start_longitude] : this.worldsNavel
+    },
+    zoom () {
+      // 14 is a nice default zoom value, that shows a run of about 3-4 km on one map
+      let z = 14
+      if (this?.run?.distance) {
+        z -= (Math.floor(Math.log2(this.run.distance)) - 11)
+        console.log(this.run.distance, this.run.distance / 4, Math.floor(this.run.distance / 4))
+      }
+      return z
     },
     stats () {
       return [
@@ -153,9 +166,6 @@ export default {
         }
       ]
     },
-    ...mapState({
-      fav: state => state.profile.basic.fav
-    }),
     ...mapGetters({
       stars: 'challenge/getStars'
     })
