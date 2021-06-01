@@ -41,6 +41,7 @@
             :key="aRun.id"
             :run="aRun.Run"
             :star-visits="aRun.StarVisits"
+            :visited-stars="visitedStars"
             :run-value="aRun.RunValue"
             :fav="myAthlete.Meta.Fav"
             :number="[myAthlete.Events.length - k, e.Runs.length - j]"
@@ -67,6 +68,12 @@ export default {
   data () {
     return {
       isVisibleIndex: 0
+    }
+  },
+  computed: {
+    visitedStars () {
+      const svs = this.myAthlete?.Events?.flatMap(e => e.Runs).flatMap(re => re.StarVisits)
+      return svs
     }
   }
 }

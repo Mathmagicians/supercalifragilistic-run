@@ -88,6 +88,10 @@ export default {
       type: Array,
       default: () => []
     },
+    visitedStars: {
+      type: Array,
+      default: () => []
+    },
     runValue: {
       type: Object,
       required: true
@@ -204,7 +208,7 @@ export default {
         return this.newStarIcon
       }
 
-      const previousVisit = this.visited?.filter(idMatch)
+      const previousVisit = this.visitedStars?.filter(idMatch)
       if (previousVisit && previousVisit?.length > 0) {
         return this.revisitIcon
       } else {
