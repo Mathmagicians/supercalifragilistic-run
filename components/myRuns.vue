@@ -52,9 +52,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { StarIcon, MapIcon, CalendarIcon, LightningBoltIcon, UserIcon, CloudDownloadIcon, CalculatorIcon, ChevronRightIcon, ChevronDownIcon } from '@vue-hero-icons/outline'
-import HeroButton from '@/components/layout-utils/HeroButton'
 import PageSectionTitle from './layout-utils/PageSectionTitle'
 
 export default {
