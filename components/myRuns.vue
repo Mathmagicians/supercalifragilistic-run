@@ -44,7 +44,6 @@
             :run-value="aRun.RunValue"
             :fav="myAthlete.Meta.Fav"
             :number="[myAthlete.Events.length - k, e.Runs.length - j]"
-            :fav="myAthlete.Meta.Fav"
           />
         </div>
       </div>
