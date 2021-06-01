@@ -202,8 +202,6 @@ export default {
       const isFirstTime = isVisited?.find(sv => sv.FirstTime)
       if (isFirstTime) {
         return this.newStarIcon
-      } else if (isVisited?.length > 0) {
-        return this.revisitIcon
       }
 
       const previousVisit = this.visited?.filter(idMatch)
