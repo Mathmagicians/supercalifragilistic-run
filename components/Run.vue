@@ -183,15 +183,21 @@ export default {
       this.decode()
     },
 
+    getHtmlTemplate (color, zoom, iconChar, pxSize) {
+      const htmlMarker = `<div style="height: ${pxSize}px; width: ${pxSize}px; line-height: ${pxSize}px; font-size: ${pxSize + pxSize / 3}px; text-align: center; padding: 0px 0px; color: ${color}; ">${iconChar}</div>`
+      return this.$L.divIcon(({
+        iconSize: [pxSize, pxSize],
+        html: htmlMarker,
+        className: 'mymarker'
+      }))
+    },
+
     setIconStyles () {
-      const starHtml = '<h1 style="font-size: 5rem; color: #f9cd0b;">★</h1>'
-      const newStarHtml = '<h1 style="font-size: 5rem; color: #d53f8c;">★</h1>'
-      const revisitHtml = '<h1 style="font-size: 5rem; color: #38a169;">★</h1>'
       const favHtml = `<h1 style="font-size: 5rem">${this.fav}</h1>`
 
-      this.starIcon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: starHtml, className: 'mymarker' })
-      this.newStarIcon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: newStarHtml, className: 'mymarker' })
-      this.revisitIcon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: revisitHtml, className: 'mymarker' })
+      this.starIcon = this.getHtmlTemplate('#f9cd0b', 12, '★', 30)
+      this.newStarIcon = this.getHtmlTemplate('#d53f8c', 12, '★', 30)
+      this.revisitIcon = this.getHtmlTemplate('#38a169', 12, '★', 30)
       this.runnerIcon = this.$L.divIcon({ iconSize: [32, 32], iconAnchor: [16, 16 + 9], html: favHtml, className: 'mymarker' })
     },
     decode () {
@@ -221,6 +227,6 @@ export default {
 
 <style scoped>
 .mymarker {
-  font-size: 75px;
+  font-size: 32px;
 }
 </style>
