@@ -9,8 +9,14 @@
           </h4>
         </template>
         <template #info>
-          <p> Challenge started {{ challenge.Start | timeSince }}</p>
-          <p> Challenge ends in {{ challenge.End | timeSince }}</p>
+          <p> Challenge <span class="italic">running</span> since</p>
+          <p class="text-right px-2 sm:px-4 text-lg sm:text-2xl text-green-600">
+            {{ ticker | countUp(challenge.Start) }}
+          </p>
+          <p> Challenge ends in</p>
+          <p class="text-right px-2 sm:px-4 text-lg sm:text-2xl  text-red-600">
+            {{ ticker | countDown(challenge.End) }}
+          </p>
         </template>
         <template #bottom>
           <Overtaking />
@@ -38,11 +44,24 @@ export default {
       challenge: 'challenge/getMyChallenge'
     })
   },
+  data () {
+    return {
+      ticker: new Date()
+    }
+  },
   async fetch () {
     const { store } = this.$nuxt.context
     console.info('[challenge] loading page,')
     await store.dispatch('handleUserLogin')
     await store.dispatch('challenge/fetchMyChallenge', store.state.profile.my_challenges)
+  },
+  watch: {
+    ticker: {
+      handler (value) {
+        setTimeout(() => { this.ticker = new Date() }, 1000)
+      },
+      immediate: true
+    }
   },
   methods: {
     isMine (id) {
