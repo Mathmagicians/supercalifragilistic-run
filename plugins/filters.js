@@ -18,7 +18,7 @@ Vue.filter('countDown', (now, timestamp) => {
   return formatDuration(duration, {
     delimiter: ' : ',
     zero: true,
-    format: ['months', 'days', 'hours', 'minutes', 'seconds']
+    format: ['months', 'days', 'hours', 'minutes']
   })
 })
 
@@ -30,6 +30,6 @@ Vue.filter('countUp', (now, timestamp) => {
   return formatDuration(duration, {
     delimiter: ' : ',
     zero: true,
-    format: ['months', 'days', 'hours', 'minutes', 'seconds']
+    format: ['months', 'days', 'hours', 'minutes']
   })
 })
