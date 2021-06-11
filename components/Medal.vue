@@ -1,20 +1,19 @@
 <template>
   <div class="flex flex-col items-center mx-2 sm:mx-5 w-1/8">
-    <!-- medal -->
     <div
-      class="rounded-full border-4 ring-4 p-6 sm:p-12 mb-2 bg-gradient-to-tr"
+      class="rounded-full border-4 ring-4 p-6 sm:p-12 mb-2 transform transition hover:scale-105 hover:-translate-y-20 duration-500 ease-in-out"
       :class="medal"
     >
       <component
         :is="mp.image"
-        class="inline-block fill-current text-md font-extrabold w-48 h-48 p-4 filter blur-xl"
+        class="inline-block fill-current text-md font-extrabold w-24 h-24 sm:w-48 sm:h-48 p-4 bg-gradient-to-tr"
         :class="textColor"
       />
     </div>
-    <!-- podium -->
+
     <div
       v-if="withPodium"
-      class="border-4 rounded-lg shadow-lg w-full bg-gradient-to-tr "
+      class="border-4 rounded-lg shadow-lg w-full bg-gradient-to-t"
       :class="podium"
     >
       <ul class="text-center py-2">
@@ -24,11 +23,11 @@
         <li>
           {{ mp.podiumTextMiddle }}
         </li>
-        <li class=" text-lg sm:text-2xl text-gray-700">
-          {{ athlete.Meta.Fav ? athlete.Meta.Fav : '⁇' }} {{ athlete.Meta.Name ? athlete.Meta.Name : 'name missing' }}
-        </li>
         <li v-for="index in podiumHeight" :key="index">
           <span class="text-white">- </span>
+        </li>
+        <li class=" text-lg sm:text-2xl text-gray-700">
+          {{ athlete.Meta.Fav ? athlete.Meta.Fav : '⁇' }} {{ athlete.Meta.Name ? athlete.Meta.Name : 'name missing' }}
         </li>
       </ul>
     </div>
@@ -74,7 +73,7 @@ const medalProperties = {
   MostKilometersWeek: {},
   MostStarsWeek: {},
   Default: {
-    color: 'blue-400',
+    color: 'pink-400',
     image: 'Overtaking',
     podiumTextTop: '🦩',
     podiumTextMiddle: 'Awarded for participation'
@@ -106,16 +105,27 @@ export default {
       return this.mp.color.split('-')[0]
     },
     medal () {
-      return `from-${this.mp.color} via-white to-${this.baseColor}-200 ${this.textColor} border-${this.mp.color} ring-${this.mp.color}`
+      return `${this.textColor} ${this.borderColor} ${this.ringColor}`
     },
     podium () {
-      return `from-${this.baseColor}-200 via-${this.baseColor}-100 to-white border-${this.mp.color} ${this.textColor}`
+      // return `from-${this.baseColor}-200 via-${this.baseColor}-100 to-white border-${this.mp.color} ${this.textColor}`
+      return `from-pink-200 via-pink-100 to-white ${this.textColor}`
     },
     podiumHeight () {
       return this.mp?.podiumHeight ? this.mp.podiumHeight : 1
     },
+    medalGradient () {
+      return `from-${this.mp.color} via-white to-${this.mp.color}`
+    },
     textColor () {
       return `text-${this.mp.color}`
+    },
+    borderColor () {
+      return `border-${this.mp.color}`
+    },
+    ringColor () {
+      const base = this.mp.color.split('-')[0]
+      return `ring-${this.mp.color}`
     }
   }
 
