@@ -19,7 +19,10 @@
           </p>
         </template>
         <template v-else-if="isChallengeOver" #info>
-          <p> Challenge is over since   {{ ticker | countDown(challenge.End) }}</p>
+          <p> Challenge is over since</p>
+          <p class="text-right px-2 sm:px-4 text-lg sm:text-2xl  text-red-600">
+            {{ ticker | countDown(challenge.End) }}
+          </p>
           <div>
             <ul class="text-current">
               <li class="flex items-center px-2 my-10 sm:my-20">

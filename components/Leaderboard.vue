@@ -20,17 +20,11 @@
         <th>
           <MapIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
-        <th class="border-r-2 border-gray-200 w-1/12">
+        <th class="w-1/12">
           <StarIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
-        <th class="break-words sm:break-normal mx-2 w-1/12">
-          Km
-        </th>
-        <th>
-          Stars
-        </th>
-        <th>
-          Starts
+        <th class="border-r-2 border-gray-200  w-1/12">
+          <GiftIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
         <th class="border-r-2 border-l-2 sm:border-none w-1/8">
           <CalculatorIcon size="1.5x" class="text-pink-600 inline-block" />
@@ -52,17 +46,11 @@
         <th>
           Distance
         </th>
-        <th class="border-r-2 border-gray-200">
+        <th>
           Stars
         </th>
-        <th>
-          Km Bonus
-        </th>
-        <th>
-          Star Bonus
-        </th>
-        <th>
-          Start Bonus
+        <th class="border-r-2 border-gray-200">
+          Awards
         </th>
         <th>
           Total
@@ -91,18 +79,13 @@
           <td class="text-right px-2 sm:px-4" :class="athlete.Score.KmsTotal ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.KmsTotal.toFixed(0) }}
           </td>
-          <td class="text-right px-2 sm:px-4 border-r-2 border-gray-200 text-lg" :class="athlete.Score.StarsCollected ? 'text-green-600': 'text-red-600'">
+          <td class="text-right px-2 sm:px-4 text-lg" :class="athlete.Score.StarsCollected ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.StarsCollected }}
           </td>
-          <td class="text-right px-2 sm:px-4 text-lg" :class="athlete.Score.KmsTotal ? 'text-green-600': 'text-red-600'">
-            ️{{ athlete.Score.KilometerBonus.toFixed(0) }}
+          <td class="text-right px-2 sm:px-4 text-lg border-gray-200 border-r-2 text-red-600">
+            pending
           </td>
-          <td :class="athlete.Score.StarsCollected ? 'text-green-600': 'text-red-600'" class="text-right px-2 sm:px-4 text-lg">
-            {{ athlete.Score.StarBonus }}
-          </td>
-          <td :class="athlete.Score.RunDays ? 'text-green-600': 'text-red-600'" class="text-right px-2 sm:px-4 text-lg">
-            {{ athlete.Score.StartBonus }}
-          </td>
+
           <td class="text-right px-2 sm:px-4 text-2xl sm:text-6xl border-l-2 border-r-2 sm:border-none" :class="athlete.Score.RunDays ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.Total.toFixed(0) }}
           </td>
@@ -126,12 +109,12 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
-import { StarIcon, MapIcon, CalendarIcon, LightningBoltIcon, UserIcon, CloudDownloadIcon, CalculatorIcon, ClipboardListIcon } from '@vue-hero-icons/outline'
+import { StarIcon, MapIcon, CalendarIcon, LightningBoltIcon, UserIcon, CloudDownloadIcon, CalculatorIcon, ClipboardListIcon, GiftIcon } from '@vue-hero-icons/outline'
 import HeroButton from '@/components/layout-utils/HeroButton'
 
 export default {
   name: 'Leaderboard',
-  components: { StarIcon, MapIcon, CalendarIcon, UserIcon, CloudDownloadIcon, CalculatorIcon, ClipboardListIcon, HeroButton },
+  components: { StarIcon, MapIcon, CalendarIcon, UserIcon, CloudDownloadIcon, CalculatorIcon, ClipboardListIcon, GiftIcon, HeroButton },
   props: {
     athletes: {
       type: Array,
