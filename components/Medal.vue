@@ -106,7 +106,7 @@ export default {
       return this.mp.color.split('-')[0]
     },
     medal () {
-      return `from-${this.mp.color} via-white to-${this.baseColor}-200 ${this.textColor} border-${this.mp.color} ring-${this.baseColor}-200`
+      return `from-${this.mp.color} via-white to-${this.baseColor}-200 ${this.textColor} border-${this.mp.color} ring-${this.mp.color}`
     },
     podium () {
       return `from-${this.baseColor}-200 via-${this.baseColor}-100 to-white border-${this.mp.color} ${this.textColor}`
