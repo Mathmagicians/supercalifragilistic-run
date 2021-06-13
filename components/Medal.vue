@@ -1,13 +1,16 @@
 <template>
-  <div class="flex flex-col items-center mx-2 sm:mx-5 w-1/8">
+  <div
+    class="flex flex-col items-center mx-2 sm:mx-5 "
+    :class="withPodium ? 'w-1/8' : 'w-18 h-18 sm:w-26 sm:h-26'"
+  >
     <div
-      class="overflow-hidden rounded-full border-4 ring-4 p-6 sm:p-12 mb-2 transform transition hover:scale-125 hover:-rotate-12 hover:-translate-y-20 duration-500 ease-in-out bg-gradient-to-tr"
-      :class="`${mp.mg} ${mp.text} ${mp.border} ${mp.ring}`"
+      class="overflow-hidden rounded-full  mb-2 transform transition hover:scale-125 hover:-rotate-12 hover:-translate-y-20 duration-500 ease-in-out bg-gradient-to-tr"
+      :class="`${withPodium? 'border-4 ring-4 p-6 sm:p-12': 'border-2 p-2 sm:p-3'} ${mp.mg} ${mp.text} ${mp.border} ${mp.ring}`"
     >
       <component
         :is="mp.image"
-        class="inline-block fill-current text-md font-extrabold w-24 h-24 sm:w-48 sm:h-48 p-4 "
-        :class="`${textColor}`"
+        class="inline-block fill-current text-md font-extrabold  p-4 "
+        :class="`${mp.text} ${withPodium ? 'w-24 h-24 sm:w-48 sm:h-48' : 'w-16 h-16 sm:w-24 sm:h-24'}`"
       />
     </div>
 
@@ -17,7 +20,7 @@
       :class="mp.text"
     >
       <ul class="text-center py-2">
-        <li class="text-2xl sm:text-6xl" :class="textColor">
+        <li class="text-2xl sm:text-6xl" :class="mp.text">
           {{ mp.podiumTextTop }}
         </li>
         <li>
@@ -41,6 +44,7 @@ import Second from '~/assets/Second.svg?inline'
 import Third from '~/assets/Third.svg?inline'
 import Allstars from '~/assets/Allstars.svg?inline'
 import Overtaking from '~/assets/Overtaking.svg?inline'
+import SuperRun from '~/assets/Super-run.svg?inline'
 
 const medalProperties = {
   1: {
@@ -86,8 +90,26 @@ const medalProperties = {
     podiumTextTop: '⭐️',
     podiumTextMiddle: 'collected all stars'
   },
-  MostKilometersWeek: {},
-  MostStarsWeek: {},
+  MostKilometersWeek: {
+    color: 'blue-400',
+    mg: 'from-pink-100 via-white to-blue-400',
+    text: 'text-blue-400',
+    border: 'border-blue-400',
+    ring: 'ring-blue-100',
+    image: 'Overtaking',
+    podiumTextTop: '⭐️',
+    podiumTextMiddle: 'Most Kilometers in a Week'
+  },
+  MostStarsWeek: {
+    color: 'pink-400',
+    mg: 'from-pink-100 via-white to-pink-400',
+    text: 'text-pink-400',
+    border: 'border-pink-400',
+    ring: 'ring-pink-100',
+    image: 'SuperRun',
+    podiumTextTop: '⭐️',
+    podiumTextMiddle: 'Most Stars in a Week'
+  },
   Default: {
     color: 'pink-400',
     mg: 'from-pink-100 via-white to-pink-400',
@@ -102,7 +124,7 @@ const medalProperties = {
 
 export default {
   name: 'Medal',
-  components: { First, Second, Third, Allstars, Overtaking },
+  components: { First, Second, Third, Allstars, Overtaking, SuperRun },
   props: {
     for: {
       type: String,

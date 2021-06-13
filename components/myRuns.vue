@@ -7,6 +7,14 @@
       <CloudDownloadIcon size="1.5x" class="inline-block" /> Data fetched {{ myAthlete.Meta.LatestFetch | timeSince }}
     </p>
     <leaderboard :athletes="[myAthlete]" class="my-2 sm:my-4" />
+    <div class="flex flex-row items-end">
+      <medal v-if="athlete.Score.AllStars" :with-podium="true" :athlete="athlete" for="AllStars" />
+      <medal v-if="athlete.Score.AllStars" :with-podium="true" :athlete="athlete" for="WeekWithMostKms" />
+      <medal v-if="athlete.Score.AllStars" :with-podium="true" :athlete="athlete" for="WeekWithMostStars" />
+      <medal v-if="position(athlete.ProfileId) === 1" :with-podium="true" :athlete="athlete" :for="1" />
+      <medal v-if="position(athlete.ProfileId) === 2" :with-podium="true" :athlete="athlete" :for="2" />
+      <medal v-if="position(athlete.ProfileId) === 3" :with-podium="true" :athlete="athlete" :for="3" />
+    </div>
     <div class="flex flex-col">
       <div v-for="(e, k) in myAthlete.Events" :key="e.Date">
         <div

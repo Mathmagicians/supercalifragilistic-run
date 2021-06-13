@@ -82,8 +82,16 @@
           <td class="text-right px-2 sm:px-4 text-lg" :class="athlete.Score.StarsCollected ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.StarsCollected }}
           </td>
-          <td class="text-right px-2 sm:px-4 text-lg border-gray-200 border-r-2 text-red-600">
-            pending
+          <td class="text-right px-2 sm:px-4 text-lg border-gray-200 border-r-2 text-green-600 flex flex-row justify-end align-middle">
+            <medal v-if="athlete.Score.AllStars" :with-podium="false" :athlete="athlete" for="AllStars" />
+            <medal v-if="athlete.Score.WeekWithMostKms" :with-podium="false" :athlete="athlete" for="WeekWithMostKms" />
+            <medal v-if="athlete.Score.WeekWithMostStars" :with-podium="false" :athlete="athlete" for="WeekWithMostStars" />
+            <medal v-if="position(athlete.ProfileId) === 1" :with-podium="false" :athlete="athlete" :for="1" />
+            <medal v-if="position(athlete.ProfileId) === 2" :with-podium="false" :athlete="athlete" :for="2" />
+            <medal v-if="position(athlete.ProfileId) === 3" :with-podium="false" :athlete="athlete" :for="3" />
+            <p v-if="athlete.Score.SpecialPrize">
+              {{ athlete.Score.SpecialPrize }}
+            </p>
           </td>
 
           <td class="text-right px-2 sm:px-4 text-2xl sm:text-6xl border-l-2 border-r-2 sm:border-none" :class="athlete.Score.RunDays ? 'text-green-600': 'text-red-600'">
