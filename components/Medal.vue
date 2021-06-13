@@ -90,7 +90,7 @@ const medalProperties = {
     podiumTextTop: '⭐️',
     podiumTextMiddle: 'collected all stars'
   },
-  MostKilometersWeek: {
+  WeekWithMostKms: {
     color: 'blue-400',
     mg: 'from-pink-100 via-white to-blue-400',
     text: 'text-blue-400',
@@ -100,10 +100,10 @@ const medalProperties = {
     podiumTextTop: '⭐️',
     podiumTextMiddle: 'Most Kilometers in a Week'
   },
-  MostStarsWeek: {
+  WeekWithMostStars: {
     color: 'pink-400',
-    mg: 'from-pink-100 via-white to-pink-400',
-    text: 'text-pink-400',
+    mg: 'from-pink-100 via-white to-blue-400',
+    text: 'text-blue-400',
     border: 'border-pink-400',
     ring: 'ring-pink-100',
     image: 'SuperRun',
