@@ -16,6 +16,7 @@
 
 import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
+
 export default {
   auth: false,
   components: { PageSectionTitle, BasicPageLayout },
