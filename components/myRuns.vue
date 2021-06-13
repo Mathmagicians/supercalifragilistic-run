@@ -7,6 +7,14 @@
       <CloudDownloadIcon size="1.5x" class="inline-block" /> Data fetched {{ myAthlete.Meta.LatestFetch | timeSince }}
     </p>
     <leaderboard :athletes="[myAthlete]" class="my-2 sm:my-4" />
+    <div class="flex flex-row items-end">
+      <medal v-if="myAthlete.Score.AllStars" :with-podium="true" :athlete="myAthlete" for="AllStars" />
+      <medal v-if="myAthlete.Score.WeekWithMostKms" :with-podium="true" :athlete="myAthlete" for="WeekWithMostKms" />
+      <medal v-if="myAthlete.Score.WeekWithMostStars" :with-podium="true" :athlete="myAthlete" for="WeekWithMostStars" />
+      <medal v-if="position(myAthlete.ProfileId) === 1" :with-podium="true" :athlete="myAthlete" :for="1" />
+      <medal v-if="position(myAthlete.ProfileId) === 2" :with-podium="true" :athlete="myAthlete" :for="2" />
+      <medal v-if="position(myAthlete.ProfileId) === 3" :with-podium="true" :athlete="myAthlete" :for="3" />
+    </div>
     <div class="flex flex-col">
       <div v-for="(e, k) in myAthlete.Events" :key="e.Date">
         <div
@@ -54,6 +62,7 @@
 
 <script>
 import { StarIcon, MapIcon, CalendarIcon, LightningBoltIcon, UserIcon, CloudDownloadIcon, CalculatorIcon, ChevronRightIcon, ChevronDownIcon } from '@vue-hero-icons/outline'
+import { mapGetters } from 'vuex'
 import PageSectionTitle from './layout-utils/PageSectionTitle'
 
 export default {
@@ -71,6 +80,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      position: 'challenge/getAthletePosition'
+    }),
     visitedStars () {
       const svs = this.myAthlete?.Events?.flatMap(e => e.Runs).flatMap(re => re.StarVisits)
       return svs

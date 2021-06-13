@@ -23,6 +23,9 @@
         <th class="w-1/12">
           <StarIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
+        <th class="border-r-2 border-l-2 sm:border-none w-1/8">
+          <CalculatorIcon size="1.5x" class="text-pink-600 inline-block" />
+        </th>
         <th class="border-r-2 border-gray-200  w-1/12">
           <GiftIcon size="1.5x" class="text-pink-600 inline-block" />
         </th>
@@ -48,6 +51,9 @@
         </th>
         <th>
           Stars
+        </th>
+        <th>
+          Bonus
         </th>
         <th class="border-r-2 border-gray-200">
           Awards
@@ -82,8 +88,18 @@
           <td class="text-right px-2 sm:px-4 text-lg" :class="athlete.Score.StarsCollected ? 'text-green-600': 'text-red-600'">
             ️{{ athlete.Score.StarsCollected }}
           </td>
-          <td class="text-right px-2 sm:px-4 text-lg border-gray-200 border-r-2 text-red-600">
-            pending
+          <td class="text-right px-2 sm:px-4 text-lg" :class="athlete.Score.SpecialPrize ? 'text-green-600': 'text-grey-700'">
+            <p>
+              {{ athlete.Score.SpecialPrize }}
+            </p>
+          </td>
+          <td class="text-right px-2 sm:px-4 text-lg border-gray-200 border-r-2 text-green-600 flex flex-row justify-end justify-center">
+            <medal v-if="athlete.Score.AllStars" :with-podium="false" :athlete="athlete" for="AllStars" />
+            <medal v-if="athlete.Score.WeekWithMostKms" :with-podium="false" :athlete="athlete" for="WeekWithMostKms" />
+            <medal v-if="athlete.Score.WeekWithMostStars" :with-podium="false" :athlete="athlete" for="WeekWithMostStars" />
+            <medal v-if="position(athlete.ProfileId) === 1" :with-podium="false" :athlete="athlete" :for="1" />
+            <medal v-if="position(athlete.ProfileId) === 2" :with-podium="false" :athlete="athlete" :for="2" />
+            <medal v-if="position(athlete.ProfileId) === 3" :with-podium="false" :athlete="athlete" :for="3" />
           </td>
 
           <td class="text-right px-2 sm:px-4 text-2xl sm:text-6xl border-l-2 border-r-2 sm:border-none" :class="athlete.Score.RunDays ? 'text-green-600': 'text-red-600'">
