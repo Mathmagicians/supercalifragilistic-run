@@ -1,1 +1,49 @@
-<mxfile host="app.diagrams.net" modified="2021-06-23T13:16:19.660Z" agent="5.0 (Macintosh)" etag="ep4NfIiFB9nziXVjyd1j" version="14.8.0" type="github"><diagram id="XnEuNFYNSUAKBxXPRm2M" name="Page-1">ddHBDsIgDADQr+HOQBI9z6kXTzt4JqMOErYuDLPp17sF5iTTE+W1UFIIz5vx7GSnr6jAEkbVSPiRMJYJsZuWWZ5BDoIFqJ1RsWiF0rwgIo36MAr6pNAjWm+6FCtsW6h8YtI5HNKyO9q0aydr2EBZSbvVm1FeB90LuvoFTK2XzhmNmUYuxRF6LRUOX8QLwnOH6EPUjDnYeXjLXMK505/s52EOWv/jwBSsd0+b5Id48QY=</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2021-06-23T13:26:11.006Z" agent="5.0 (Macintosh)" etag="qOFUpYVpwmAp_ADMJd0r" version="14.8.0" type="github">
+  <diagram id="XnEuNFYNSUAKBxXPRm2M" name="Page-1">
+    <mxGraphModel dx="1554" dy="952" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="N5vf8b5NywpB6LoSah3F-1" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.dynamo_db;fillColor=#2E73B8;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="184.75" y="330" width="72" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-2" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.lambda_function;fillColor=#F58534;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="280" y="230" width="69" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-3" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.lambda_function;fillColor=#F58534;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="190" y="230" width="69" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-4" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.api_gateway;fillColor=#D9A741;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="182.5" y="90" width="76.5" height="93" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-5" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/323_Strava_logo-128.png" vertex="1" parent="1">
+          <mxGeometry x="380" y="517.2" width="108" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-6" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.cognito;fillColor=#AD688B;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="60" y="324" width="76.5" height="93" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-7" value="" style="dashed=0;outlineConnect=0;html=1;align=center;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;shape=mxgraph.webicons.facebook;fillColor=#6294E4;gradientColor=#1A2665" vertex="1" parent="1">
+          <mxGeometry x="47" y="520" width="102.4" height="102.4" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-12" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://assets-global.website-files.com/5d3ef00c73102c436bc83996/5d3ef00c73102c6de8c83a2e_logo-space-black.gif;" vertex="1" parent="1">
+          <mxGeometry x="629" y="510" width="193.99" height="108.93" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-13" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://leafletjs.com/docs/images/logo.png;" vertex="1" parent="1">
+          <mxGeometry x="640" y="470" width="177.84" height="47.2" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-14" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://wiki.openstreetmap.org/w/images/3/3e/Icon_logos.png;" vertex="1" parent="1">
+          <mxGeometry x="640" y="610" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-15" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn4.iconfinder.com/data/icons/logos-brands-5/24/go-128.png" vertex="1" parent="1">
+          <mxGeometry x="47" y="183" width="128" height="128" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-16" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn4.iconfinder.com/data/icons/logos-brands-5/24/nuxt-dot-js-128.png" vertex="1" parent="1">
+          <mxGeometry x="665" y="60" width="128" height="128" as="geometry" />
+        </mxCell>
+        <mxCell id="N5vf8b5NywpB6LoSah3F-17" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn4.iconfinder.com/data/icons/logos-brands-5/24/vue-dot-js-128.png" vertex="1" parent="1">
+          <mxGeometry x="530" y="60" width="128" height="128" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
