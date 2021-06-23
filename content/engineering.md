@@ -79,4 +79,5 @@ We use the generous free tier on [Terraform Cloud](https://www.terraform.io/clou
 Depends. Happy to provide this for free, if it can contribute to peoples enhanced life quality.
 
 # License
+
 Open Source, under the [MIT license](https://github.com/Mathmagicians/supercalifragilistic-run/blob/main/LICENSE).
