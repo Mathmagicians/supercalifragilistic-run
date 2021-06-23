@@ -1,14 +1,10 @@
 <template>
   <basic-page-layout>
     <page-section-title>
-      Engineering
+      {{ engineeringPage.description }}
     </page-section-title>
-    <p>
-      Received from server: {{ fromLambda }}
-    </p>
-    <p>
-      Lambda url is: {{ $config.axios.baseUrl }}
-    </p>
+    <super-run-diagram />
+    <nuxt-content :document="engineeringPage" class="prose lg:prose-lg" />
   </basic-page-layout>
 </template>
 
@@ -16,19 +12,14 @@
 
 import BasicPageLayout from '../components/layout-utils/BasicPageLayout'
 import PageSectionTitle from '../components/layout-utils/PageSectionTitle'
-
+import SuperRunDiagram from '~/content/super-run.svg?inline-block'
 export default {
   auth: false,
-  components: { PageSectionTitle, BasicPageLayout },
+  components: { PageSectionTitle, BasicPageLayout, SuperRunDiagram },
 
-  data () {
-    return {
-      fromLambda: {}
-    }
-  },
-
-  async fetch () {
-    this.fromLambda = await this.$axios.$get('/')
+  async asyncData ({ $content }) {
+    const engineeringPage = await $content('engineering').fetch()
+    return { engineeringPage }
   }
 
 }
