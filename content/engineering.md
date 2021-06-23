@@ -1,4 +1,8 @@
-# The Engineering Behind this app
+---
+description: Engineering
+---
+
+# Behind this app
 
 This is a portfolio project, that aims at exploring the Frontend As a Service architecture paradigm, together with some principles of Everything as Code, and a high bar for Quality Assurance (read BDD and TDD).
 
@@ -65,9 +69,14 @@ The project is an example of a serverless, event driven microservice architectur
 Data are peristed in a NoSQL database.
 Everything is fully scalable.
 
-## Infrascture as Code 
+## Infrastructure as Code 
 We use Terraform for creating and destroying all cloud resources for the project.
-We use Terraform Cloud to ensure our statefiles are safe.
+We use the generous free tier on [Terraform Cloud](https://www.terraform.io/cloud) to ensure our statefiles are safe.
 
-## License
+# FAQ
+
+## Do you want to commercialize it?
+Depends. Happy to provide this for free, if it can contribute to peoples enhanced life quality.
+
+# License
 Open Source, under the [MIT license](https://github.com/Mathmagicians/supercalifragilistic-run/blob/main/LICENSE).
