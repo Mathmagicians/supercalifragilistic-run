@@ -1,14 +1,9 @@
 <template>
   <basic-page-layout>
     <page-section-title>
-      Engineering
+      {{ engineeringPage.description }}
     </page-section-title>
-    <p>
-      Received from server: {{ fromLambda }}
-    </p>
-    <p>
-      Lambda url is: {{ $config.axios.baseUrl }}
-    </p>
+    <nuxt-content :document="engineeringPage" class="prose lg:prose-lg" />
   </basic-page-layout>
 </template>
 
@@ -21,14 +16,9 @@ export default {
   auth: false,
   components: { PageSectionTitle, BasicPageLayout },
 
-  data () {
-    return {
-      fromLambda: {}
-    }
-  },
-
-  async fetch () {
-    this.fromLambda = await this.$axios.$get('/')
+  async asyncData ({ $content }) {
+    const engineeringPage = await $content('engineering').fetch()
+    return { engineeringPage }
   }
 
 }
