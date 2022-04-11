@@ -37,7 +37,7 @@ jobs:
         run: npm run generate
 
       - name: Upload build artifact to Github Actions
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: frontend-dist-${{ github.sha }}
           path: ./dist
